@@ -145,14 +145,14 @@
                     );
 
                 this.SpikeG=this.physics.add.group();
-                this.Spike1 = this.SpikeG.create(1379,1030,"SpikeA")
+                this.Spike1 = this.SpikeG.create(1500,1040,"SpikeA")
                 this.Spike1.body.setSize(30,27,true)
                 this.Spike1.setOffset(0, 5)
-                this.Spike2 = this.SpikeG.create(1379,1060,"SpikeA")
+                this.Spike2 = this.SpikeG.create(1800,1093,"SpikeA")
                 this.Spike2.body.setSize(30,27,true)
                 this.Spike2.setOffset(0, 5)
 
-                this.player = this.physics.add.sprite(1379,1100, 'PersoSprite') ;
+                this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
                 this.player.setOffset(4, 28)
                 this.player.alpha = 1;  
@@ -173,16 +173,20 @@
                 this.physics.add.collider(this.PierresM, Calque3);
                 this.physics.add.collider(this.PierresM, CalqueSJ);
                 this.physics.add.collider(this.PierresM, CalqueSM);
-                this.PierreM1 = this.PierresM.create(2022,679, "MonstreR");
+                this.PierreM1 = this.PierresM.create(2766,1174, "MonstreR");
+                this.PierreM1.setBounce(1);
+                this.PierreM2 = this.PierresM.create(2880,1032, "MonstreR");
                 this.PierreM1.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
-                this.BatM1 = this.BatM.create(2022,700, "MonstreBA");
+                this.BatM1 = this.BatM.create(2500,774, "MonstreBA");
                 this.BatM1.setBounce(1);
                 
-                this.AgroZoneM = this.physics.add.image(0,0,"AgroZ")
-                this.AgroZoneM.setSize(224, 224)
+                this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM1.setSize(224, 224)
+                this.AgroZoneM2 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM2.setSize(224, 224)
                 
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueMonstre, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueMonstre, null, this);
@@ -423,6 +427,18 @@
                         this.PierreM1.setVelocityY(-60) 
             }
             
+            AttackM2(){               
+                        this.PierreM2.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM2.x > this.player.x)
+                        this.PierreM2.setVelocityX(-60)
+                        if (this.PierreM2.x < this.player.x)
+                        this.PierreM2.setVelocityX(60)
+                        if (this.PierreM2.y < this.player.y)
+                        this.PierreM2.setVelocityY(60)
+                        if (this.PierreM2.y > this.player.y)
+                        this.PierreM2.setVelocityY(-60) 
+            }
+
             update(){
                 console.log(this.player.x,this.player.y)
                 if ((this.player.x >= 1446 && this.player.x <= 1502) && (this.player.y >=341 && this.player.y <= 402)){
@@ -454,11 +470,14 @@
                 if (this.BatM1.y > this.player.y)
                     this.BatM1.setVelocityY(-60)
 
-                this.AgroZoneM.x=this.PierreM1.x
-                this.AgroZoneM.y=this.PierreM1.y
+                this.AgroZoneM1.x=this.PierreM1.x
+                this.AgroZoneM1.y=this.PierreM1.y
+                this.AgroZoneM2.x=this.PierreM2.x
+                this.AgroZoneM2.y=this.PierreM2.y
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
-                this.physics.add.overlap(this.player, this.AgroZoneM, this.AttackM1, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM1, this.AttackM1, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM2, this.AttackM2, null, this);
 
                 if(this.invincible == true){
                     this.compteur-- ;
@@ -742,7 +761,7 @@
                 this.Spike2.body.setSize(30,27,true)
                 this.Spike2.setOffset(0, 5)
 
-                this.player = this.physics.add.sprite(1379,1100, 'PersoSprite') ;
+                this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
                 this.player.setOffset(4, 28)
                 this.player.alpha = 1;  
