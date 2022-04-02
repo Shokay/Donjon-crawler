@@ -29,7 +29,7 @@
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
                 this.load.image("BourseHUD","assets/bourse.png")
-                
+                this.load.image("PiqueSolo","assets/PiqueSeul.png")               
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -75,8 +75,7 @@
                 this.tailleP=1;
                 this.speedconst = 140;
                 this.thune=0;
-                
-                
+               
                 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -144,13 +143,24 @@
                         tileset1,
                     );
 
-                this.SpikeG=this.physics.add.group();
-                this.Spike1 = this.SpikeG.create(1500,1040,"SpikeA")
-                this.Spike1.body.setSize(30,27,true)
-                this.Spike1.setOffset(0, 5)
-                this.Spike2 = this.SpikeG.create(1800,1093,"SpikeA")
-                this.Spike2.body.setSize(30,27,true)
-                this.Spike2.setOffset(0, 5)
+                this.SpikeG=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+
+                this.anims.create({
+                    key: 'SpikeAnim',           
+                    frames: this.anims.generateFrameNumbers('SpikeA', {start:0,end:16}),          //creation des animation
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                carteDuNiveau.getObjectLayer('Spike').objects.forEach((spike) => {
+                    // Add new spikes to our sprite group
+                    const spikeSprite = this.SpikeG.create(spike.x, spike.y -= 32,'PiqueSolo').setOrigin(0);
+                });
+
+                this.SpikeG.playAnimation("SpikeAnim")
 
                 this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
@@ -177,6 +187,7 @@
                 this.PierreM1.setBounce(1);
                 this.PierreM2 = this.PierresM.create(2880,1032, "MonstreR");
                 this.PierreM1.setBounce(1);
+                this.PierreM2.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
@@ -300,16 +311,7 @@
                     frameRate: 6,
                 });
 
-                this.anims.create({
-                    key: 'SpikeAnim',           
-                    frames: this.anims.generateFrameNumbers('SpikeA', {start:0,end:16}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
                 this.BatM1.play('MonstreBatAttack',true);
-                this.Spike1.play('SpikeAnim',true)
-                this.Spike2.play('SpikeAnim',true)
                 
                 this.physics.world.setBounds(0, 0, 3200, 1376);
                 this.cameras.main.setBounds(0, 0, 3200,1376);
@@ -407,11 +409,11 @@
                 this.ArgentTxT.setText(this.thune)
             }
             
-            SpikeDegat(){
-                if(this.invincible === false && this.Spike1.anims.currentFrame.index>=15){
+            SpikeDegat(player,Pique){
+                if(this.invincible === false && Pique.anims.currentFrame.index>=15){
                         this.invincible = true;
                         this.HpJoueur --;
-                        this.player.setTint(0xff0000);
+                        player.setTint(0xff0000);
                     }
             }
 
@@ -773,7 +775,6 @@
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
-
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
                 

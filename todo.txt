@@ -1,0 +1,10 @@
+1.Tout avoir sur tiled ( ennemies placé, piege, terrain) (long)
+2.faire trigger zone et fermeture      (ca c'est mid) 
+faire loot mobs
+3.faire magie anim et bloc lié            ( ca c'est long)
+4.faire marchand et item a vendre  (regarder si y'a du temps, si oui faire zone du bas) (long)
+5.faire items et barre d'inv           (rapide)
+6.faire coruption assets      ( rapide)
+7.faire derniere zone avec trou   (long)
+
+terminé gg !
