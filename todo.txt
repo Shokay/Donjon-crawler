@@ -9,3 +9,14 @@ faire loot mobs
 7.faire derniere zone avec trou   (long)
 
 terminé gg !
+
+idée: sort qui tir plusieur projectile
+	item modifie vitesse pero ( botte ) 
+demain:
+finir de tout placé
+trigger zone
+plaque de pression
+coffre
+item 
+loot mob aussi
+marchant
