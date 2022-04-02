@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="80" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <editorsettings>
-  <export target="DonjonMap2..tmx" format="tmx"/>
+  <export target="DonjonMap2.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="Salle1T" tilewidth="32" tileheight="32" tilecount="252" columns="21">
   <image source="assets/Salle1.png" width="672" height="384"/>

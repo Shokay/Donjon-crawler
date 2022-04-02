@@ -441,7 +441,7 @@
 
             update(){
                 console.log(this.player.x,this.player.y)
-                if ((this.player.x >= 1446 && this.player.x <= 1502) && (this.player.y >=341 && this.player.y <= 402)){
+                if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
 
@@ -519,7 +519,6 @@
                 //console.log(this.player.x,this.player.y)
                 const {keys} = this
                 this.speed = this.speedconst
-
 
                 this.player.body.setVelocity(0)
                 if(Phaser.Input.Keyboard.JustDown(this.keys.a)){
@@ -761,7 +760,7 @@
                 this.Spike2.body.setSize(30,27,true)
                 this.Spike2.setOffset(0, 5)
 
-                this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
+                this.player = this.physics.add.sprite(1184,98, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
                 this.player.setOffset(4, 28)
                 this.player.alpha = 1;  
