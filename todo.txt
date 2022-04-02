@@ -1,4 +1,5 @@
 1.Tout avoir sur tiled ( ennemies placé, piege, terrain) (long)
+plaque de pression
 2.faire trigger zone et fermeture      (ca c'est mid) 
 faire loot mobs
 3.faire magie anim et bloc lié            ( ca c'est long)
