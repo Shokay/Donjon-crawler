@@ -76,7 +76,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
+                this.speedconst = 140;
                 this.thune=0;
                 this.spawnS1=false;
                 this.salle1visit=false
@@ -116,7 +116,7 @@
                         tileset1,
                     ); 
 
-                const Calque = carteDuNiveau.createLayer(
+                this.Calque = carteDuNiveau.createLayer(
                         "Blocs",
                         tileset2,
                     );
@@ -172,6 +172,7 @@
                     frameRate: 5,
                     repeat: -1,
                 });
+                this.Calque.setDepth(-2)
 
                 carteDuNiveau.getObjectLayer('Spike').objects.forEach((spike) => {
                     // Add new spikes to our sprite group
@@ -533,6 +534,7 @@
                 this.ImagePlaque1="PlaquePressionon"
                 this.Plaque1.destroy()
                 this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionon")
+                this.Plaque1.setDepth(-1)
             }
 
             ActivPlaque2(){
@@ -540,6 +542,7 @@
                 this.Plaque2A=true
                 this.Plaque2.destroy()
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionon")
+                this.Plaque2.setDepth(-1)
             }
 
             AttackM1(){               
