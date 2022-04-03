@@ -32,7 +32,12 @@
                 this.load.image("PiqueSolo","assets/PiqueSeul.png")  
                 this.load.image("TriggerZone","assets/Zonetrigger.png") 
                 this.load.image("PlaquePressionoff","assets/PressurePlat1.png")
-                this.load.image("PlaquePressionon","assets/PressurePlat2.png")                        
+                this.load.image("PlaquePressionon","assets/PressurePlat2.png")
+                this.load.image("BackPackHUD","assets/backpack.png")   
+                this.load.image("BatLoot","assets/lootB.png")   
+                this.load.image("RockLoot","assets/lootR.png")
+                this.load.image("clénul","assets/clé1.png")
+                this.load.image("clédar","assets/clé2.png")                             
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -78,6 +83,8 @@
                 this.tailleP=1;
                 this.speedconst = 140;
                 this.thune=0;
+                this.LootBatV=0;
+                this.LootRockV=0;
                 this.spawnS1=false;
                 this.salle1visit=false
                 this.spawnS3=false;
@@ -206,6 +213,10 @@
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
+                this.LootBatTxT= this.add.bitmapText(906, 210, 'carrier_command',this.LootBatV,9);
+                this.LootBatTxT.setScrollFactor(0);
+                this.LootRockTxT= this.add.bitmapText(890, 250, 'carrier_command',this.LootRockV,9);
+                this.LootRockTxT.setScrollFactor(0);
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
 
@@ -290,8 +301,8 @@
 
                 
                 
-                this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueMonstre, null, this);
-                this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueMonstre, null, this);
+                this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueRock, null, this);
+                this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueBat, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
@@ -312,11 +323,28 @@
                 this.BourseImage.setScrollFactor(0);
                 this.Pvbarre = this.add.sprite(360,205, 'PVbar');
                 this.Pvbarre.setScrollFactor(0);
+                this.BackPack = this.add.sprite(890,230, 'BackPackHUD');
+                this.BackPack.setScrollFactor(0);
+                this.LootBat = this.add.sprite(900,212, 'BatLoot');
+                this.LootBat.setScrollFactor(0);
+                this.LootRock = this.add.sprite(885,245, 'RockLoot');
+                this.LootRock.setScrollFactor(0);
+                this.CléNul = this.add.sprite(924,237, 'clénul');
+                this.CléNul.setScrollFactor(0);
+                this.CléDar = this.add.sprite(927,235, 'clédar');
+                this.CléDar.setScrollFactor(0);
                 this.Pvbarre.setScale(0.8);
-                this.label.setDepth(10)
-                this.ArgentTxT.setDepth(10)
-                this.BourseImage.setDepth(10)
-                this.Pvbarre.setDepth(10)
+                this.LootBat.setDepth(10);
+                this.LootRock.setDepth(10);
+                this.CléDar.setDepth(10);
+                this.CléNul.setDepth(10);
+                this.BackPack.setDepth(10);
+                this.label.setDepth(10);
+                this.ArgentTxT.setDepth(10);
+                this.LootBatTxT.setDepth(11);
+                this.LootRockTxT.setDepth(11);
+                this.BourseImage.setDepth(10);
+                this.Pvbarre.setDepth(10);
 
                 this.anims.create({
                     key: 'leftB',           
@@ -503,11 +531,22 @@
                 balle1.setVelocity(this.directionX, this.directionY); 
             }  
             
-            AttaqueMonstre(balle,Monstreseul){
+            AttaqueRock(balle,Monstreseul){
                 Monstreseul.disableBody(true, true);
                 balle.disableBody(true,true)
                 this.thune+=Math.floor(Math.random() * 20)+1
                 this.ArgentTxT.setText(this.thune)
+            }
+
+            AttaqueBat(balle,Monstreseul){
+                Monstreseul.disableBody(true, true);
+                balle.disableBody(true,true)
+                this.thune+=Math.floor(Math.random() * 20)+1
+                this.ArgentTxT.setText(this.thune)
+                this.DropBat = this.add.sprite(Monstreseul.x,Monstreseul.y, 'BatLoot');
+                this.DropBat.setScale(0.5)
+                this.DropBat.setSize(24,12,true)
+                this.DropBat.setOffset(4, 28)
             }
             
             SpikeDegat(player,Pique){
@@ -1510,7 +1549,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: false,
+            debug: true,
             }},
             pixelArt: true,
             input:{gamepad:true},

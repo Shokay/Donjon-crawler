@@ -13,10 +13,10 @@ terminé gg !
 idée: sort qui tir plusieur projectile
 	item modifie vitesse pero ( botte ) 
 demain:
-finir de tout placé
-trigger zone
-plaque de pression
-coffre
-item 
-loot mob aussi
+finir de tout placé oui
+trigger zone  oui
+plaque de pression  oui 
+coffre   
+item  
+loot mob aussi 
 marchant
