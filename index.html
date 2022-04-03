@@ -80,6 +80,8 @@
                 this.salle1visit=false
                 this.spawnS3=false;
                 this.salle3visit=false
+                this.spawnS4=false;
+                this.salle4visit=false
                
                 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
@@ -181,6 +183,8 @@
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
+                this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
+                this.label.setScrollFactor(0)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -193,6 +197,10 @@
                     allowGravity: false,
                     immovable:true
                 });
+                this.BlocsGS2=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
 
                 carteDuNiveau.getObjectLayer('Salle1D').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
@@ -202,6 +210,11 @@
                 carteDuNiveau.getObjectLayer('Salle3D').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
                     const spikeSprite = this.BlocsDS3.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                });
+
+                carteDuNiveau.getObjectLayer('Salle2G').objects.forEach((blocsV) => {
+                    // Add new spikes to our sprite group
+                    const spikeSprite = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
                 
                 this.PierresM=this.physics.add.group();
@@ -221,11 +234,13 @@
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
-                this.BatM1 = this.BatM.create(null,null, "MonstreBA");  
-                this.BatM2 = this.BatM.create(null,null, "MonstreBA");  
-                this.BatM3 = this.BatM.create(null,null, "MonstreBA");  
-                this.BatM4 = this.BatM.create(null,null, "MonstreBA");  
-                this.BatM5 = this.BatM.create(null,null, "MonstreBA");  
+                this.BatM1 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM2 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM3 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM4 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM5 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM6 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 
                 this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM1.setSize(224, 224)
@@ -247,6 +262,7 @@
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
+                this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
 
                 const CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -476,6 +492,14 @@
                 }
             }
 
+            Salle4SpawnVerif(){
+                if(this.salle4visit==false){
+                    this.spawnS4=true
+                }else{
+
+                }
+            }
+
             AttackM1(){               
                         this.PierreM1.anims.play('MonstreRockAttack', true)
                         if (this.PierreM1.x > this.player.x)
@@ -547,9 +571,8 @@
                     monstre.setVelocityY(-60)
             }
 
-            update(){
-                //console.log(this.player.x,this.player.y)
-                console.log(this.spawnS1)
+            update(){                     
+                this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
@@ -592,6 +615,16 @@
                     this.BatM.playAnimation("MonstreBatAttack");
                 }
 
+                if (this.spawnS4==true){
+                    this.BatM6 = this.BatM.create(1119,578, "MonstreBA");           ///salle 1
+                    this.BatM6.setBounce(1);
+                    this.BatM7 = this.BatM.create(623,643, "MonstreBA");
+                    this.BatM7.setBounce(1);
+                    this.spawnS4=false
+                    this.salle4visit=true
+                    this.BatM.playAnimation("MonstreBatAttack");
+                }
+
                 this.trackennemie(this.BatM1)
                 this.trackennemie(this.BatM2)
                 this.trackennemie(this.BatM3)
@@ -606,7 +639,7 @@
                 this.AgroZoneM3.y=this.PierreM3.y
                 this.AgroZoneM4.x=this.PierreM4.x
                 this.AgroZoneM4.y=this.PierreM4.y
-                this.AgroZoneM5.y=this.PierreM5.y
+                this.AgroZoneM5.x=this.PierreM5.x
                 this.AgroZoneM5.y=this.PierreM5.y
 
                 //console.log(this.player.x,this.player.y)
@@ -764,6 +797,10 @@
                 
             } 
         };
+         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                           ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         class sceneExemple2 extends Phaser.Scene{
             constructor(){
             super("sceneExemple2");
