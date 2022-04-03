@@ -115,6 +115,11 @@
                         tileset2,
                     );
 
+                 const Calque21 = carteDuNiveau.createLayer(
+                        "Decors-1",
+                        tileset2,
+                    ); 
+
                 const Calque2 = carteDuNiveau.createLayer(
                         "Decors",
                         tileset2,
@@ -231,6 +236,10 @@
                 this.PierreM4.setBounce(1);
                 this.PierreM5 = this.PierresM.create(2164,586, "MonstreR");
                 this.PierreM5.setBounce(1);
+                this.PierreM6 = this.PierresM.create(819,676, "MonstreR");
+                this.PierreM6.setBounce(1);
+                this.PierreM7 = this.PierresM.create(861,1153, "MonstreR");
+                this.PierreM7.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
@@ -252,6 +261,10 @@
                 this.AgroZoneM4.setSize(224, 224)
                 this.AgroZoneM5 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM5.setSize(224, 224)
+                this.AgroZoneM6 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM6.setSize(224, 224)
+                this.AgroZoneM7 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM7.setSize(224, 224)
 
                 
                 
@@ -560,6 +573,30 @@
                         this.PierreM5.setVelocityY(-60) 
             }
 
+            AttackM6(){               
+                        this.PierreM6.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM6.x > this.player.x)
+                        this.PierreM6.setVelocityX(-60)
+                        if (this.PierreM6.x < this.player.x)
+                        this.PierreM6.setVelocityX(60)
+                        if (this.PierreM6.y < this.player.y)
+                        this.PierreM6.setVelocityY(60)
+                        if (this.PierreM6.y > this.player.y)
+                        this.PierreM6.setVelocityY(-60) 
+            }
+
+            AttackM7(){               
+                        this.PierreM7.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM7.x > this.player.x)
+                        this.PierreM7.setVelocityX(-60)
+                        if (this.PierreM7.x < this.player.x)
+                        this.PierreM7.setVelocityX(60)
+                        if (this.PierreM7.y < this.player.y)
+                        this.PierreM7.setVelocityY(60)
+                        if (this.PierreM7.y > this.player.y)
+                        this.PierreM7.setVelocityY(-60) 
+            }
+
             trackennemie(monstre){
                 if (monstre.x > this.player.x)
                     monstre.setVelocityX(-60)
@@ -643,6 +680,10 @@
                 this.AgroZoneM4.y=this.PierreM4.y
                 this.AgroZoneM5.x=this.PierreM5.x
                 this.AgroZoneM5.y=this.PierreM5.y
+                this.AgroZoneM6.x=this.PierreM6.x
+                this.AgroZoneM6.y=this.PierreM6.y
+                this.AgroZoneM7.x=this.PierreM7.x
+                this.AgroZoneM7.y=this.PierreM7.y
 
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
@@ -651,6 +692,8 @@
                 this.physics.add.overlap(this.player, this.AgroZoneM3, this.AttackM3, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM4, this.AttackM4, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM5, this.AttackM5, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM6, this.AttackM6, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM7, this.AttackM7, null, this);
 
                 if(this.invincible == true){
                     this.compteur-- ;
