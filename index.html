@@ -29,7 +29,8 @@
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
                 this.load.image("BourseHUD","assets/bourse.png")
-                this.load.image("PiqueSolo","assets/PiqueSeul.png")               
+                this.load.image("PiqueSolo","assets/PiqueSeul.png")  
+                this.load.image("TriggerZone","assets/Zonetrigger.png")               
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -75,6 +76,10 @@
                 this.tailleP=1;
                 this.speedconst = 140;
                 this.thune=0;
+                this.spawnS1=false;
+                this.salle1visit=false
+                this.spawnS3=false;
+                this.salle3visit=false
                
                 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
@@ -160,7 +165,8 @@
                     const spikeSprite = this.SpikeG.create(spike.x, spike.y -= 32,'PiqueSolo').setOrigin(0);
                 });
 
-                this.SpikeG.playAnimation("SpikeAnim")
+                this.SpikeG.playAnimation("SpikeAnim");
+                
 
                 this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
@@ -178,6 +184,25 @@
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
+
+                this.BlocsDS1=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+                this.BlocsDS3=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+
+                carteDuNiveau.getObjectLayer('Salle1D').objects.forEach((blocsV) => {
+                    // Add new spikes to our sprite group
+                    const spikeSprite = this.BlocsDS1.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                });
+
+                carteDuNiveau.getObjectLayer('Salle3D').objects.forEach((blocsV) => {
+                    // Add new spikes to our sprite group
+                    const spikeSprite = this.BlocsDS3.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                });
                 
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
@@ -191,19 +216,26 @@
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
-                this.BatM1 = this.BatM.create(2500,774, "MonstreBA");
-                this.BatM1.setBounce(1);
+                this.BatM1 = this.BatM.create(null,null, "MonstreBA");  
+                this.BatM2 = this.BatM.create(null,null, "MonstreBA");  
+                this.BatM3 = this.BatM.create(null,null, "MonstreBA");  
+                this.BatM4 = this.BatM.create(null,null, "MonstreBA");  
+                this.BatM5 = this.BatM.create(null,null, "MonstreBA");  
                 
                 this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM1.setSize(224, 224)
                 this.AgroZoneM2 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM2.setSize(224, 224)
+
+                
                 
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueMonstre, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueMonstre, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
+                this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
+                this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
 
                 const CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -310,8 +342,6 @@
                     frames: this.anims.generateFrameNumbers('PVbar', {start:2,end:2}),          //creation des animation
                     frameRate: 6,
                 });
-
-                this.BatM1.play('MonstreBatAttack',true);
                 
                 this.physics.world.setBounds(0, 0, 3200, 1376);
                 this.cameras.main.setBounds(0, 0, 3200,1376);
@@ -419,6 +449,22 @@
                     }
             }
 
+            Salle1SpawnVerif(){
+                if(this.salle1visit==false){
+                    this.spawnS1=true
+                }else{
+
+                }
+            }
+
+            Salle3SpawnVerif(){
+                if(this.salle3visit==false){
+                    this.spawnS3=true
+                }else{
+
+                }
+            }
+
             AttackM1(){               
                         this.PierreM1.anims.play('MonstreRockAttack', true)
                         if (this.PierreM1.x > this.player.x)
@@ -443,8 +489,20 @@
                         this.PierreM2.setVelocityY(-60) 
             }
 
+            trackennemie(monstre){
+                if (monstre.x > this.player.x)
+                    monstre.setVelocityX(-60)
+                if (monstre.x < this.player.x)
+                    monstre.setVelocityX(60)
+                if (monstre.y < this.player.y)
+                    monstre.setVelocityY(60)
+                    if (monstre.y > this.player.y)
+                    monstre.setVelocityY(-60)
+            }
+
             update(){
-                console.log(this.player.x,this.player.y)
+                //console.log(this.player.x,this.player.y)
+                console.log(this.spawnS1)
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
@@ -463,16 +521,35 @@
 
                 if (this.HpJoueur<=0){
                     this.Death()
-                }               
+                }    
+                
+                if (this.spawnS1==true){
+                    this.BatM1 = this.BatM.create(2443,997, "MonstreBA");           ///salle 1
+                    this.BatM1.setBounce(1);
+                    this.BatM2 = this.BatM.create(2351,1188, "MonstreBA");
+                    this.BatM2.setBounce(1);
+                    this.spawnS1=false
+                    this.salle1visit=true
+                    this.BatM.playAnimation("MonstreBatAttack");
+                }
 
-                if (this.BatM1.x > this.player.x)
-                    this.BatM1.setVelocityX(-60)
-                if (this.BatM1.x < this.player.x)
-                    this.BatM1.setVelocityX(60)
-                if (this.BatM1.y < this.player.y)
-                    this.BatM1.setVelocityY(60)
-                if (this.BatM1.y > this.player.y)
-                    this.BatM1.setVelocityY(-60)
+                if (this.spawnS3==true){
+                    this.BatM3 = this.BatM.create(2920,693, "MonstreBA");           ///salle 1
+                    this.BatM3.setBounce(1);
+                    this.BatM4 = this.BatM.create(2773,550, "MonstreBA");
+                    this.BatM4.setBounce(1);
+                    this.BatM5 = this.BatM.create(2528,798, "MonstreBA");
+                    this.BatM5.setBounce(1);
+                    this.spawnS3=false
+                    this.salle3visit=true
+                    this.BatM.playAnimation("MonstreBatAttack");
+                }
+
+                this.trackennemie(this.BatM1)
+                this.trackennemie(this.BatM2)
+                this.trackennemie(this.BatM3)
+                this.trackennemie(this.BatM4)
+                this.trackennemie(this.BatM5)
 
                 this.AgroZoneM1.x=this.PierreM1.x
                 this.AgroZoneM1.y=this.PierreM1.y

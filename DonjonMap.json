@@ -807,32 +807,67 @@
         }, 
         {
          "draworder":"topdown",
-         "id":13,
-         "name":"Bats1",
+         "id":14,
+         "name":"Salle1D",
          "objects":[
                 {
-                 "gid":324,
+                 "gid":257,
                  "height":32,
-                 "id":117,
+                 "id":122,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":2400,
-                 "y":1024
+                 "x":2080,
+                 "y":1120
                 }, 
                 {
-                 "gid":324,
+                 "gid":257,
                  "height":32,
-                 "id":119,
+                 "id":123,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":2272,
-                 "y":1088
+                 "x":2080,
+                 "y":1152
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":15,
+         "name":"Salle3D",
+         "objects":[
+                {
+                 "gid":257,
+                 "height":32,
+                 "id":124,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":2816,
+                 "y":864
+                }, 
+                {
+                 "gid":257,
+                 "height":32,
+                 "id":125,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":2784,
+                 "y":864
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -840,8 +875,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":14,
- "nextobjectid":120,
+ "nextlayerid":16,
+ "nextobjectid":126,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",
