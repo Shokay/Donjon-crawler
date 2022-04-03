@@ -211,8 +211,13 @@
                 this.PierreM1 = this.PierresM.create(2766,1174, "MonstreR");
                 this.PierreM1.setBounce(1);
                 this.PierreM2 = this.PierresM.create(2880,1032, "MonstreR");
-                this.PierreM1.setBounce(1);
                 this.PierreM2.setBounce(1);
+                this.PierreM3 = this.PierresM.create(2523,546, "MonstreR");
+                this.PierreM3.setBounce(1);
+                this.PierreM4 = this.PierresM.create(2199,751, "MonstreR");
+                this.PierreM4.setBounce(1);
+                this.PierreM5 = this.PierresM.create(2164,586, "MonstreR");
+                this.PierreM5.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
@@ -226,6 +231,12 @@
                 this.AgroZoneM1.setSize(224, 224)
                 this.AgroZoneM2 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM2.setSize(224, 224)
+                this.AgroZoneM3 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM3.setSize(224, 224)
+                this.AgroZoneM4 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM4.setSize(224, 224)
+                this.AgroZoneM5 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM5.setSize(224, 224)
 
                 
                 
@@ -489,6 +500,42 @@
                         this.PierreM2.setVelocityY(-60) 
             }
 
+            AttackM3(){               
+                        this.PierreM3.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM3.x > this.player.x)
+                        this.PierreM3.setVelocityX(-60)
+                        if (this.PierreM3.x < this.player.x)
+                        this.PierreM3.setVelocityX(60)
+                        if (this.PierreM3.y < this.player.y)
+                        this.PierreM3.setVelocityY(60)
+                        if (this.PierreM3.y > this.player.y)
+                        this.PierreM3.setVelocityY(-60) 
+            }
+
+            AttackM4(){               
+                        this.PierreM4.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM4.x > this.player.x)
+                        this.PierreM4.setVelocityX(-60)
+                        if (this.PierreM4.x < this.player.x)
+                        this.PierreM4.setVelocityX(60)
+                        if (this.PierreM4.y < this.player.y)
+                        this.PierreM4.setVelocityY(60)
+                        if (this.PierreM4.y > this.player.y)
+                        this.PierreM4.setVelocityY(-60) 
+            }
+
+            AttackM5(){               
+                        this.PierreM5.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM5.x > this.player.x)
+                        this.PierreM5.setVelocityX(-60)
+                        if (this.PierreM5.x < this.player.x)
+                        this.PierreM5.setVelocityX(60)
+                        if (this.PierreM5.y < this.player.y)
+                        this.PierreM5.setVelocityY(60)
+                        if (this.PierreM5.y > this.player.y)
+                        this.PierreM5.setVelocityY(-60) 
+            }
+
             trackennemie(monstre){
                 if (monstre.x > this.player.x)
                     monstre.setVelocityX(-60)
@@ -555,10 +602,20 @@
                 this.AgroZoneM1.y=this.PierreM1.y
                 this.AgroZoneM2.x=this.PierreM2.x
                 this.AgroZoneM2.y=this.PierreM2.y
+                this.AgroZoneM3.x=this.PierreM3.x
+                this.AgroZoneM3.y=this.PierreM3.y
+                this.AgroZoneM4.x=this.PierreM4.x
+                this.AgroZoneM4.y=this.PierreM4.y
+                this.AgroZoneM5.y=this.PierreM5.y
+                this.AgroZoneM5.y=this.PierreM5.y
+
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
                 this.physics.add.overlap(this.player, this.AgroZoneM1, this.AttackM1, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM2, this.AttackM2, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM3, this.AttackM3, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM4, this.AttackM4, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM5, this.AttackM5, null, this);
 
                 if(this.invincible == true){
                     this.compteur-- ;
