@@ -176,6 +176,9 @@
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
 
+                this.DropsBat=this.physics.add.group();
+                this.physics.add.overlap(this.player, this.DropsBat, this.TakeDrop, null, this);
+
                 this.SpikeG=this.physics.add.group({
                     allowGravity: false,
                     immovable:true
@@ -540,14 +543,19 @@
 
             AttaqueBat(balle,Monstreseul){
                 Monstreseul.disableBody(true, true);
-                balle.disableBody(true,true)
+                balle.disableBody(true,true);
                 this.thune+=Math.floor(Math.random() * 20)+1
                 this.ArgentTxT.setText(this.thune)
-                this.DropBat = this.add.sprite(Monstreseul.x,Monstreseul.y, 'BatLoot');
+                this.DropBat = this.DropsBat.create(Monstreseul.x,Monstreseul.y, "BatLoot");
                 this.DropBat.setScale(0.5)
-                this.overlap
             }
-            
+
+            TakeDrop(player,drop){
+                console.log("lol")
+                drop.destroy()
+                this.LootBatV+=1
+            }
+
             SpikeDegat(player,Pique){
                 if(this.invincible === false && Pique.anims.currentFrame.index>=15){
                         this.invincible = true;
