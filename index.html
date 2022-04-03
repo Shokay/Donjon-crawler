@@ -666,7 +666,8 @@
 
             update(){    
                 if(this.Plaque1A==true && this.Plaque2A==true){
-                    this.collidePG
+                    this.BlockZone1Gauche.setVisible(false);
+                    this.physics.world.removeCollider(this.collidePG);
                 }              
 
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
