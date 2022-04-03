@@ -898,9 +898,44 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":17,
+         "name":"Salle2G",
+         "objects":[
+                {
+                 "gid":257,
+                 "height":32,
+                 "id":129,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1152,
+                 "y":800
+                }, 
+                {
+                 "gid":257,
+                 "height":32,
+                 "id":130,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1184,
+                 "y":800
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":16,
- "nextobjectid":129,
+ "nextlayerid":18,
+ "nextobjectid":131,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",

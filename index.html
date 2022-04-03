@@ -204,17 +204,17 @@
 
                 carteDuNiveau.getObjectLayer('Salle1D').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
-                    const spikeSprite = this.BlocsDS1.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                    const Blocd1 = this.BlocsDS1.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
 
                 carteDuNiveau.getObjectLayer('Salle3D').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
-                    const spikeSprite = this.BlocsDS3.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                    const Blocd2 = this.BlocsDS3.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
 
                 carteDuNiveau.getObjectLayer('Salle2G').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
-                    const spikeSprite = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                    const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
                 
                 this.PierresM=this.physics.add.group();
@@ -630,6 +630,8 @@
                 this.trackennemie(this.BatM3)
                 this.trackennemie(this.BatM4)
                 this.trackennemie(this.BatM5)
+                this.trackennemie(this.BatM6)
+                this.trackennemie(this.BatM7)
 
                 this.AgroZoneM1.x=this.PierreM1.x
                 this.AgroZoneM1.y=this.PierreM1.y
