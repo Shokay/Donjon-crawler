@@ -151,7 +151,7 @@
                         tileset2,
                     );
 
-                const CalquePorte2 = carteDuNiveau.createLayer(
+                this.CalquePorte2 = carteDuNiveau.createLayer(
                         "PortesP",
                         tileset1,
                     );
@@ -160,6 +160,14 @@
                         "stair",
                         tileset1,
                     );
+
+                this.BlockZone1Gauche = carteDuNiveau.createLayer(
+                        "PorteBlockZ1G",
+                        tileset1,
+                    );
+
+                this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
+                this.BlockZone1Gauche.setDepth(3)
 
                 this.SpikeG=this.physics.add.group({
                     allowGravity: false,
@@ -194,6 +202,7 @@
                 CalqueMort.setCollisionByProperty({ Tue: true });         //background et plateformes
                 this.physics.add.collider(this.player, Calque3);
                 this.physics.add.collider(this.player, CalqueSJ);
+                this.collidePG=this.physics.add.collider(this.player, this.BlockZone1Gauche);
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
@@ -292,10 +301,12 @@
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
 
-                const CalquePorte = carteDuNiveau.createLayer(
+                this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
                         tileset1,
                     );
+                this.CalquePorte.setDepth(2)
+
                 this.player.setCollideWorldBounds(true);
                 this.BourseImage = this.add.image(430,200,'BourseHUD');
                 this.BourseImage.setScrollFactor(0);
@@ -655,7 +666,7 @@
 
             update(){    
                 if(this.Plaque1A==true && this.Plaque2A==true){
-                    console.log(this.ImagePlaque2)  
+                    this.collidePG
                 }              
 
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
