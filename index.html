@@ -46,6 +46,8 @@
                 { frameWidth: 38, frameHeight: 42 });
                 this.load.spritesheet('AnimBoule1','assets/AnimBullet1.png',
                 { frameWidth: 16, frameHeight: 16 });
+                this.load.spritesheet('AnimBoule2','assets/AnimBullet2.png',
+                { frameWidth: 16, frameHeight: 16 });
                 this.load.spritesheet('MonstreRA','assets/spritesheetMC.png',
                 { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('MonstreBA','assets/spritesheetMB.png',
@@ -97,7 +99,7 @@
                 this.Plaque2A=false;
                 this.ImagePlaque1="PlaquePressionoff";
                 this.ImagePlaque2="PlaquePressionoff";
-               
+                this.BulletA="BulletShoot"
                 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -472,7 +474,7 @@
                 
                 this.anims.create({
                     key: 'BulletShootF',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),          //creation des animation
+                    frames: this.anims.generateFrameNumbers('AnimBoule2', {start:0,end:1}),          //creation des animation
                     frameRate: 5,
                     repeat: -1,
                 });
@@ -523,6 +525,7 @@
                     z:  Phaser.Input.Keyboard.KeyCodes.Z,
                     a:  Phaser.Input.Keyboard.KeyCodes.A,
                     e:  Phaser.Input.Keyboard.KeyCodes.E,               //importation de touche
+                    r:  Phaser.Input.Keyboard.KeyCodes.R,  
                     f:  Phaser.Input.Keyboard.KeyCodes.F
                 });
             }
@@ -592,7 +595,7 @@
                 }
                
                 var balle1 = this.groupeBalles.create(this.player.x + (15 * this.directionTX), this.player.y + (15 * this.directionTY));
-                balle1.anims.play("BulletShoot",true);
+                balle1.anims.play(this.BulletA,true);
                 balle1.setCollideWorldBounds(true);
                 balle1.body.onWorldBounds = true;  
                 balle1.body.allowGravity =false;
@@ -911,6 +914,30 @@
                         this.speedconst=140;
                         this.player.angle = 1;
                     }
+                }
+                
+                if(this.keys.r.isDown){
+                    this.haut="upF";
+                    this.bas="downF";
+                    this.droite="rightF";
+                    this.gauche="leftF";
+                    this.immobileB="staticFB";
+                    this.immobileH="staticFH";
+                    this.immobileG="staticFG";
+                    this.immobileD="staticFD";
+                    this.BulletA="BulletShootF";
+                }
+
+                if(this.keys.e.isDown){
+                    this.haut="upB";
+                    this.bas="downB";
+                    this.droite="rightB";
+                    this.gauche="leftB";
+                    this.immobileB="staticBB";
+                    this.immobileH="staticBH";
+                    this.immobileG="staticBG";
+                    this.immobileD="staticBD";
+                    this.BulletA="BulletShoot";
                 }
 
                 //console.log(this.player.x,this.player.y)
