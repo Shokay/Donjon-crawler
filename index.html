@@ -593,13 +593,21 @@
                     this.directionTY=1
                     this.directionTX=0
                 }
-               
                 var balle1 = this.groupeBalles.create(this.player.x + (15 * this.directionTX), this.player.y + (15 * this.directionTY));
                 balle1.anims.play(this.BulletA,true);
                 balle1.setCollideWorldBounds(true);
                 balle1.body.onWorldBounds = true;  
                 balle1.body.allowGravity =false;
                 balle1.setVelocity(this.directionX, this.directionY); 
+                if (player.direction == 'gauche') { 
+                    balle1.angle += 3;
+                } 
+                else if (player.direction == 'droite'){ 
+                }
+                else if (player.direction == 'haut'){ 
+                }
+                else if (player.direction == 'bas'){ 
+                }
             }  
             
             AttaqueRock(balle,Monstreseul){
@@ -915,7 +923,7 @@
                         this.player.angle = 1;
                     }
                 }
-                
+
                 if(this.keys.r.isDown){
                     this.haut="upF";
                     this.bas="downF";
