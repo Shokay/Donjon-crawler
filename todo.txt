@@ -9,7 +9,6 @@ terminé gg !
 idée: sort qui tir plusieur projectile
 	item modifie vitesse pero ( botte ) 
 demain:
-loot mob aussi finir
 coffre   
 item  
 marchant
