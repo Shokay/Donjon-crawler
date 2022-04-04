@@ -42,6 +42,8 @@
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
                 { frameWidth: 38, frameHeight: 42 });
+                this.load.spritesheet('PersoSpriteF','assets/spritesheetPF.png',
+                { frameWidth: 38, frameHeight: 42 });
                 this.load.spritesheet('AnimBoule1','assets/AnimBullet1.png',
                 { frameWidth: 16, frameHeight: 16 });
                 this.load.spritesheet('MonstreRA','assets/spritesheetMC.png',
@@ -407,6 +409,69 @@
                 
                 this.anims.create({
                     key: 'BulletShoot',           
+                    frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),          //creation des animation
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'leftF',           
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:8,end:11}),          //creation des animation
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'staticFB',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:16,end:19}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'staticFH',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:28,end:31}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'staticFD',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:20,end:23}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'staticFG',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:24,end:27}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+                
+                this.anims.create({
+                    key: 'rightF',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:4,end:7}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+                
+                this.anims.create({
+                    key: 'downF',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:0,end:3}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'upF',
+                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:12,end:15}),
+                    frameRate: 5,
+                    repeat: -1,
+                });
+                
+                this.anims.create({
+                    key: 'BulletShootF',           
                     frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),          //creation des animation
                     frameRate: 5,
                     repeat: -1,
