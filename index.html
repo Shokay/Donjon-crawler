@@ -645,6 +645,7 @@
                     this.directionTY=1
                     this.directionTX=0
                 }
+                
                 var balle1 = this.groupeBalles.create(this.player.x + (15 * this.directionTX), this.player.y + (15 * this.directionTY));
                 balle1.anims.play(this.BulletA,true);
                 balle1.setCollideWorldBounds(true);
@@ -697,8 +698,10 @@
             }
 
             FireOn(player,camps){
-                this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
+                if(this.feuV==true){
+                    this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
                 this.FireOnG.playAnimation("FireSpriteA");
+                }
             }
 
             Salle1SpawnVerif(){
