@@ -37,7 +37,8 @@
                 this.load.image("BatLoot","assets/lootB.png")   
                 this.load.image("RockLoot","assets/lootR.png")
                 this.load.image("clénul","assets/clé1.png")
-                this.load.image("clédar","assets/clé2.png")                             
+                this.load.image("clédar","assets/clé2.png")
+                this.load.image("CampFireNull","assets/fireplaceNull.png")                                   
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -62,6 +63,8 @@
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('SpikeA','assets/spritesheetPique.png',
                 { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('FireSprite','assets/firespritesheet.png',
+                { frameWidth: 32, frameHeight: 64 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -189,6 +192,7 @@
 
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
+                this.FireOnG=this.physics.add.group();
 
                 this.SpikeG=this.physics.add.group({
                     allowGravity: false,
@@ -201,6 +205,7 @@
                     frameRate: 5,
                     repeat: -1,
                 });
+
                 this.Calque.setDepth(-2)
 
                 carteDuNiveau.getObjectLayer('Spike').objects.forEach((spike) => {
@@ -210,6 +215,16 @@
 
                 this.SpikeG.playAnimation("SpikeAnim");
                 
+                this.CampG=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+
+                carteDuNiveau.getObjectLayer('FireCamp').objects.forEach((camps) => {
+                    // Add new spikes to our sprite group
+                    const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);
+                });
+
                 this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionoff")
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionoff")
 
@@ -317,6 +332,7 @@
                 
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueRock, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueBat, null, this);
+                this.physics.add.overlap(this.groupeBalles, this.CampG, this.FireOn, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
@@ -541,6 +557,12 @@
                     frameRate: 6,
                 });
                 
+                this.anims.create({
+                    key: 'FireSpriteA',           
+                    frames: this.anims.generateFrameNumbers('FireSprite', {start:0,end:2}),          //creation des animation
+                    frameRate: 5,
+                });
+                
                 this.physics.world.setBounds(0, 0, 3200, 1376);
                 this.cameras.main.setBounds(0, 0, 3200,1376);
                 this.cameras.main.zoom = 2;                  //Camera
@@ -672,6 +694,11 @@
                         player.setTint(0xff0000);
                         this.cameras.main.shake(100, 0.01);
                     }
+            }
+
+            FireOn(player,camps){
+                this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
+                this.FireOnG.playAnimation("FireSpriteA");
             }
 
             Salle1SpawnVerif(){
@@ -822,8 +849,12 @@
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
+            update(){   
 
-            update(){ 
+                this.FireOnG.children.each(function(fire) {
+                    fire.anims.play("FireSpriteA",true);
+                }, this);
+
                 if(this.Plaque1A==true && this.Plaque2A==true){
                     this.BlockZone1Gauche.setVisible(false);
                     this.physics.world.removeCollider(this.collidePG);
