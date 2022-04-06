@@ -114,6 +114,9 @@
                 this.ImagePlaque2="PlaquePressionoff";
                 this.BulletA="BulletShoot";
                 this.feuV=false;
+                this.utilisecléV=false;
+                this.Getclé = false;
+                this.createclé=false;
                 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -213,6 +216,9 @@
                 
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Droite.setDepth(3)
+
+                this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
+                this.CléUtiliser.setSize(50, 50)
 
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
@@ -375,6 +381,7 @@
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
+                this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
                 this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
 
@@ -605,7 +612,7 @@
                     frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
                     frameRate: 5,
                 });
-                
+
                 this.physics.world.setBounds(0, 0, 3200, 1376);
                 this.cameras.main.setBounds(0, 0, 3200,1376);
                 this.cameras.main.zoom = 2;                  //Camera
@@ -741,9 +748,13 @@
 
             GetClé1(player,drop){
                 drop.destroy()
-                this.CléNul = this.add.sprite(924,237, 'clénul');
-                this.CléNul.setScrollFactor(0);
-                this.CléNul.setDepth(10);
+                if (this.createclé==false){
+                    this.CléNul = this.add.sprite(924,237, 'clénul');
+                    this.CléNul.setScrollFactor(0);
+                    this.CléNul.setDepth(10);
+                }
+                this.createclé=true;
+                this.Getclé = true;
             }
 
             LootChestD1(player,chest){
@@ -754,6 +765,13 @@
                     this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
                     this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
                 } 
+            }
+
+            UseKey(){
+                if(this.keys.f.isDown && this.Getclé == true){
+                    this.utilisecléV=true;
+                    this.CléNul.destroy();
+                }
             }
 
             FireOn(balle,camps){
@@ -787,6 +805,7 @@
 
                 }
             }
+
 
             ActivPlaque1(){
                 this.Plaque1A=true
@@ -927,7 +946,7 @@
                     this.physics.world.removeCollider(this.collidePG);
                 }
 
-                if(this.Plaque1A==true && this.Plaque2A==true){
+                if(this.utilisecléV==true){
                     this.BlockZone1Droite.setVisible(false);
                     this.physics.world.removeCollider(this.collidePD);
                 }                 
@@ -2351,7 +2370,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: true,
+            debug: false,
             }},
             pixelArt: true,
             input:{gamepad:true},
