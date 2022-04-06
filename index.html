@@ -1145,6 +1145,7 @@
             constructor(){
             super("sceneExemple2");
             }
+
             preload(){
                 //load de toute les images / sprites sheet 
 
@@ -1163,7 +1164,7 @@
                 this.load.image("clénul","assets/clé1.png")
                 this.load.image("clédar","assets/clé2.png")
                 this.load.image("CampFireNull","assets/fireplaceNull.png")                                   
-                this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
+                this.load.tilemapTiledJSON("carte2", "DonjonMap2.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
                 { frameWidth: 38, frameHeight: 42 });
@@ -1692,8 +1693,8 @@
                     frameRate: 5,
                 });
                 
-                this.physics.world.setBounds(0, 0, 3200, 1376);
-                this.cameras.main.setBounds(0, 0, 3200,1376);
+                this.physics.world.setBounds(0, 0, 2560, 3200);
+                this.cameras.main.setBounds(0, 0, 2560,3200);
                 this.cameras.main.zoom = 2;                  //Camera
                 this.cameras.main.startFollow(this.player);  
                 this.player.setCollideWorldBounds(true);
