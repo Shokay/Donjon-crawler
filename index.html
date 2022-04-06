@@ -296,8 +296,13 @@
                     const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
 
-                this.ChestD1 = this.create(2123,656, "ChestSprite");
+                this.ChestGD1=this.physics.add.group();
+                this.ChestD1 = this.ChestGD1.create(2123,668, "ChestSprite");
+                this.ChestD1.body.setSize(150,150,true);
                 
+                this.CoinG=this.physics.add.group();
+
+
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
                 this.physics.add.collider(this.PierresM, CalqueSJ);
@@ -361,6 +366,8 @@
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
+                this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
+                this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
 
                 this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -379,15 +386,12 @@
                 this.LootBat.setScrollFactor(0);
                 this.LootRock = this.add.sprite(885,245, 'RockLoot');
                 this.LootRock.setScrollFactor(0);
-                this.CléNul = this.add.sprite(924,237, 'clénul');
-                this.CléNul.setScrollFactor(0);
-                this.CléDar = this.add.sprite(927,235, 'clédar');
-                this.CléDar.setScrollFactor(0);
+                //this.CléDar = this.add.sprite(927,235, 'clédar');
+                //this.CléDar.setScrollFactor(0);
                 this.Pvbarre.setScale(0.8);
                 this.LootBat.setDepth(10);
                 this.LootRock.setDepth(10);
-                this.CléDar.setDepth(10);
-                this.CléNul.setDepth(10);
+                //this.CléDar.setDepth(10);
                 this.BackPack.setDepth(10);
                 this.label.setDepth(10);
                 this.ArgentTxT.setDepth(10);
@@ -582,13 +586,13 @@
                 });
 
                 this.anims.create({
-                    key: 'Chest Close',           
+                    key: 'ChestClose',           
                     frames: this.anims.generateFrameNumbers('ChestSprite', {start:0,end:0}),          //creation des animation
                     frameRate: 5,
                 });
 
                 this.anims.create({
-                    key: 'Chest Open',           
+                    key: 'ChestOpen',           
                     frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
                     frameRate: 5,
                 });
@@ -647,7 +651,6 @@
             destroy(balle){
                 balle.disableBody(true,true)
             }
-            
 
             tirer(player) {
                 // choix de la direction de la balle en fonction de l'ancien ou du déplacement actuel du joueur
@@ -725,6 +728,23 @@
                         player.setTint(0xff0000);
                         this.cameras.main.shake(100, 0.01);
                     }
+            }
+
+            GetClé1(player,drop){
+                drop.destroy()
+                this.CléNul = this.add.sprite(924,237, 'clénul');
+                this.CléNul.setScrollFactor(0);
+                this.CléNul.setDepth(10);
+            }
+
+            LootChestD1(player,chest){
+                if(this.keys.f.isDown){
+                    this.ChestGD1.playAnimation("ChestOpen");
+                    var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
+                    this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
+                    this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
+                } 
             }
 
             FireOn(balle,camps){
@@ -869,6 +889,12 @@
                         this.PierreM8.setVelocityY(60)
                         if (this.PierreM8.y > this.player.y)
                         this.PierreM8.setVelocityY(-60) 
+            }
+
+            TakeMoney(player,drop){
+                drop.destroy();
+                this.thune+=3;
+                this.ArgentTxT.setText(this.thune);
             }
 
             trackennemie(monstre){
@@ -1836,17 +1862,17 @@
             }
 
             TakeDropB(player,drop){
-                console.log("lol")
-                drop.destroy()
-                this.LootBatV+=1
-                this.LootBatTxT.setText(this.LootBatV)
+                console.log("lol");
+                drop.destroy();
+                this.LootBatV+=1;
+                this.LootBatTxT.setText(this.LootBatV);
             }
 
             TakeDropR(player,drop){
-                console.log("lol")
-                drop.destroy()
-                this.LootRockV+=1
-                this.LootRockTxT.setText(this.LootRockV)
+                console.log("lol");
+                drop.destroy();
+                this.LootRockV+=1;
+                this.LootRockTxT.setText(this.LootRockV);
             }
 
             SpikeDegat(player,Pique){
@@ -2278,6 +2304,7 @@
                                 this.player.setVelocityY(0); 
                                 this.player.anims.play(gauche, true);}
                         }
+
                         else if(this.controller.leftStick.x > 0){
                             if(this.controller.A  && AttaqueStatus==false) {
                                 this.player.setVelocityX(300-ResistenceP);
