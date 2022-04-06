@@ -29,17 +29,18 @@
                 this.load.image("Phaser_Autres", "assets/SetAutre.png");
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
-                this.load.image("BourseHUD","assets/bourse.png")
-                this.load.image("PiqueSolo","assets/PiqueSeul.png")  
-                this.load.image("TriggerZone","assets/Zonetrigger.png") 
-                this.load.image("PlaquePressionoff","assets/PressurePlat1.png")
-                this.load.image("PlaquePressionon","assets/PressurePlat2.png")
-                this.load.image("BackPackHUD","assets/backpack.png")   
-                this.load.image("BatLoot","assets/lootB.png")   
-                this.load.image("RockLoot","assets/lootR.png")
-                this.load.image("clénul","assets/clé1.png")
-                this.load.image("clédar","assets/clé2.png")
-                this.load.image("CampFireNull","assets/fireplaceNull.png")                                   
+                this.load.image("BourseHUD","assets/bourse.png");
+                this.load.image("PiqueSolo","assets/PiqueSeul.png");  
+                this.load.image("TriggerZone","assets/Zonetrigger.png"); 
+                this.load.image("PlaquePressionoff","assets/PressurePlat1.png");
+                this.load.image("PlaquePressionon","assets/PressurePlat2.png");
+                this.load.image("BackPackHUD","assets/backpack.png");   
+                this.load.image("BatLoot","assets/lootB.png");   
+                this.load.image("RockLoot","assets/lootR.png");
+                this.load.image("clénul","assets/clé1.png");
+                this.load.image("clédar","assets/clé2.png");
+                this.load.image("CampFireNull","assets/fireplaceNull.png");   
+                this.load.image("DropMoney","assets/MoneyDrop.png");                                   
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -66,6 +67,8 @@
                 { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('FireSprite','assets/firespritesheet.png',
                 { frameWidth: 32, frameHeight: 64 });
+                this.load.spritesheet('ChestSprite','assets/ChestSpriteSheet.png',
+                { frameWidth: 32, frameHeight: 32 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -292,6 +295,8 @@
                     // Add new spikes to our sprite group
                     const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
+
+                this.ChestD1 = this.create(2123,656, "ChestSprite");
                 
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
@@ -573,6 +578,18 @@
                 this.anims.create({
                     key: 'FireSpriteA',           
                     frames: this.anims.generateFrameNumbers('FireSprite', {start:0,end:2}),          //creation des animation
+                    frameRate: 5,
+                });
+
+                this.anims.create({
+                    key: 'Chest Close',           
+                    frames: this.anims.generateFrameNumbers('ChestSprite', {start:0,end:0}),          //creation des animation
+                    frameRate: 5,
+                });
+
+                this.anims.create({
+                    key: 'Chest Open',           
+                    frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
                     frameRate: 5,
                 });
                 
