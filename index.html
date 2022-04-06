@@ -26,6 +26,7 @@
 
                 this.load.image("Phaser_Trou", "assets/SetHole.png");
                 this.load.image("Phaser_Salle", "assets/Salle1.png");
+                this.load.image("Phaser_Autres", "assets/SetAutre.png");
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
                 this.load.image("BourseHUD","assets/bourse.png")
@@ -128,6 +129,13 @@
                         32,
                         32
                         ); 
+                        
+                const tileset3 = carteDuNiveau.addTilesetImage(
+                        "SetAutre",
+                        "Phaser_Autres",
+                        32,
+                        32
+                        ); 
 
                 // importer les calques 
 
@@ -150,6 +158,11 @@
                 const Calque2 = carteDuNiveau.createLayer(
                         "Decors",
                         tileset2,
+                    ); 
+
+                const CalqueA = carteDuNiveau.createLayer(
+                        "Decors Autres",
+                        tileset3,
                     ); 
 
                 const Calque3 = carteDuNiveau.createLayer(
