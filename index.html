@@ -697,10 +697,11 @@
                     }
             }
 
-            FireOn(player,camps){
+            FireOn(balle,camps){
                 if(this.feuV==true){
                     this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
-                this.FireOnG.playAnimation("FireSpriteA");
+                    balle.disableBody(true,true);
+                    this.FireOnG.playAnimation("FireSpriteA");
                 }
             }
 
@@ -729,7 +730,6 @@
             }
 
             ActivPlaque1(){
-                console.log("oui1")
                 this.Plaque1A=true
                 this.ImagePlaque1="PlaquePressionon"
                 this.Plaque1.destroy()
@@ -738,7 +738,6 @@
             }
 
             ActivPlaque2(){
-                console.log("oui2")
                 this.Plaque2A=true
                 this.Plaque2.destroy()
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionon")
