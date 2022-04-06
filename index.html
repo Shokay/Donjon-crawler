@@ -230,7 +230,7 @@
 
                 this.player = this.physics.add.sprite(1665,1093, 'PersoSprite') ;
                 this.player.body.setSize(24,12,true)
-                this.player.setOffset(4, 28)
+                this.player.setOffset(8, 28)
                 this.player.alpha = 1;  
                 Calque3.setCollisionByProperty({ estSolide: true });         //background et plateformes
                 CalqueSJ.setCollisionByProperty({ estSolide: true }); 
@@ -914,6 +914,7 @@
                     this.salle4visit=true
                     this.BatM.playAnimation("MonstreBatAttack");
                 }
+
 
                 this.trackennemie(this.BatM1)
                 this.trackennemie(this.BatM2)
