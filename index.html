@@ -41,7 +41,10 @@
                 this.load.image("clédar","assets/clé2.png");
                 this.load.image("tapis","assets/Tapis.png");
                 this.load.image("CampFireNull","assets/fireplaceNull.png");   
-                this.load.image("DropMoney","assets/MoneyDrop.png");                                   
+                this.load.image("DropMoney","assets/MoneyDrop.png");
+                this.load.image("DonutTexte","assets/DonutTxT.png");
+                this.load.image("PizzaTexte","assets/PizzaTxT.png");
+                this.load.image("PotionTexte","assets/PotionTxT.png");                                               
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -88,7 +91,6 @@
         
 
             create (){
-
                 this.isConnected = false;
                 this.directionX=0
                 this.directionY=750 * 1
@@ -127,7 +129,7 @@
                 this.Getclé = false;
                 this.createclé=false;
                 this.inZone = false;
-                this.createAffiche=false;
+
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
                 // importer TileSet 
@@ -279,6 +281,8 @@
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
+
+                this.TextePotion = this.create(280,300, "PotionTexte");
 
                 this.player = this.physics.add.sprite(1665,1093, 'PersoSprite');
                 this.player.body.setSize(24,12,true)
@@ -1001,16 +1005,6 @@
                 this.DonutItem.anims.play("DonutA",true);
                 this.PizzaItem.anims.play("PizzaA",true);
                 this.PotionItem.anims.play("PotionA",true);
-
-                if (this.inZone==true) {
-                    if (this.createAffiche==false){
-                        this.BatM2 = this.BatM.create(this.player.x,this.player.y, "MonstreBA");
-                        this.createAffiche=true;
-                    }
-                }
-                if (this.inZone==false){
-
-                }
 
                 this.FireOnG.children.each(function(fire) {
                     fire.anims.play("FireSpriteA",true);
@@ -2445,7 +2439,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: true,
+            debug: false,
             }},
             pixelArt: true,
             input:{gamepad:true},
