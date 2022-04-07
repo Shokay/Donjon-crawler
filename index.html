@@ -130,6 +130,7 @@
                 this.createclé=false;
                 this.inZone = false;
                 this.OnPotion = false;
+                this.createAfficheP=true;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -307,6 +308,8 @@
                 this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
                 this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
                 this.TextePotion.setScale(0.4)
+                this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");
+                this.TextePizza.setScale(0.4)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -1007,16 +1010,20 @@
                 this.PizzaItem.anims.play("PizzaA",true);
                 this.PotionItem.anims.play("PotionA",true);
 
-                if(this.OnPotion==true){
+                if((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)){
                     this.TextePotion.setVisible(true);
-                    this.Affichetruc=true
                 }else{
                     this.TextePotion.setVisible(false);
                 }
 
-                if(this.Affichetruc==false){
-                    this.OnPotion=false;
+                if((this.player.x >= 242 && this.player.x <= 349) && (this.player.y >=232 && this.player.y <= 269)){
+                    this.TextePizza.setVisible(true);
+                }else{
+                    this.TextePizza.setVisible(false);
                 }
+
+
+                this.OnPotion=false
 
                 this.FireOnG.children.each(function(fire) {
                     fire.anims.play("FireSpriteA",true);
@@ -1033,6 +1040,7 @@
                 }                 
 
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
+
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
