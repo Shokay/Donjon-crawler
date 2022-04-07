@@ -69,6 +69,8 @@
                 { frameWidth: 32, frameHeight: 64 });
                 this.load.spritesheet('ChestSprite','assets/ChestSpriteSheet.png',
                 { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('MarchandSprite','assets/ShopSpriteSheet.png',
+                { frameWidth: 32, frameHeight: 32 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -279,6 +281,8 @@
                 this.LootRockTxT.setScrollFactor(0);
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
+                this.Marchand = this.physics.add.sprite(193,311, 'MarchandSprite') ;
+                this.Marchand.body.setSize(24,12,true)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -617,12 +621,18 @@
                     frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
                     frameRate: 5,
                 });
+                this.anims.create({
+                    key: 'MarchandA',           
+                    frames: this.anims.generateFrameNumbers('MarchandSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
 
                 this.physics.world.setBounds(0, 0, 3200, 1376);
                 this.cameras.main.setBounds(0, 0, 3200,1376);
                 this.cameras.main.zoom = 2;                  //Camera
                 this.cameras.main.startFollow(this.player);  
                 this.player.setCollideWorldBounds(true);
+                this.Marchand.anims.play("MarchandA",true);
                 // touches clavier
                 this.cursors = this.input.keyboard.createCursorKeys();
                 this.keys = this.input.keyboard.addKeys({
