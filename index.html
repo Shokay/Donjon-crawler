@@ -129,6 +129,7 @@
                 this.Getclé = false;
                 this.createclé=false;
                 this.inZone = false;
+                this.OnPotion = false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -282,8 +283,6 @@
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
 
-                this.TextePotion = this.create(280,300, "PotionTexte");
-
                 this.player = this.physics.add.sprite(1665,1093, 'PersoSprite');
                 this.player.body.setSize(24,12,true)
                 this.player.setOffset(8, 28)
@@ -306,6 +305,8 @@
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
                 this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
+                this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
+                this.TextePotion.setScale(0.4)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -790,7 +791,7 @@
                 this.LootRockTxT.setText(this.LootRockV)
             }
             VerifCollid(){
-                this.inZone = true;
+                this.OnPotion=true;
             }
 
             SpikeDegat(player,Pique){
@@ -1005,6 +1006,17 @@
                 this.DonutItem.anims.play("DonutA",true);
                 this.PizzaItem.anims.play("PizzaA",true);
                 this.PotionItem.anims.play("PotionA",true);
+
+                if(this.OnPotion==true){
+                    this.TextePotion.setVisible(true);
+                    this.Affichetruc=true
+                }else{
+                    this.TextePotion.setVisible(false);
+                }
+
+                if(this.Affichetruc==false){
+                    this.OnPotion=false;
+                }
 
                 this.FireOnG.children.each(function(fire) {
                     fire.anims.play("FireSpriteA",true);
