@@ -109,8 +109,8 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
-                this.thune=300;
+                this.speedconst = 140;
+                this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
                 this.spawnS1=false;
@@ -309,6 +309,8 @@
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
                 this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
+                this.Marchand.body.setSize(100,100,true)
+                this.Marchand.setOffset(50, 50)
                 this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
                 this.TextePotion.setScale(0.5)
                 this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");
@@ -428,6 +430,7 @@
                 this.physics.add.overlap(this.player, this.PotionItem, this.VerifAchatPotion,null, this);
                 this.physics.add.overlap(this.player, this.PizzaItem, this.VerifAchatPizza,null, this);
                 this.physics.add.overlap(this.player, this.DonutItem, this.VerifAchatDonut,null, this);
+                this.physics.add.overlap(this.player, this.Marchand, this.SellItems,null, this);
 
                 this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -801,8 +804,8 @@
                 this.LootRockTxT.setText(this.LootRockV)
             }
             VerifAchatPotion(){
-                if(this.keys.f.isDown && this.thune>=250){
-                    this.thune-=250
+                if(this.keys.f.isDown && this.thune>=150 && this.AchatPotion==false){
+                    this.thune-=150
                     this.ArgentTxT.setText(this.thune)
                     this.PotionItem.setVisible(false)
                     this.AchatPotion=true;
@@ -810,7 +813,7 @@
             }
 
             VerifAchatPizza(){
-                if(this.keys.f.isDown && this.thune>=100){
+                if(this.keys.f.isDown && this.thune>=100 && this.AchatPizza==false ){
                     this.thune-=100
                     this.ArgentTxT.setText(this.thune)
                     this.PizzaItem.setVisible(false)
@@ -820,12 +823,24 @@
             }
 
             VerifAchatDonut(){
-                if(this.keys.f.isDown && this.thune>=50){
+                if(this.keys.f.isDown && this.thune>=50 && this.AchatDonut==false){
                     this.thune-=50
                     this.ArgentTxT.setText(this.thune)
                     this.DonutItem.setVisible(false)
                     this.AchatDonut=true;
                     this.HpJoueur+=1
+                }
+            }
+
+            SellItems(){
+                if(this.keys.f.isDown){
+                    const ItemGlobal=this.LootBatV+this.LootRockV;
+                    this.thune+=ItemGlobal*4;
+                    this.LootBatV=0;
+                    this.LootRockV=0;
+                    this.ArgentTxT.setText(this.thune);
+                    this.LootBatTxT.setText(this.LootBatV);
+                    this.LootRockTxT.setText(this.LootRockV);
                 }
             }
 
@@ -1083,7 +1098,7 @@
                     this.scene.start("sceneExemple2");
                 }
 
-                if (this.HpJoueur==3){
+                if (this.HpJoueur>=3){
                     this.Pvbarre.anims.play("HP1", true);
                 }
 
@@ -1132,30 +1147,30 @@
                 }
 
 
-                this.trackennemie(this.BatM1)
-                this.trackennemie(this.BatM2)
-                this.trackennemie(this.BatM3)
-                this.trackennemie(this.BatM4)
-                this.trackennemie(this.BatM5)
-                this.trackennemie(this.BatM6)
-                this.trackennemie(this.BatM7)
+                this.trackennemie(this.BatM1);
+                this.trackennemie(this.BatM2);
+                this.trackennemie(this.BatM3);
+                this.trackennemie(this.BatM4);
+                this.trackennemie(this.BatM5);
+                this.trackennemie(this.BatM6);
+                this.trackennemie(this.BatM7);
 
-                this.AgroZoneM1.x=this.PierreM1.x
-                this.AgroZoneM1.y=this.PierreM1.y
-                this.AgroZoneM2.x=this.PierreM2.x
-                this.AgroZoneM2.y=this.PierreM2.y
-                this.AgroZoneM3.x=this.PierreM3.x
-                this.AgroZoneM3.y=this.PierreM3.y
-                this.AgroZoneM4.x=this.PierreM4.x
-                this.AgroZoneM4.y=this.PierreM4.y
-                this.AgroZoneM5.x=this.PierreM5.x
-                this.AgroZoneM5.y=this.PierreM5.y
-                this.AgroZoneM6.x=this.PierreM6.x
-                this.AgroZoneM6.y=this.PierreM6.y
-                this.AgroZoneM7.x=this.PierreM7.x
-                this.AgroZoneM7.y=this.PierreM7.y
-                this.AgroZoneM8.x=this.PierreM8.x
-                this.AgroZoneM8.y=this.PierreM8.y
+                this.AgroZoneM1.x=this.PierreM1.x;
+                this.AgroZoneM1.y=this.PierreM1.y;
+                this.AgroZoneM2.x=this.PierreM2.x;
+                this.AgroZoneM2.y=this.PierreM2.y;
+                this.AgroZoneM3.x=this.PierreM3.x;
+                this.AgroZoneM3.y=this.PierreM3.y;
+                this.AgroZoneM4.x=this.PierreM4.x;
+                this.AgroZoneM4.y=this.PierreM4.y;
+                this.AgroZoneM5.x=this.PierreM5.x;
+                this.AgroZoneM5.y=this.PierreM5.y;
+                this.AgroZoneM6.x=this.PierreM6.x;
+                this.AgroZoneM6.y=this.PierreM6.y;
+                this.AgroZoneM7.x=this.PierreM7.x;
+                this.AgroZoneM7.y=this.PierreM7.y;
+                this.AgroZoneM8.x=this.PierreM8.x;
+                this.AgroZoneM8.y=this.PierreM8.y;
 
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
@@ -2497,7 +2512,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: true,
+            debug: false,
             }},
             pixelArt: true,
             input:{gamepad:true},
