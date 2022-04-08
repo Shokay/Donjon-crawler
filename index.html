@@ -1601,6 +1601,8 @@
                 { frameWidth: 32, frameHeight: 64 });
                 this.load.spritesheet('ChestSprite','assets/ChestSpriteSheet.png',
                 { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('ChestSprite2','assets/ChestSpriteSheet2.png',
+                { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('MarchandSprite','assets/ShopSpriteSheet.png',
                 { frameWidth: 96, frameHeight: 128 });
                 this.load.spritesheet('DonutSprite','assets/SpriteSheetDonut.png',
@@ -1611,6 +1613,8 @@
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('PotionHUD','assets/SpriteSheetPotionHUD.png',
                 { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('PowerUpAnim','assets/SpriteSheetPowerUp.png',
+                { frameWidth: 32, frameHeight: 32 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -1668,6 +1672,7 @@
                 this.PotionStatus=4;
                 this.potionCheck=false;
                 this.PotionStatusHUD=3;
+                this.feucheck=false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte2"});
                 
@@ -1840,6 +1845,9 @@
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
+                this.ChestGD1=this.physics.add.group();
+                this.ChestD1 = this.ChestGD1.create(1185,1965, "ChestSprite2");
+                this.ChestD1.body.setSize(150,150,true);
 
                 this.player = this.physics.add.sprite(1190,120, 'PersoSprite');
                 this.player.body.setSize(24,12,true)
@@ -1905,19 +1913,11 @@
                     // Add new spikes to our sprite group
                     const Blocd4 = this.BlocsHS4.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
-
-                this.ChestGD1=this.physics.add.group();
-                this.ChestD1 = this.ChestGD1.create(2123,668, "ChestSprite");
-                this.ChestD1.body.setSize(150,150,true);
-
-                this.ChestGG1=this.physics.add.group();
-                this.ChestG1 = this.ChestGG1.create(267,1082, "ChestSprite");
-                this.ChestG1.body.setSize(150,150,true);
                 
                 this.CoinG=this.physics.add.group();
                 this.HealG=this.physics.add.group();
-
                 this.PierresM=this.physics.add.group();
+                this.PowerUp = this.physics.add.sprite(1190,429, 'PowerUpAnim');
                 this.physics.add.collider(this.PierresM, Calque3);
                 this.physics.add.collider(this.PierresM, CalqueSJ);
                 this.physics.add.collider(this.PierresM, CalqueSM);
@@ -1981,7 +1981,7 @@
                 this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
                 this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
-                this.physics.add.overlap(this.player, this.ChestG1, this.LootChestG1, null, this);
+                this.physics.add.overlap(this.player, this.PowerUp, this.RecupPowerUp, null, this);
 
                 this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -2213,6 +2213,12 @@
                     frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
                     frameRate: 5,
                 });
+
+                this.anims.create({
+                    key: 'ChestOpen2',           
+                    frames: this.anims.generateFrameNumbers('ChestSprite2', {start:1,end:1}),          //creation des animation
+                    frameRate: 5,
+                });
                 this.anims.create({
                     key: 'MarchandA',           
                     frames: this.anims.generateFrameNumbers('MarchandSprite', {start:0,end:5}),          //creation des animation
@@ -2248,7 +2254,13 @@
                     frames: this.anims.generateFrameNumbers('PotionHUD', {start:2,end:2}),
                     frameRate: 5,
                 });
-
+                this.anims.create({
+                    key: 'PowerUpAnimF',           
+                    frames: this.anims.generateFrameNumbers('PowerUpAnim', {start:0,end:3}),
+                    frameRate: 3,
+                    repeat: -1,
+                });
+                this.PowerUp.anims.play("PowerUpAnimF",true)
                 this.physics.world.setBounds(0, 0, 2560, 3200);
                 this.cameras.main.setBounds(0, 0, 2560,3200);
                 this.cameras.main.zoom = 2;                  //Camera
@@ -2302,6 +2314,11 @@
 
             destroy(balle){
                 balle.disableBody(true,true)
+            }
+
+            RecupPowerUp(player,sprite){
+                this.feucheck=true;
+                sprite.destroy()
             }
 
             tirer(player) {
@@ -2384,9 +2401,9 @@
             GetClé1(player,drop){
                 drop.destroy()
                 if (this.createclé==false){
-                    this.CléNul = this.add.sprite(924,237, 'clénul');
-                    this.CléNul.setScrollFactor(0);
-                    this.CléNul.setDepth(10);
+                    this.CléDar = this.add.sprite(924,237, 'clédar');
+                    this.CléDar.setScrollFactor(0);
+                    this.CléDar.setDepth(10);
                 }
                 this.createclé=true;
                 this.Getclé = true;
@@ -2394,22 +2411,11 @@
 
             LootChestD1(player,chest){
                 if(this.keys.f.isDown){
-                    this.ChestGD1.playAnimation("ChestOpen");
-                    var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
-                    var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
-                    var Heal = this.HealG.create(chest.x+50,chest.y-20, "DonutSprite");
-                    Heal.setScale(0.5);
-                    this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
-                    this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
-                } 
-            }
-            
-            LootChestG1(player,chest){
-                if(this.keys.f.isDown){
-                    this.ChestGG1.playAnimation("ChestOpen");
-                    var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
-                    var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
-                    var Coin = this.CoinG.create(chest.x-20,chest.y-10, "DropMoney");
+                    this.ChestGD1.playAnimation("ChestOpen2");
+                    var Coin = this.CoinG.create(chest.x+25,chest.y+10, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x+10,chest.y-30, "DropMoney");
+                    this.CléDarDrop= this.physics.add.image(chest.x-10,chest.y-20, 'clédar');
+                    this.physics.add.overlap(this.player, this.CléDarDrop, this.GetClé1, null, this);
                 } 
             }
 
@@ -2789,15 +2795,17 @@
                 }
 
                 if(this.keys.r.isDown){
-                    this.haut="upF";
-                    this.bas="downF";
-                    this.droite="rightF";
-                    this.gauche="leftF";
-                    this.immobileB="staticFB";
-                    this.immobileH="staticFH";
-                    this.immobileG="staticFG";
-                    this.immobileD="staticFD";
-                    this.feuV=true;
+                    if (this.feucheck==true){
+                        this.haut="upF";
+                        this.bas="downF";
+                        this.droite="rightF";
+                        this.gauche="leftF";
+                        this.immobileB="staticFB";
+                        this.immobileH="staticFH";
+                        this.immobileG="staticFG";
+                        this.immobileD="staticFD";
+                        this.feuV=true;                      
+                    }
                 }
                 if(this.feuV==true){
                     if (this.player.direction == 'gauche') { 
