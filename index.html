@@ -1704,6 +1704,11 @@
                         tileset2,
                     ); 
 
+                const CalqueDecors2 = carteDuNiveau.createLayer(
+                        "Decors2",
+                        tileset2,
+                    ); 
+
                 const CalqueA = carteDuNiveau.createLayer(
                         "Decors Autres",
                         tileset3,
@@ -1793,8 +1798,8 @@
                     const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);
                 });
 
-                this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionoff")
-                this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionoff")
+                this.Plaque1 = this.physics.add.image(1395,1463,"PlaquePressionoff")
+                this.Plaque2 = this.physics.add.image(1170,1675,"PlaquePressionoff")
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
@@ -2434,14 +2439,14 @@
                 this.Plaque1A=true
                 this.ImagePlaque1="PlaquePressionon"
                 this.Plaque1.destroy()
-                this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionon")
+                this.Plaque1 = this.physics.add.image(1395,1463,"PlaquePressionon")
                 this.Plaque1.setDepth(-1)
             }
 
             ActivPlaque2(){
                 this.Plaque2A=true
                 this.Plaque2.destroy()
-                this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionon")
+                this.Plaque2 = this.physics.add.image(1170,1675,"PlaquePressionon")
                 this.Plaque2.setDepth(-1)
             }
 
