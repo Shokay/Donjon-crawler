@@ -332,10 +332,12 @@
                     allowGravity: false,
                     immovable:true
                 });
+
                 this.BlocsDS3=this.physics.add.group({
                     allowGravity: false,
                     immovable:true
                 });
+
                 this.BlocsGS2=this.physics.add.group({
                     allowGravity: false,
                     immovable:true
@@ -375,7 +377,7 @@
                 this.ChestG1.body.setSize(150,150,true);
                 
                 this.CoinG=this.physics.add.group();
-
+                this.HealG=this.physics.add.group();
 
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
@@ -451,6 +453,7 @@
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
                 this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
                 this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
+                this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
                 this.physics.add.overlap(this.player, this.ChestG1, this.LootChestG1, null, this);
                 this.physics.add.overlap(this.player, this.PotionItem, this.VerifAchatPotion,null, this);
@@ -913,6 +916,8 @@
                     this.ChestGD1.playAnimation("ChestOpen");
                     var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
                     var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
+                    var Heal = this.HealG.create(chest.x+50,chest.y-20, "DonutSprite");
+                    Heal.setScale(0.5);
                     this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
                     this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
                 } 
@@ -1105,6 +1110,11 @@
                 this.ArgentTxT.setText(this.thune);
             }
 
+            TakeHeal(player,drop){
+                drop.destroy();
+                this.HpJoueur+=1
+            }
+
             trackennemie(monstre){
                 if (monstre.x > this.player.x)
                     monstre.setVelocityX(-60)
@@ -1120,6 +1130,9 @@
                 this.DonutItem.anims.play("DonutA",true);
                 this.PizzaItem.anims.play("PizzaA",true);
                 this.PotionItem.anims.play("PotionA",true);
+                if(this.HpJoueur>3){
+                    this.HpJoueur=3
+                }
 
                 if(((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)) && this.AchatPotion==false){
                     this.TextePotion.setVisible(true);
@@ -1524,19 +1537,25 @@
 
                 this.load.image("Phaser_Trou", "assets/SetHole.png");
                 this.load.image("Phaser_Salle", "assets/Salle1.png");
+                this.load.image("Phaser_Autres", "assets/SetAutre.png");
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
-                this.load.image("BourseHUD","assets/bourse.png")
-                this.load.image("PiqueSolo","assets/PiqueSeul.png")  
-                this.load.image("TriggerZone","assets/Zonetrigger.png") 
-                this.load.image("PlaquePressionoff","assets/PressurePlat1.png")
-                this.load.image("PlaquePressionon","assets/PressurePlat2.png")
-                this.load.image("BackPackHUD","assets/backpack.png")   
-                this.load.image("BatLoot","assets/lootB.png")   
-                this.load.image("RockLoot","assets/lootR.png")
-                this.load.image("clénul","assets/clé1.png")
-                this.load.image("clédar","assets/clé2.png")
-                this.load.image("CampFireNull","assets/fireplaceNull.png")                                   
+                this.load.image("BourseHUD","assets/bourse.png");
+                this.load.image("PiqueSolo","assets/PiqueSeul.png");  
+                this.load.image("TriggerZone","assets/Zonetrigger.png"); 
+                this.load.image("PlaquePressionoff","assets/PressurePlat1.png");
+                this.load.image("PlaquePressionon","assets/PressurePlat2.png");
+                this.load.image("BackPackHUD","assets/backpack.png");   
+                this.load.image("BatLoot","assets/lootB.png");   
+                this.load.image("RockLoot","assets/lootR.png");
+                this.load.image("clénul","assets/clé1.png");
+                this.load.image("clédar","assets/clé2.png");
+                this.load.image("tapis","assets/Tapis.png");
+                this.load.image("CampFireNull","assets/fireplaceNull.png");   
+                this.load.image("DropMoney","assets/MoneyDrop.png");
+                this.load.image("DonutTexte","assets/DonutTxT.png");
+                this.load.image("PizzaTexte","assets/PizzaTxT.png");
+                this.load.image("PotionTexte","assets/PotionTxT.png");                                               
                 this.load.tilemapTiledJSON("carte2", "DonjonMap2.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -1563,6 +1582,18 @@
                 { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('FireSprite','assets/firespritesheet.png',
                 { frameWidth: 32, frameHeight: 64 });
+                this.load.spritesheet('ChestSprite','assets/ChestSpriteSheet.png',
+                { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('MarchandSprite','assets/ShopSpriteSheet.png',
+                { frameWidth: 96, frameHeight: 128 });
+                this.load.spritesheet('DonutSprite','assets/SpriteSheetDonut.png',
+                { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('PizzaSprite','assets/SpriteSheetPizza.png',
+                { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('PotionSprite','assets/PotionSpriteSheet.png',
+                { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('PotionHUD','assets/SpriteSheetPotionHUD.png',
+                { frameWidth: 64, frameHeight: 64 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -1573,7 +1604,6 @@
         
 
             create (){
-
                 this.isConnected = false;
                 this.directionX=0
                 this.directionY=750 * 1
@@ -1597,19 +1627,33 @@
                 this.LootBatV=0;
                 this.LootRockV=0;
                 this.spawnS1=false;
-                this.salle1visit=false
+                this.salle1visit=false;;
                 this.spawnS3=false;
-                this.salle3visit=false
+                this.salle3visit=false;
                 this.spawnS4=false;
-                this.salle4visit=false
+                this.salle4visit=false;
+                this.spawnS5=false;
+                this.salle5visit=false
                 this.Plaque1A=false;
                 this.Plaque2A=false;
                 this.ImagePlaque1="PlaquePressionoff";
                 this.ImagePlaque2="PlaquePressionoff";
                 this.BulletA="BulletShoot";
                 this.feuV=false;
-                
-                const carteDuNiveau = this.make.tilemap({ key: "carte2"});
+                this.utilisecléV=false;
+                this.Getclé = false;
+                this.createclé=false;
+                this.inZone = false;
+                this.OnPotion = false;
+                this.createAfficheP=true;
+                this.AchatPotion=false;
+                this.AchatPizza=false;
+                this.AchatDonut=false;
+                this.PotionStatus=4;
+                this.potionCheck=false;
+                this.PotionStatusHUD=3;
+
+                const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
                 // importer TileSet 
                         
@@ -1623,6 +1667,13 @@
                 const tileset2 = carteDuNiveau.addTilesetImage(
                         "SetHole",
                         "Phaser_Trou",
+                        32,
+                        32
+                        ); 
+                        
+                const tileset3 = carteDuNiveau.addTilesetImage(
+                        "SetAutre",
+                        "Phaser_Autres",
                         32,
                         32
                         ); 
@@ -1650,10 +1701,10 @@
                         tileset2,
                     ); 
 
-                const CalqueDecors2 = carteDuNiveau.createLayer(
-                        "Decors2",
-                        tileset2,
-                    );
+                const CalqueA = carteDuNiveau.createLayer(
+                        "Decors Autres",
+                        tileset3,
+                    ); 
 
                 const Calque3 = carteDuNiveau.createLayer(
                         "Solid",
@@ -1689,9 +1740,20 @@
                         "PorteBlockZ1G",
                         tileset1,
                     );
+                    
+                this.BlockZone1Droite = carteDuNiveau.createLayer(
+                        "PorteBlockZ1D",
+                        tileset1,
+                    );
 
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
+                
+                this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
+                this.BlockZone1Droite.setDepth(3)
+
+                this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
+                this.CléUtiliser.setSize(50, 50)
 
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
@@ -1730,10 +1792,22 @@
 
                 this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionoff")
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionoff")
+                this.Tapis1 = this.add.image(279,263,'tapis');
+                this.Tapis2 = this.add.image(304,319,'tapis');
+                this.Tapis3 = this.add.image(260,363,'tapis');
+                this.DonutItem = this.physics.add.sprite(260,355, 'DonutSprite');
+                this.DonutItem.body.setSize(128,64,true)
+                this.DonutItem.setOffset(-6, 5)                
+                this.PizzaItem = this.physics.add.sprite(279,250, 'PizzaSprite');
+                this.PizzaItem.body.setSize(128,64,true)
+                this.PizzaItem.setOffset(8, 0)
+                this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
+                this.PotionItem.body.setSize(128,64,true)
+                this.PotionItem.setOffset(8, 15)
 
-                this.player = this.physics.add.sprite(1184,98, 'PersoSprite') ;
+                this.player = this.physics.add.sprite(1148,98, 'PersoSprite');
                 this.player.body.setSize(24,12,true)
-                this.player.setOffset(4, 28)
+                this.player.setOffset(8, 28)
                 this.player.alpha = 1;  
                 Calque3.setCollisionByProperty({ estSolide: true });         //background et plateformes
                 CalqueSJ.setCollisionByProperty({ estSolide: true }); 
@@ -1742,6 +1816,7 @@
                 this.physics.add.collider(this.player, Calque3);
                 this.physics.add.collider(this.player, CalqueSJ);
                 this.collidePG=this.physics.add.collider(this.player, this.BlockZone1Gauche);
+                this.collidePD=this.physics.add.collider(this.player, this.BlockZone1Droite);
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
@@ -1751,6 +1826,15 @@
                 this.LootRockTxT.setScrollFactor(0);
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
+                this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
+                this.Marchand.body.setSize(100,100,true)
+                this.Marchand.setOffset(50, 50)
+                this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
+                this.TextePotion.setScale(0.5)
+                this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");
+                this.TextePizza.setScale(0.5)
+                this.TexteDonut= this.physics.add.image(200,335, "DonutTexte");
+                this.TexteDonut.setScale(0.5)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -1759,11 +1843,18 @@
                     allowGravity: false,
                     immovable:true
                 });
+
                 this.BlocsDS3=this.physics.add.group({
                     allowGravity: false,
                     immovable:true
                 });
+
                 this.BlocsGS2=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+
+                this.BlocsHS4=this.physics.add.group({
                     allowGravity: false,
                     immovable:true
                 });
@@ -1782,7 +1873,23 @@
                     // Add new spikes to our sprite group
                     const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
+
+                carteDuNiveau.getObjectLayer('Salle4H').objects.forEach((blocsV) => {
+                    // Add new spikes to our sprite group
+                    const Blocd4 = this.BlocsHS4.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                });
+
+                this.ChestGD1=this.physics.add.group();
+                this.ChestD1 = this.ChestGD1.create(2123,668, "ChestSprite");
+                this.ChestD1.body.setSize(150,150,true);
+
+                this.ChestGG1=this.physics.add.group();
+                this.ChestG1 = this.ChestGG1.create(267,1082, "ChestSprite");
+                this.ChestG1.body.setSize(150,150,true);
                 
+                this.CoinG=this.physics.add.group();
+                this.HealG=this.physics.add.group();
+
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
                 this.physics.add.collider(this.PierresM, CalqueSJ);
@@ -1803,6 +1910,8 @@
                 this.PierreM7.setBounce(1);
                 this.PierreM8 = this.PierresM.create(1108,256, "MonstreR");
                 this.PierreM8.setBounce(1);
+                this.PierreM9 = this.PierresM.create(1804,355, "MonstreR");
+                this.PierreM9.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
@@ -1812,7 +1921,11 @@
                 this.BatM4 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM5 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM6 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
-                this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");
+                this.BatM8 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM9 = this.BatM.create(1000000000,1000000000, "MonstreBA");
+                this.BatM10 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM11 = this.BatM.create(1000000000,1000000000, "MonstreBA");       
                 
                 this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM1.setSize(224, 224)
@@ -1830,6 +1943,8 @@
                 this.AgroZoneM7.setSize(224, 224)
                 this.AgroZoneM8 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM8.setSize(224, 224)
+                this.AgroZoneM9 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM9.setSize(224, 224)
 
                 
                 
@@ -1844,8 +1959,18 @@
                 this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
+                this.physics.add.overlap(this.player, this.BlocsHS4, this.Salle5SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
+                this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
+                this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
+                this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
+                this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
+                this.physics.add.overlap(this.player, this.ChestG1, this.LootChestG1, null, this);
+                this.physics.add.overlap(this.player, this.PotionItem, this.VerifAchatPotion,null, this);
+                this.physics.add.overlap(this.player, this.PizzaItem, this.VerifAchatPizza,null, this);
+                this.physics.add.overlap(this.player, this.DonutItem, this.VerifAchatDonut,null, this);
+                this.physics.add.overlap(this.player, this.Marchand, this.SellItems,null, this);
 
                 this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -1864,15 +1989,14 @@
                 this.LootBat.setScrollFactor(0);
                 this.LootRock = this.add.sprite(885,245, 'RockLoot');
                 this.LootRock.setScrollFactor(0);
-                this.CléNul = this.add.sprite(924,237, 'clénul');
-                this.CléNul.setScrollFactor(0);
-                this.CléDar = this.add.sprite(927,235, 'clédar');
-                this.CléDar.setScrollFactor(0);
+                this.PotionHud = this.add.sprite(1000,1000, 'PotionHUD');
+                this.PotionHud.setScrollFactor(0);
+                //this.CléDar = this.add.sprite(927,235, 'clédar');
+                //this.CléDar.setScrollFactor(0);
                 this.Pvbarre.setScale(0.8);
                 this.LootBat.setDepth(10);
                 this.LootRock.setDepth(10);
-                this.CléDar.setDepth(10);
-                this.CléNul.setDepth(10);
+                //this.CléDar.setDepth(10);
                 this.BackPack.setDepth(10);
                 this.label.setDepth(10);
                 this.ArgentTxT.setDepth(10);
@@ -1880,6 +2004,7 @@
                 this.LootRockTxT.setDepth(11);
                 this.BourseImage.setDepth(10);
                 this.Pvbarre.setDepth(10);
+                this.PotionHud.setDepth(10);
 
                 this.anims.create({
                     key: 'leftB',           
@@ -2065,7 +2190,54 @@
                     frames: this.anims.generateFrameNumbers('FireSprite', {start:0,end:2}),          //creation des animation
                     frameRate: 5,
                 });
-                
+
+                this.anims.create({
+                    key: 'ChestClose',           
+                    frames: this.anims.generateFrameNumbers('ChestSprite', {start:0,end:0}),          //creation des animation
+                    frameRate: 5,
+                });
+
+                this.anims.create({
+                    key: 'ChestOpen',           
+                    frames: this.anims.generateFrameNumbers('ChestSprite', {start:1,end:1}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'MarchandA',           
+                    frames: this.anims.generateFrameNumbers('MarchandSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'DonutA',           
+                    frames: this.anims.generateFrameNumbers('DonutSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PizzaA',           
+                    frames: this.anims.generateFrameNumbers('PizzaSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionA',           
+                    frames: this.anims.generateFrameNumbers('PotionSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState1',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:0,end:0}),
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState2',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:1,end:1}),
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState3',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:2,end:2}),
+                    frameRate: 5,
+                });
+
                 this.physics.world.setBounds(0, 0, 2560, 3200);
                 this.cameras.main.setBounds(0, 0, 2560,3200);
                 this.cameras.main.zoom = 2;                  //Camera
@@ -2120,7 +2292,6 @@
             destroy(balle){
                 balle.disableBody(true,true)
             }
-            
 
             tirer(player) {
                 // choix de la direction de la balle en fonction de l'ancien ou du déplacement actuel du joueur
@@ -2178,17 +2349,57 @@
             }
 
             TakeDropB(player,drop){
-                console.log("lol");
-                drop.destroy();
-                this.LootBatV+=1;
-                this.LootBatTxT.setText(this.LootBatV);
+                console.log("lol")
+                drop.destroy()
+                this.LootBatV+=1
+                this.LootBatTxT.setText(this.LootBatV)
             }
 
             TakeDropR(player,drop){
-                console.log("lol");
-                drop.destroy();
-                this.LootRockV+=1;
-                this.LootRockTxT.setText(this.LootRockV);
+                console.log("lol")
+                drop.destroy()
+                this.LootRockV+=1
+                this.LootRockTxT.setText(this.LootRockV)
+            }
+            VerifAchatPotion(){
+                if(this.keys.f.isDown && this.thune>=150 && this.AchatPotion==false){
+                    this.thune-=150
+                    this.ArgentTxT.setText(this.thune)
+                    this.PotionItem.setVisible(false)
+                    this.AchatPotion=true;
+                }
+            }
+
+            VerifAchatPizza(){
+                if(this.keys.f.isDown && this.thune>=100 && this.AchatPizza==false ){
+                    this.thune-=100
+                    this.ArgentTxT.setText(this.thune)
+                    this.PizzaItem.setVisible(false)
+                    this.AchatPizza=true;
+                    this.HpJoueur+=2
+                }
+            }
+
+            VerifAchatDonut(){
+                if(this.keys.f.isDown && this.thune>=50 && this.AchatDonut==false){
+                    this.thune-=50
+                    this.ArgentTxT.setText(this.thune)
+                    this.DonutItem.setVisible(false)
+                    this.AchatDonut=true;
+                    this.HpJoueur+=1
+                }
+            }
+
+            SellItems(){
+                if(this.keys.f.isDown){
+                    const ItemGlobal=this.LootBatV+this.LootRockV;
+                    this.thune+=ItemGlobal*4;
+                    this.LootBatV=0;
+                    this.LootRockV=0;
+                    this.ArgentTxT.setText(this.thune);
+                    this.LootBatTxT.setText(this.LootBatV);
+                    this.LootRockTxT.setText(this.LootRockV);
+                }
             }
 
             SpikeDegat(player,Pique){
@@ -2200,6 +2411,45 @@
                     }
             }
 
+            GetClé1(player,drop){
+                drop.destroy()
+                if (this.createclé==false){
+                    this.CléNul = this.add.sprite(924,237, 'clénul');
+                    this.CléNul.setScrollFactor(0);
+                    this.CléNul.setDepth(10);
+                }
+                this.createclé=true;
+                this.Getclé = true;
+            }
+
+            LootChestD1(player,chest){
+                if(this.keys.f.isDown){
+                    this.ChestGD1.playAnimation("ChestOpen");
+                    var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
+                    var Heal = this.HealG.create(chest.x+50,chest.y-20, "DonutSprite");
+                    Heal.setScale(0.5);
+                    this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
+                    this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
+                } 
+            }
+            
+            LootChestG1(player,chest){
+                if(this.keys.f.isDown){
+                    this.ChestGG1.playAnimation("ChestOpen");
+                    var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x-20,chest.y-10, "DropMoney");
+                } 
+            }
+
+            UseKey(){
+                if(this.keys.f.isDown && this.Getclé == true){
+                    this.utilisecléV=true;
+                    this.CléNul.destroy();
+                }
+            }
+
             FireOn(balle,camps){
                 if(this.feuV==true){
                     this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
@@ -2207,7 +2457,7 @@
                     this.FireOnG.playAnimation("FireSpriteA");
                 }
             }
-
+            
             Salle1SpawnVerif(){
                 if(this.salle1visit==false){
                     this.spawnS1=true
@@ -2231,6 +2481,15 @@
 
                 }
             }
+
+            Salle5SpawnVerif(){
+                if(this.salle5visit==false){
+                    this.spawnS5=true
+                }else{
+
+                }
+            }
+
 
             ActivPlaque1(){
                 this.Plaque1A=true
@@ -2344,6 +2603,29 @@
                         this.PierreM8.setVelocityY(-60) 
             }
 
+            AttackM9(){               
+                        this.PierreM9.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM9.x > this.player.x)
+                        this.PierreM9.setVelocityX(-60)
+                        if (this.PierreM9.x < this.player.x)
+                        this.PierreM9.setVelocityX(60)
+                        if (this.PierreM9.y < this.player.y)
+                        this.PierreM9.setVelocityY(60)
+                        if (this.PierreM9.y > this.player.y)
+                        this.PierreM9.setVelocityY(-60) 
+            }
+
+            TakeMoney(player,drop){
+                drop.destroy();
+                this.thune+=3;
+                this.ArgentTxT.setText(this.thune);
+            }
+
+            TakeHeal(player,drop){
+                drop.destroy();
+                this.HpJoueur+=1
+            }
+
             trackennemie(monstre){
                 if (monstre.x > this.player.x)
                     monstre.setVelocityX(-60)
@@ -2354,7 +2636,35 @@
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
-            update(){   
+            update(){ 
+                this.Marchand.anims.play("MarchandA",true);
+                this.DonutItem.anims.play("DonutA",true);
+                this.PizzaItem.anims.play("PizzaA",true);
+                this.PotionItem.anims.play("PotionA",true);
+                if(this.HpJoueur>3){
+                    this.HpJoueur=3
+                }
+
+                if(((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)) && this.AchatPotion==false){
+                    this.TextePotion.setVisible(true);
+                }else{
+                    this.TextePotion.setVisible(false);
+                }
+
+                if(((this.player.x >= 242 && this.player.x <= 349) && (this.player.y >=232 && this.player.y <= 269)) && this.AchatPizza==false){
+                    this.TextePizza.setVisible(true);
+                }else{
+                    this.TextePizza.setVisible(false);
+                }
+
+                if(((this.player.x >= 235 && this.player.x <= 328) && (this.player.y >=338 && this.player.y <= 363))  && this.AchatDonut==false){
+                    this.TexteDonut.setVisible(true);
+                }else{
+                    this.TexteDonut.setVisible(false);
+                }
+
+
+                this.OnPotion=false
 
                 this.FireOnG.children.each(function(fire) {
                     fire.anims.play("FireSpriteA",true);
@@ -2363,14 +2673,20 @@
                 if(this.Plaque1A==true && this.Plaque2A==true){
                     this.BlockZone1Gauche.setVisible(false);
                     this.physics.world.removeCollider(this.collidePG);
-                }              
+                }
+
+                if(this.utilisecléV==true){
+                    this.BlockZone1Droite.setVisible(false);
+                    this.physics.world.removeCollider(this.collidePD);
+                }                 
 
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
+
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
 
-                if (this.HpJoueur==3){
+                if (this.HpJoueur>=3){
                     this.Pvbarre.anims.play("HP1", true);
                 }
 
@@ -2380,6 +2696,26 @@
 
                 if (this.HpJoueur==1){
                     this.Pvbarre.anims.play("HP3", true);
+                }
+
+                if(this.AchatPotion==true){
+                    this.PotionHud = this.add.sprite(825,205, 'PotionHUD');
+                    this.PotionHud.setScrollFactor(0);
+                    if(this.potionCheck==false){
+                        this.PotionStatus=1;
+                    }
+                }
+
+                if (this.PotionStatusHUD==3){
+                    this.PotionHud.anims.play("PotionHUDState1", true);
+                }
+
+                if (this.PotionStatusHUD==2){
+                    this.PotionHud.anims.play("PotionHUDState2", true);
+                }
+
+                if (this.PotionStatusHUD<=1){
+                    this.PotionHud.anims.play("PotionHUDState3", true);
                 }
 
                 if (this.HpJoueur<=0){
@@ -2418,30 +2754,51 @@
                     this.BatM.playAnimation("MonstreBatAttack");
                 }
 
-                this.trackennemie(this.BatM1)
-                this.trackennemie(this.BatM2)
-                this.trackennemie(this.BatM3)
-                this.trackennemie(this.BatM4)
-                this.trackennemie(this.BatM5)
-                this.trackennemie(this.BatM6)
-                this.trackennemie(this.BatM7)
+                if (this.spawnS5==true){
+                    this.BatM8 = this.BatM.create(1907,381, "MonstreBA");           ///salle 1
+                    this.BatM8.setBounce(1);
+                    this.BatM9 = this.BatM.create(1907,185, "MonstreBA");
+                    this.BatM9.setBounce(1);
+                    this.BatM10 = this.BatM.create(1418,249, "MonstreBA");
+                    this.BatM10.setBounce(1);
+                    this.BatM11 = this.BatM.create(1657,376, "MonstreBA");
+                    this.BatM11.setBounce(1);
+                    this.spawnS5=false
+                    this.salle5visit=true
+                    this.BatM.playAnimation("MonstreBatAttack");
+                }
 
-                this.AgroZoneM1.x=this.PierreM1.x
-                this.AgroZoneM1.y=this.PierreM1.y
-                this.AgroZoneM2.x=this.PierreM2.x
-                this.AgroZoneM2.y=this.PierreM2.y
-                this.AgroZoneM3.x=this.PierreM3.x
-                this.AgroZoneM3.y=this.PierreM3.y
-                this.AgroZoneM4.x=this.PierreM4.x
-                this.AgroZoneM4.y=this.PierreM4.y
-                this.AgroZoneM5.x=this.PierreM5.x
-                this.AgroZoneM5.y=this.PierreM5.y
-                this.AgroZoneM6.x=this.PierreM6.x
-                this.AgroZoneM6.y=this.PierreM6.y
-                this.AgroZoneM7.x=this.PierreM7.x
-                this.AgroZoneM7.y=this.PierreM7.y
-                this.AgroZoneM8.x=this.PierreM8.x
-                this.AgroZoneM8.y=this.PierreM8.y
+
+                this.trackennemie(this.BatM1);
+                this.trackennemie(this.BatM2);
+                this.trackennemie(this.BatM3);
+                this.trackennemie(this.BatM4);
+                this.trackennemie(this.BatM5);
+                this.trackennemie(this.BatM6);
+                this.trackennemie(this.BatM7);
+                this.trackennemie(this.BatM8);
+                this.trackennemie(this.BatM9);
+                this.trackennemie(this.BatM10);
+                this.trackennemie(this.BatM11);
+
+                this.AgroZoneM1.x=this.PierreM1.x;
+                this.AgroZoneM1.y=this.PierreM1.y;
+                this.AgroZoneM2.x=this.PierreM2.x;
+                this.AgroZoneM2.y=this.PierreM2.y;
+                this.AgroZoneM3.x=this.PierreM3.x;
+                this.AgroZoneM3.y=this.PierreM3.y;
+                this.AgroZoneM4.x=this.PierreM4.x;
+                this.AgroZoneM4.y=this.PierreM4.y;
+                this.AgroZoneM5.x=this.PierreM5.x;
+                this.AgroZoneM5.y=this.PierreM5.y;
+                this.AgroZoneM6.x=this.PierreM6.x;
+                this.AgroZoneM6.y=this.PierreM6.y;
+                this.AgroZoneM7.x=this.PierreM7.x;
+                this.AgroZoneM7.y=this.PierreM7.y;
+                this.AgroZoneM8.x=this.PierreM8.x;
+                this.AgroZoneM8.y=this.PierreM8.y;
+                this.AgroZoneM9.x=this.PierreM9.x;
+                this.AgroZoneM9.y=this.PierreM9.y;
 
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
@@ -2453,6 +2810,7 @@
                 this.physics.add.overlap(this.player, this.AgroZoneM6, this.AttackM6, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM7, this.AttackM7, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM8, this.AttackM8, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM9, this.AttackM9, null, this);
 
                 if(this.invincible == true){
                     this.compteur-- ;
@@ -2463,12 +2821,14 @@
                     }
                 }
 
-                if(this.fallV==true){
+                if(this.fallV==true && this.PotionStatus==4){
                     this.tailleP-=0.01
                     this.player.setScale(this.tailleP);
                     this.player.angle += 3;
                     this.player.alpha -= 0.01;
+                    this.invincible=true;
                     if (this.tailleP<=0){
+                        this.invincible=false;
                         this.MonstreAttaque()
                         if (this.player.direction=='gauche'){
                             this.player.x+=30
@@ -2489,6 +2849,40 @@
                         this.speedconst=140;
                         this.player.angle = 1;
                     }
+                }
+                
+                if(this.fallV==true && this.PotionStatus>=1 && this.PotionStatus!=4){
+                    this.potionCheck=true;
+                    this.tailleP-=0.01
+                        this.player.setScale(this.tailleP);
+                        this.player.angle += 3;
+                        this.player.alpha -= 0.01;
+                    if (this.tailleP<=0){
+                        if (this.player.direction=='gauche'){
+                            this.player.x+=30
+                        }
+                        if (this.player.direction=='droite'){
+                            this.player.x-=40
+                        }
+                        if (this.player.direction=='haut'){
+                            this.player.y+=30
+                        }
+                        if (this.player.direction=='bas'){
+                            this.player.y-=40
+                        }
+                        this.tailleP=1;
+                        this.player.setScale(this.tailleP);
+                        this.player.alpha=255;
+                        this.fallV=false;
+                        this.speedconst=140;
+                        this.player.angle = 1;
+                        this.PotionStatus+=1
+                        this.PotionStatusHUD-=1
+                    }
+                }
+
+                if(this.PotionStatus==3){
+                    this.PotionStatus=4
                 }
 
                 if(this.keys.r.isDown){
@@ -2620,7 +3014,6 @@
                                 this.player.setVelocityY(0); 
                                 this.player.anims.play(gauche, true);}
                         }
-
                         else if(this.controller.leftStick.x > 0){
                             if(this.controller.A  && AttaqueStatus==false) {
                                 this.player.setVelocityX(300-ResistenceP);
