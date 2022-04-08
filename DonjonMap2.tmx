@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="80" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="23">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="80" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="35">
  <editorsettings>
   <export target="DonjonMap2.json" format="json"/>
  </editorsettings>
@@ -1603,9 +1603,19 @@
   <object id="21" gid="46" x="1152" y="1120" width="32" height="32"/>
   <object id="22" gid="46" x="1184" y="1120" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="13" name="Salle3D"/>
- <objectgroup id="15" name="Salle2G"/>
- <objectgroup id="20" name="Salle4H"/>
+ <objectgroup id="13" name="Salle3D">
+  <object id="24" gid="46" x="512" y="1632" width="32" height="32"/>
+  <object id="25" gid="46" x="544" y="1632" width="32" height="32"/>
+  <object id="26" gid="46" x="576" y="1632" width="32" height="32"/>
+  <object id="27" gid="46" x="608" y="1632" width="32" height="32"/>
+  <object id="28" gid="46" x="640" y="1632" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="15" name="Salle2G">
+  <object id="32" gid="46" x="960" y="1600" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="20" name="Salle4H">
+  <object id="34" gid="46" x="1120" y="1472" width="32" height="32"/>
+ </objectgroup>
  <objectgroup id="16" name="FireCamp">
   <object id="1" gid="301" x="640" y="1728" width="32" height="32"/>
   <object id="2" gid="301" x="832" y="1440" width="32" height="32"/>
