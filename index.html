@@ -109,16 +109,18 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
                 this.spawnS1=false;
-                this.salle1visit=false
+                this.salle1visit=false;;
                 this.spawnS3=false;
-                this.salle3visit=false
+                this.salle3visit=false;
                 this.spawnS4=false;
-                this.salle4visit=false
+                this.salle4visit=false;
+                this.spawnS5=false;
+                this.salle5visit=false
                 this.Plaque1A=false;
                 this.Plaque2A=false;
                 this.ImagePlaque1="PlaquePressionoff";
@@ -334,6 +336,11 @@
                     immovable:true
                 });
 
+                this.BlocsHS4=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                });
+
                 carteDuNiveau.getObjectLayer('Salle1D').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
                     const Blocd1 = this.BlocsDS1.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
@@ -347,6 +354,11 @@
                 carteDuNiveau.getObjectLayer('Salle2G').objects.forEach((blocsV) => {
                     // Add new spikes to our sprite group
                     const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                });
+
+                carteDuNiveau.getObjectLayer('Salle4H').objects.forEach((blocsV) => {
+                    // Add new spikes to our sprite group
+                    const Blocd4 = this.BlocsHS4.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
                 });
 
                 this.ChestGD1=this.physics.add.group();
@@ -380,6 +392,8 @@
                 this.PierreM7.setBounce(1);
                 this.PierreM8 = this.PierresM.create(1108,256, "MonstreR");
                 this.PierreM8.setBounce(1);
+                this.PierreM9 = this.PierresM.create(1108,256, "MonstreR");
+                this.PierreM9.setBounce(1);
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
@@ -389,7 +403,11 @@
                 this.BatM4 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM5 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM6 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
-                this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");
+                this.BatM8 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM9 = this.BatM.create(1000000000,1000000000, "MonstreBA");
+                this.BatM10 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM11 = this.BatM.create(1000000000,1000000000, "MonstreBA");      
                 
                 this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM1.setSize(224, 224)
@@ -421,6 +439,7 @@
                 this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
+                this.physics.add.overlap(this.player, this.BlocsHS4, this.Salle5SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
                 this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
@@ -922,6 +941,14 @@
                 }
             }
 
+            Salle5SpawnVerif(){
+                if(this.salle5visit==false){
+                    this.spawnS5=true
+                }else{
+
+                }
+            }
+
 
             ActivPlaque1(){
                 this.Plaque1A=true
@@ -1146,6 +1173,20 @@
                     this.BatM.playAnimation("MonstreBatAttack");
                 }
 
+                if (this.spawnS5==true){
+                    this.BatM8 = this.BatM.create(1907,381, "MonstreBA");           ///salle 1
+                    this.BatM8.setBounce(1);
+                    this.BatM9 = this.BatM.create(1907,185, "MonstreBA");
+                    this.BatM9.setBounce(1);
+                    this.BatM10 = this.BatM.create(1418,249, "MonstreBA");
+                    this.BatM10.setBounce(1);
+                    this.BatM11 = this.BatM.create(1657,376, "MonstreBA");
+                    this.BatM11.setBounce(1);
+                    this.spawnS5=false
+                    this.salle5visit=true
+                    this.BatM.playAnimation("MonstreBatAttack");
+                }
+
 
                 this.trackennemie(this.BatM1);
                 this.trackennemie(this.BatM2);
@@ -1154,6 +1195,10 @@
                 this.trackennemie(this.BatM5);
                 this.trackennemie(this.BatM6);
                 this.trackennemie(this.BatM7);
+                this.trackennemie(this.BatM8);
+                this.trackennemie(this.BatM9);
+                this.trackennemie(this.BatM10);
+                this.trackennemie(this.BatM11);
 
                 this.AgroZoneM1.x=this.PierreM1.x;
                 this.AgroZoneM1.y=this.PierreM1.y;
