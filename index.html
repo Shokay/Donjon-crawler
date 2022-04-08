@@ -111,7 +111,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1553,6 +1553,8 @@
                 this.load.image("Phaser_Trou", "assets/SetHole.png");
                 this.load.image("Phaser_Salle", "assets/Salle1.png");
                 this.load.image("Phaser_Autres", "assets/SetAutre.png");
+                this.load.image("Phaser_TrouZF", "assets/TrouZF.png");
+                this.load.image("Phaser_MurZF", "assets/MurZF.png");
                 this.load.image("MonstreR","assets/mobmc.png");
                 this.load.image("AgroZ","assets/ZoneAgro.png");
                 this.load.image("BourseHUD","assets/bourse.png");
@@ -1636,7 +1638,7 @@
                 this.compteur = 60;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1692,6 +1694,19 @@
                         32
                         ); 
 
+                const tileset4 = carteDuNiveau.addTilesetImage(
+                        "TrouZF",
+                        "Phaser_TrouZF",
+                        32,
+                        32
+                        ); 
+                const tileset5 = carteDuNiveau.addTilesetImage(
+                        "MurZF",
+                        "Phaser_MurZF",
+                        32,
+                        32
+                        ); 
+
                 // importer les calques 
 
 
@@ -1719,6 +1734,17 @@
                         "Decors2",
                         tileset2,
                     ); 
+
+                const CalqueTrou = carteDuNiveau.createLayer(
+                        "TrouZF",
+                        tileset4,
+                    ); 
+
+                const CalqueMur = carteDuNiveau.createLayer(
+                        "MursZF",
+                        tileset5,
+                    ); 
+
 
                 const CalqueA = carteDuNiveau.createLayer(
                         "Decors Autres",
