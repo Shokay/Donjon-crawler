@@ -128,7 +128,6 @@
                 this.ImagePlaque1="PlaquePressionoff";
                 this.ImagePlaque2="PlaquePressionoff";
                 this.BulletA="BulletShoot";
-                this.feuV=false;
                 this.utilisecléV=false;
                 this.Getclé = false;
                 this.createclé=false;
@@ -559,90 +558,6 @@
                 });
 
                 this.anims.create({
-                    key: 'leftF',           
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:8,end:11}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'staticFB',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:16,end:19}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'staticFH',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:28,end:31}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'staticFD',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:20,end:23}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'staticFG',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:24,end:27}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-                
-                this.anims.create({
-                    key: 'rightF',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:4,end:7}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-                
-                this.anims.create({
-                    key: 'downF',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:0,end:3}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'upF',
-                    frames: this.anims.generateFrameNumbers('PersoSpriteF', {start:12,end:15}),
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'BulletShootFD',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule2D', {start:0,end:1}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'BulletShootFG',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule2G', {start:0,end:1}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'BulletShootFB',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule2B', {start:0,end:1}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
-                    key: 'BulletShootFH',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule2H', {start:0,end:1}),          //creation des animation
-                    frameRate: 5,
-                    repeat: -1,
-                });
-
-                this.anims.create({
                     key: 'MonstreRockAttack',           
                     frames: this.anims.generateFrameNumbers('MonstreRA', {start:0,end:2}),          //creation des animation
                     frameRate: 5,
@@ -672,12 +587,6 @@
                     key: 'HP3',           
                     frames: this.anims.generateFrameNumbers('PVbar', {start:2,end:2}),          //creation des animation
                     frameRate: 6,
-                });
-                
-                this.anims.create({
-                    key: 'FireSpriteA',           
-                    frames: this.anims.generateFrameNumbers('FireSprite', {start:0,end:2}),          //creation des animation
-                    frameRate: 5,
                 });
 
                 this.anims.create({
@@ -939,14 +848,6 @@
                     this.CléNul.destroy();
                 }
             }
-
-            FireOn(balle,camps){
-                if(this.feuV==true){
-                    this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
-                    balle.disableBody(true,true);
-                    this.FireOnG.playAnimation("FireSpriteA");
-                }
-            }
             
             Salle1SpawnVerif(){
                 if(this.salle1visit==false){
@@ -1163,13 +1064,6 @@
                     this.TexteDonut.setVisible(false);
                 }
 
-
-                this.OnPotion=false
-
-                this.FireOnG.children.each(function(fire) {
-                    fire.anims.play("FireSpriteA",true);
-                }, this);
-
                 if(this.Plaque1A==true && this.Plaque2A==true){
                     this.BlockZone1Gauche.setVisible(false);
                     this.physics.world.removeCollider(this.collidePG);
@@ -1385,32 +1279,6 @@
 
                 if(this.PotionStatus==3){
                     this.PotionStatus=4
-                }
-
-                if(this.keys.r.isDown){
-                    this.haut="upF";
-                    this.bas="downF";
-                    this.droite="rightF";
-                    this.gauche="leftF";
-                    this.immobileB="staticFB";
-                    this.immobileH="staticFH";
-                    this.immobileG="staticFG";
-                    this.immobileD="staticFD";
-                    this.feuV=true;
-                }
-                if(this.feuV==true){
-                    if (this.player.direction == 'gauche') { 
-                        this.BulletA="BulletShootFG";
-                    } 
-                    else if (this.player.direction == 'droite'){ 
-                        this.BulletA="BulletShootFD";
-                    }
-                    else if (this.player.direction == 'haut'){ 
-                        this.BulletA="BulletShootFH";
-                    }
-                    else if (this.player.direction == 'bas'){ 
-                        this.BulletA="BulletShootFB";
-                    }
                 }
 
                 if(this.keys.e.isDown){
