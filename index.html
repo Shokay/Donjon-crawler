@@ -111,7 +111,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1622,7 +1622,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1653,7 +1653,7 @@
                 this.potionCheck=false;
                 this.PotionStatusHUD=3;
 
-                const carteDuNiveau = this.make.tilemap({ key: "carte"});
+                const carteDuNiveau = this.make.tilemap({ key: "carte2"});
                 
                 // importer TileSet 
                         
@@ -1805,7 +1805,7 @@
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
 
-                this.player = this.physics.add.sprite(1148,98, 'PersoSprite');
+                this.player = this.physics.add.sprite(1190,120, 'PersoSprite');
                 this.player.body.setSize(24,12,true)
                 this.player.setOffset(8, 28)
                 this.player.alpha = 1;  
