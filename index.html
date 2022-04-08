@@ -138,7 +138,9 @@
                 this.AchatPotion=false;
                 this.AchatPizza=false;
                 this.AchatDonut=false;
-                this.PotionStatus=1;
+                this.PotionStatus=4;
+                this.potionCheck=false;
+                this.PotionStatusHUD=3;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -1175,17 +1177,20 @@
                 if(this.AchatPotion==true){
                     this.PotionHud = this.add.sprite(825,205, 'PotionHUD');
                     this.PotionHud.setScrollFactor(0);
+                    if(this.potionCheck==false){
+                        this.PotionStatus=1;
+                    }
                 }
 
-                if (this.PotionStatus==1){
+                if (this.PotionStatusHUD==3){
                     this.PotionHud.anims.play("PotionHUDState1", true);
                 }
 
-                if (this.PotionStatus==2){
+                if (this.PotionStatusHUD==2){
                     this.PotionHud.anims.play("PotionHUDState2", true);
                 }
 
-                if (this.PotionStatus==3){
+                if (this.PotionStatusHUD<=1){
                     this.PotionHud.anims.play("PotionHUDState3", true);
                 }
 
@@ -1292,7 +1297,7 @@
                     }
                 }
 
-                if(this.fallV==true){
+                if(this.fallV==true && this.PotionStatus==4){
                     this.tailleP-=0.01
                     this.player.setScale(this.tailleP);
                     this.player.angle += 3;
@@ -1320,6 +1325,40 @@
                         this.speedconst=140;
                         this.player.angle = 1;
                     }
+                }
+                
+                if(this.fallV==true && this.PotionStatus>=1 && this.PotionStatus!=4){
+                    this.potionCheck=true;
+                    this.tailleP-=0.01
+                        this.player.setScale(this.tailleP);
+                        this.player.angle += 3;
+                        this.player.alpha -= 0.01;
+                    if (this.tailleP<=0){
+                        if (this.player.direction=='gauche'){
+                            this.player.x+=30
+                        }
+                        if (this.player.direction=='droite'){
+                            this.player.x-=40
+                        }
+                        if (this.player.direction=='haut'){
+                            this.player.y+=30
+                        }
+                        if (this.player.direction=='bas'){
+                            this.player.y-=40
+                        }
+                        this.tailleP=1;
+                        this.player.setScale(this.tailleP);
+                        this.player.alpha=255;
+                        this.fallV=false;
+                        this.speedconst=140;
+                        this.player.angle = 1;
+                        this.PotionStatus+=1
+                        this.PotionStatusHUD-=1
+                    }
+                }
+
+                if(this.PotionStatus==3){
+                    this.PotionStatus=4
                 }
 
                 if(this.keys.r.isDown){
