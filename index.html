@@ -81,6 +81,8 @@
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('PotionSprite','assets/PotionSpriteSheet.png',
                 { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('PotionHUD','assets/SpriteSheetPotionHUD.png',
+                { frameWidth: 64, frameHeight: 64 });
 
                 this.load.bitmapFont('carrier_command', 'assets/carrier_command.png', 'assets/carrier_command.xml');
 
@@ -110,7 +112,7 @@
                 this.fallV=false;
                 this.tailleP=1;
                 this.speedconst = 1000;
-                this.thune=0;
+                this.thune=300;
                 this.LootBatV=0;
                 this.LootRockV=0;
                 this.spawnS1=false;
@@ -136,6 +138,7 @@
                 this.AchatPotion=false;
                 this.AchatPizza=false;
                 this.AchatDonut=false;
+                this.PotionStatus=1;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -392,7 +395,7 @@
                 this.PierreM7.setBounce(1);
                 this.PierreM8 = this.PierresM.create(1108,256, "MonstreR");
                 this.PierreM8.setBounce(1);
-                this.PierreM9 = this.PierresM.create(1108,256, "MonstreR");
+                this.PierreM9 = this.PierresM.create(1804,355, "MonstreR");
                 this.PierreM9.setBounce(1);
 
                 this.BatM=this.physics.add.group();
@@ -407,7 +410,7 @@
                 this.BatM8 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM9 = this.BatM.create(1000000000,1000000000, "MonstreBA");
                 this.BatM10 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
-                this.BatM11 = this.BatM.create(1000000000,1000000000, "MonstreBA");      
+                this.BatM11 = this.BatM.create(1000000000,1000000000, "MonstreBA");       
                 
                 this.AgroZoneM1 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM1.setSize(224, 224)
@@ -425,6 +428,8 @@
                 this.AgroZoneM7.setSize(224, 224)
                 this.AgroZoneM8 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM8.setSize(224, 224)
+                this.AgroZoneM9 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM9.setSize(224, 224)
 
                 
                 
@@ -468,6 +473,8 @@
                 this.LootBat.setScrollFactor(0);
                 this.LootRock = this.add.sprite(885,245, 'RockLoot');
                 this.LootRock.setScrollFactor(0);
+                this.PotionHud = this.add.sprite(1000,1000, 'PotionHUD');
+                this.PotionHud.setScrollFactor(0);
                 //this.CléDar = this.add.sprite(927,235, 'clédar');
                 //this.CléDar.setScrollFactor(0);
                 this.Pvbarre.setScale(0.8);
@@ -481,6 +488,7 @@
                 this.LootRockTxT.setDepth(11);
                 this.BourseImage.setDepth(10);
                 this.Pvbarre.setDepth(10);
+                this.PotionHud.setDepth(10);
 
                 this.anims.create({
                     key: 'leftB',           
@@ -696,6 +704,21 @@
                 this.anims.create({
                     key: 'PotionA',           
                     frames: this.anims.generateFrameNumbers('PotionSprite', {start:0,end:5}),          //creation des animation
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState1',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:0,end:0}),
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState2',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:1,end:1}),
+                    frameRate: 5,
+                });
+                this.anims.create({
+                    key: 'PotionHUDState3',           
+                    frames: this.anims.generateFrameNumbers('PotionHUD', {start:2,end:2}),
                     frameRate: 5,
                 });
 
@@ -1062,6 +1085,18 @@
                         this.PierreM8.setVelocityY(-60) 
             }
 
+            AttackM9(){               
+                        this.PierreM9.anims.play('MonstreRockAttack', true)
+                        if (this.PierreM9.x > this.player.x)
+                        this.PierreM9.setVelocityX(-60)
+                        if (this.PierreM9.x < this.player.x)
+                        this.PierreM9.setVelocityX(60)
+                        if (this.PierreM9.y < this.player.y)
+                        this.PierreM9.setVelocityY(60)
+                        if (this.PierreM9.y > this.player.y)
+                        this.PierreM9.setVelocityY(-60) 
+            }
+
             TakeMoney(player,drop){
                 drop.destroy();
                 this.thune+=3;
@@ -1135,6 +1170,23 @@
 
                 if (this.HpJoueur==1){
                     this.Pvbarre.anims.play("HP3", true);
+                }
+
+                if(this.AchatPotion==true){
+                    this.PotionHud = this.add.sprite(825,205, 'PotionHUD');
+                    this.PotionHud.setScrollFactor(0);
+                }
+
+                if (this.PotionStatus==1){
+                    this.PotionHud.anims.play("PotionHUDState1", true);
+                }
+
+                if (this.PotionStatus==2){
+                    this.PotionHud.anims.play("PotionHUDState2", true);
+                }
+
+                if (this.PotionStatus==3){
+                    this.PotionHud.anims.play("PotionHUDState3", true);
                 }
 
                 if (this.HpJoueur<=0){
@@ -1216,6 +1268,8 @@
                 this.AgroZoneM7.y=this.PierreM7.y;
                 this.AgroZoneM8.x=this.PierreM8.x;
                 this.AgroZoneM8.y=this.PierreM8.y;
+                this.AgroZoneM9.x=this.PierreM9.x;
+                this.AgroZoneM9.y=this.PierreM9.y;
 
                 //console.log(this.player.x,this.player.y)
                 ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
@@ -1227,6 +1281,7 @@
                 this.physics.add.overlap(this.player, this.AgroZoneM6, this.AttackM6, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM7, this.AttackM7, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM8, this.AttackM8, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM9, this.AttackM9, null, this);
 
                 if(this.invincible == true){
                     this.compteur-- ;
