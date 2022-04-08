@@ -438,7 +438,6 @@
                 
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueRock, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueBat, null, this);
-                this.physics.add.overlap(this.groupeBalles, this.CampG, this.FireOn, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
@@ -1440,7 +1439,9 @@
                 this.load.image("DropMoney","assets/MoneyDrop.png");
                 this.load.image("DonutTexte","assets/DonutTxT.png");
                 this.load.image("PizzaTexte","assets/PizzaTxT.png");
-                this.load.image("PotionTexte","assets/PotionTxT.png");                                               
+                this.load.image("PotionTexte","assets/PotionTxT.png");
+                this.load.image("DartTrapH","assets/DartTrapH.png"); 
+                this.load.image("DartTrapB","assets/DartTrapB.png");                                                         
                 this.load.tilemapTiledJSON("carte2", "DonjonMap2.json");  
                 
                 this.load.spritesheet('PersoSprite','assets/spritesheetP.png',
@@ -1449,6 +1450,8 @@
                 { frameWidth: 38, frameHeight: 42 });
                 this.load.spritesheet('AnimBoule1','assets/AnimBullet1.png',
                 { frameWidth: 16, frameHeight: 16 });
+                this.load.spritesheet('AnimTrapBullet','assets/BulletTrapSpriteSheet.png',
+                { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('AnimBoule2D','assets/AnimBullet2D.png',
                 { frameWidth: 16, frameHeight: 16 });
                 this.load.spritesheet('AnimBoule2H','assets/bulletspritesheetFH.png',
@@ -1541,6 +1544,7 @@
                 this.potionCheck=false;
                 this.PotionStatusHUD=3;
                 this.feucheck=false;
+                this.compteurTrap = 60;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte2"});
                 
@@ -1708,6 +1712,16 @@
                     const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);
                 });
 
+                this.FlecheTrapG=this.physics.add.group({
+                    allowGravity: false,
+                    immovable:true
+                })
+
+                carteDuNiveau.getObjectLayer('Piege FlecheH').objects.forEach((trapdarts) => {
+                    // Add new spikes to our sprite group
+                    const Trapsprite = this.FlecheTrapG.create(trapdarts.x, trapdarts.y -= 32,'DartTrapH').setOrigin(0);
+                });
+
                 this.Plaque1 = this.physics.add.image(1395,1463,"PlaquePressionoff")
                 this.Plaque2 = this.physics.add.image(1170,1675,"PlaquePressionoff")
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
@@ -1741,6 +1755,9 @@
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
+
+                this.groupeBallesTrap = this.physics.add.group();  
+                this.physics.add.collider(this.groupeBallesTrap, Calque3, this.destroy,null,this);
 
                 this.BlocsDS1=this.physics.add.group({
                     allowGravity: false,
@@ -1834,6 +1851,7 @@
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueRock, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueBat, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.CampG, this.FireOn, null, this);
+                this.physics.add.overlap(this.player, this.groupeBallesTrap, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
@@ -1944,6 +1962,13 @@
                 this.anims.create({
                     key: 'BulletShoot',           
                     frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),          //creation des animation
+                    frameRate: 5,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'BulletShootTrap',           
+                    frames: this.anims.generateFrameNumbers('AnimTrapBullet', {start:0,end:1}),          //creation des animation
                     frameRate: 5,
                     repeat: -1,
                 });
@@ -2219,11 +2244,21 @@
                 var balle1 = this.groupeBalles.create(this.player.x + (15 * this.directionTX), this.player.y + (15 * this.directionTY));
                 balle1.anims.play(this.BulletA,true);
                 balle1.setCollideWorldBounds(true);
-                balle1.body.setSize(15,10,true)
+                balle1.body.setSize(15,10,true);
                 balle1.body.onWorldBounds = true;  
                 balle1.body.allowGravity =false;
                 balle1.setVelocity(this.directionX, this.directionY); 
-            }  
+            } 
+
+            tirerTrap(trapdarts) { 
+                var balle2 = this.groupeBallesTrap.create(trapdarts.x + (15 * 0), trapdarts.y + (15 * 1));
+                balle2.anims.play("BulletShootTrap",true);
+                balle2.setCollideWorldBounds(true);
+                balle2.body.setSize(10,15,true);
+                balle2.body.onWorldBounds = true;  
+                balle2.body.allowGravity =false;
+                balle2.setVelocity(0, 750 * 0.5); 
+            }   
             
             AttaqueRock(balle,Monstreseul){
                 Monstreseul.disableBody(true, true);
@@ -2301,7 +2336,7 @@
                     this.FireOnG.playAnimation("FireSpriteA");
                 }
             }
-            
+
             Salle1SpawnVerif(){
                 if(this.salle1visit==false){
                     this.spawnS1=true
@@ -2361,7 +2396,7 @@
                         if (this.PierreM1.y > this.player.y)
                         this.PierreM1.setVelocityY(-60) 
             }
-            
+
             AttackM2(){               
                         this.PierreM2.anims.play('MonstreRockAttack', true)
                         if (this.PierreM2.x > this.player.x)
@@ -2455,11 +2490,20 @@
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
+
             update(){ 
+
+                /*this.compteurTrap--
+                if(this.compteurTrap == 0){
+                    this.compteurTrap = 60;
+                    this.tirerTrap(this.FlecheTrapG);
+                }*/
+
                 if (this.player.direction == 'bas'){     
                     this.player.body.setSize(24,12,true)
                     this.player.setOffset(3, 28)
                 }
+
                 if (this.player.direction == 'haut'){     
                     this.player.body.setSize(24,12,true)
                     this.player.setOffset(10, 28)
@@ -2675,6 +2719,7 @@
                         this.feuV=true;                      
                     }
                 }
+
                 if(this.feuV==true){
                     if (this.player.direction == 'gauche') { 
                         this.BulletA="BulletShootFG";
@@ -2823,7 +2868,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: false,
+            debug: true,
             }},
             pixelArt: true,
             input:{gamepad:true},
