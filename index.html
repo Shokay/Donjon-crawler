@@ -1172,7 +1172,9 @@
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
 
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
-                    this.scene.start("sceneExemple2");
+                    this.scene.start("sceneExemple2",{
+                        HpJoueur : this.HpJoueur
+                    });
                 }
 
                 if (this.HpJoueur>=3){
@@ -1531,7 +1533,9 @@
             constructor(){
             super("sceneExemple2");
             }
-
+            init(data){
+                this.HpJoueur=data.HpJoueur
+            }
             preload(){
                 //load de toute les images / sprites sheet 
 
@@ -1619,7 +1623,6 @@
                 this.immobileD="staticBD";
                 this.invincible=false;
                 this.compteur = 60;
-                this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
                 this.speedconst = 1000;
@@ -1792,15 +1795,6 @@
 
                 this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionoff")
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionoff")
-                this.Tapis1 = this.add.image(279,263,'tapis');
-                this.Tapis2 = this.add.image(304,319,'tapis');
-                this.Tapis3 = this.add.image(260,363,'tapis');
-                this.DonutItem = this.physics.add.sprite(260,355, 'DonutSprite');
-                this.DonutItem.body.setSize(128,64,true)
-                this.DonutItem.setOffset(-6, 5)                
-                this.PizzaItem = this.physics.add.sprite(279,250, 'PizzaSprite');
-                this.PizzaItem.body.setSize(128,64,true)
-                this.PizzaItem.setOffset(8, 0)
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
@@ -1826,15 +1820,6 @@
                 this.LootRockTxT.setScrollFactor(0);
                 this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
                 this.label.setScrollFactor(0)
-                this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
-                this.Marchand.body.setSize(100,100,true)
-                this.Marchand.setOffset(50, 50)
-                this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
-                this.TextePotion.setScale(0.5)
-                this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");
-                this.TextePizza.setScale(0.5)
-                this.TexteDonut= this.physics.add.image(200,335, "DonutTexte");
-                this.TexteDonut.setScale(0.5)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
@@ -1967,10 +1952,6 @@
                 this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
                 this.physics.add.overlap(this.player, this.ChestG1, this.LootChestG1, null, this);
-                this.physics.add.overlap(this.player, this.PotionItem, this.VerifAchatPotion,null, this);
-                this.physics.add.overlap(this.player, this.PizzaItem, this.VerifAchatPizza,null, this);
-                this.physics.add.overlap(this.player, this.DonutItem, this.VerifAchatDonut,null, this);
-                this.physics.add.overlap(this.player, this.Marchand, this.SellItems,null, this);
 
                 this.CalquePorte = carteDuNiveau.createLayer(
                         "portes",
@@ -2349,57 +2330,15 @@
             }
 
             TakeDropB(player,drop){
-                console.log("lol")
                 drop.destroy()
                 this.LootBatV+=1
                 this.LootBatTxT.setText(this.LootBatV)
             }
 
             TakeDropR(player,drop){
-                console.log("lol")
                 drop.destroy()
                 this.LootRockV+=1
                 this.LootRockTxT.setText(this.LootRockV)
-            }
-            VerifAchatPotion(){
-                if(this.keys.f.isDown && this.thune>=150 && this.AchatPotion==false){
-                    this.thune-=150
-                    this.ArgentTxT.setText(this.thune)
-                    this.PotionItem.setVisible(false)
-                    this.AchatPotion=true;
-                }
-            }
-
-            VerifAchatPizza(){
-                if(this.keys.f.isDown && this.thune>=100 && this.AchatPizza==false ){
-                    this.thune-=100
-                    this.ArgentTxT.setText(this.thune)
-                    this.PizzaItem.setVisible(false)
-                    this.AchatPizza=true;
-                    this.HpJoueur+=2
-                }
-            }
-
-            VerifAchatDonut(){
-                if(this.keys.f.isDown && this.thune>=50 && this.AchatDonut==false){
-                    this.thune-=50
-                    this.ArgentTxT.setText(this.thune)
-                    this.DonutItem.setVisible(false)
-                    this.AchatDonut=true;
-                    this.HpJoueur+=1
-                }
-            }
-
-            SellItems(){
-                if(this.keys.f.isDown){
-                    const ItemGlobal=this.LootBatV+this.LootRockV;
-                    this.thune+=ItemGlobal*4;
-                    this.LootBatV=0;
-                    this.LootRockV=0;
-                    this.ArgentTxT.setText(this.thune);
-                    this.LootBatTxT.setText(this.LootBatV);
-                    this.LootRockTxT.setText(this.LootRockV);
-                }
             }
 
             SpikeDegat(player,Pique){
@@ -2637,34 +2576,10 @@
                     monstre.setVelocityY(-60)
             }
             update(){ 
-                this.Marchand.anims.play("MarchandA",true);
-                this.DonutItem.anims.play("DonutA",true);
-                this.PizzaItem.anims.play("PizzaA",true);
-                this.PotionItem.anims.play("PotionA",true);
+
                 if(this.HpJoueur>3){
                     this.HpJoueur=3
                 }
-
-                if(((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)) && this.AchatPotion==false){
-                    this.TextePotion.setVisible(true);
-                }else{
-                    this.TextePotion.setVisible(false);
-                }
-
-                if(((this.player.x >= 242 && this.player.x <= 349) && (this.player.y >=232 && this.player.y <= 269)) && this.AchatPizza==false){
-                    this.TextePizza.setVisible(true);
-                }else{
-                    this.TextePizza.setVisible(false);
-                }
-
-                if(((this.player.x >= 235 && this.player.x <= 328) && (this.player.y >=338 && this.player.y <= 363))  && this.AchatDonut==false){
-                    this.TexteDonut.setVisible(true);
-                }else{
-                    this.TexteDonut.setVisible(false);
-                }
-
-
-                this.OnPotion=false
 
                 this.FireOnG.children.each(function(fire) {
                     fire.anims.play("FireSpriteA",true);
@@ -2696,14 +2611,6 @@
 
                 if (this.HpJoueur==1){
                     this.Pvbarre.anims.play("HP3", true);
-                }
-
-                if(this.AchatPotion==true){
-                    this.PotionHud = this.add.sprite(825,205, 'PotionHUD');
-                    this.PotionHud.setScrollFactor(0);
-                    if(this.potionCheck==false){
-                        this.PotionStatus=1;
-                    }
                 }
 
                 if (this.PotionStatusHUD==3){
