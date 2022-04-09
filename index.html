@@ -167,7 +167,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 100;
+                this.speedconst = 140;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -181,6 +181,7 @@
                 this.salle5visit=false
                 this.Plaque1A=false;
                 this.Plaque2A=false;
+                this.PotionStatus=4;
                 this.ImagePlaque1="PlaquePressionoff";
                 this.ImagePlaque2="PlaquePressionoff";
                 this.BulletA="BulletShoot";
@@ -189,7 +190,6 @@
                 this.Getclé = false;
                 this.createclé=false;
                 this.inZone = false;
-                this.OnPotion = false;
                 this.createAfficheP=true;
                 this.AchatPotion=false;
                 this.AchatPizza=false;
@@ -197,6 +197,8 @@
                 this.loochestD1Verif=false;
                 this.loochestG1Verif=false;
                 this.clédarcreate=false;
+                this.PotionStatusHUD=3;
+                this.potionCheck=false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -819,14 +821,12 @@
             }
 
             TakeDropB(player,drop){
-                console.log("lol")
                 drop.destroy()
                 this.LootBatV+=1
                 this.LootBatTxT.setText(this.LootBatV)
             }
 
             TakeDropR(player,drop){
-                console.log("lol")
                 drop.destroy()
                 this.LootRockV+=1
                 this.LootRockTxT.setText(this.LootRockV)
@@ -1178,6 +1178,7 @@
                         PotionStatus: this.PotionStatus,
                         potionCheck: this.potionCheck,
                         PotionStatusHUD: this.PotionStatusHUD,
+                        AchatPotion: this.AchatPotion,
                         LootBatV: this.LootBatV,
                         LootRockV: this.LootRockV,
                     });
@@ -1302,8 +1303,6 @@
                 this.AgroZoneM9.x=this.PierreM9.x;
                 this.AgroZoneM9.y=this.PierreM9.y;
 
-                //console.log(this.player.x,this.player.y)
-                ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
                 this.physics.add.overlap(this.player, this.AgroZoneM1, this.AttackM1, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM2, this.AttackM2, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM3, this.AttackM3, null, this);
@@ -1400,7 +1399,6 @@
                     this.feuV=false;
                 }
 
-                //console.log(this.player.x,this.player.y)
                 const {keys} = this
                 this.speed = this.speedconst
 
@@ -1458,8 +1456,6 @@
                         });
 
                 if(this.isConnected){
-                    this.player.setVelocityX(160* this.controller.leftStick.x);
-                    this.player.setVelocityY(160* this.controller.leftStick.y);           // permet d'avoir un déplacement en 360
                         if (this.controller.leftStick.y < 0){
                             if(this.controller.A && AttaqueStatus==false) {      //deplacement manette
                             this.player.setVelocityY(-300-ResistenceN);
@@ -1522,8 +1518,9 @@
                 this.HpJoueur=data.HpJoueur;
                 this.thune=data.thune;
                 this.PotionStatus = data.PotionStatus;
-                this.potionCheck = data.potionCheck;
+                this.potionCheck = data.potionCheck
                 this.PotionStatusHUD = data.PotionStatusHUD;
+                this.AchatPotion = data.AchatPotion;
                 this.LootBatV = data.LootBatV;
                 this.LootRockV = data.LootRockV;
             }
@@ -1628,7 +1625,7 @@
                 this.compteur = 60;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
+                this.speedconst = 140;
                 this.spawnS1=false;
                 this.salle1visit=false;;
                 this.spawnS3=false;
@@ -1647,9 +1644,7 @@
                 this.GetcléDar = false;
                 this.createclé=false;
                 this.inZone = false;
-                this.OnPotion = false;
                 this.createAfficheP=true;
-                this.AchatPotion=false;
                 this.AchatPizza=false;
                 this.AchatDonut=false;
                 this.feucheck=false;
@@ -2623,7 +2618,7 @@
             }
 
             update(){ 
-                console.log(this.thune)
+
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
                     this.compteurTrap1 = 60;
@@ -2784,8 +2779,6 @@
                 this.AgroZoneM7.x=this.PierreM7.x;
                 this.AgroZoneM7.y=this.PierreM7.y;
 
-                //console.log(this.player.x,this.player.y)
-                ///console.log(this.PierreM1.x,this.PierreM1.y,this.player.x,this.player.y)
                 this.physics.add.overlap(this.player, this.AgroZoneM1, this.AttackM1, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM2, this.AttackM2, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM3, this.AttackM3, null, this);
@@ -2915,7 +2908,6 @@
                     this.feuV=false;
                 }
 
-                //console.log(this.player.x,this.player.y)
                 const {keys} = this
                 this.speed = this.speedconst
 
