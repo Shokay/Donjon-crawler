@@ -177,6 +177,7 @@
                 this.PotionStatusHUD=3;
                 this.loochestD1Verif=false;
                 this.loochestG1Verif=false;
+                this.clédarcreate=false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -276,12 +277,19 @@
                         tileset1,
                     );
 
+                this.SolidF = carteDuNiveau.createLayer(
+                        "CalqueSolidF",
+                        tileset2,
+                    );
+
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Droite.setDepth(3) 
                 this.BlockZone1F.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1F.setDepth(3)
+                this.SolidF.setCollisionByProperty({ estSolide: true }); 
+                this.SolidF.setDepth(3)
 
                 this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
                 this.CléUtiliser.setSize(50, 50)
@@ -1099,10 +1107,15 @@
                     this.player.setOffset(10, 28)
                 }
 
-                if(this.GetcléDar == true){
+                if(this.GetcléDar==true){
+                    this.physics.add.collider(this.player, this.SolidF);
+                }
+
+                if(this.GetcléDar == true && this.clédarcreate == false){
                     this.CléDar= this.add.sprite(924,237, 'clédar');
                     this.CléDar.setScrollFactor(0);
                     this.CléDar.setDepth(10);
+                    this.clédarcreate=true;
                 }
 
                 if(this.HpJoueur>3){
@@ -1149,6 +1162,10 @@
                         HpJoueur : this.HpJoueur,
                         thune: this.thune
                     });
+                }
+
+                if ((this.player.x >= 1641 && this.player.x <= 1720) && (this.player.y >=1298 && this.player.y <= 1357)){
+                    this.Death()
                 }
 
                 if (this.HpJoueur>=3){
