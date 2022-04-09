@@ -44,6 +44,28 @@
             }
         }
 
+        class EcranFin extends Phaser.Scene {
+            constructor() {
+                super("EcranFin")
+            }
+
+            preload() {
+
+                this.load.image("End_Screen", "assets/endtitle.png");
+
+            }
+
+            create() {
+
+                this.imageFin = this.physics.add.staticGroup();
+                this.fin=this.imageFin.create(640, 360, 'End_Screen');
+                this.fin.setScale(5)
+            }
+
+            update() {
+            }
+        }    
+
     class sceneExemple extends Phaser.Scene{
         constructor(){
         super("sceneExemple");
@@ -1160,7 +1182,8 @@
                 }
 
                 if ((this.player.x >= 1641 && this.player.x <= 1720) && (this.player.y >=1298 && this.player.y <= 1357)){
-                    this.Death()
+                    this.scene.start("EcranFin",{
+                    });
                 }
 
                 if (this.HpJoueur>=3){
@@ -3010,7 +3033,7 @@
             forceSetTimeOut: true
             },
             input:{gamepad:true},
-            scene: [EcranTitre,sceneExemple,sceneExemple2]
+            scene: [EcranTitre,sceneExemple,sceneExemple2,EcranFin]
             };
         new Phaser.Game(config);
 
