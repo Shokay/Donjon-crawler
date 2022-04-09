@@ -367,8 +367,6 @@
                 this.LootBatTxT.setScrollFactor(0);
                 this.LootRockTxT= this.add.bitmapText(890, 250, 'carrier_command',this.LootRockV,9);
                 this.LootRockTxT.setScrollFactor(0);
-                this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
-                this.label.setScrollFactor(0)
                 this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
                 this.Marchand.body.setSize(100,100,true)
                 this.Marchand.setOffset(50, 50)
@@ -541,7 +539,6 @@
                 this.LootRock.setDepth(10);
                 //this.CléDar.setDepth(10);
                 this.BackPack.setDepth(10);
-                this.label.setDepth(10);
                 this.ArgentTxT.setDepth(10);
                 this.LootBatTxT.setDepth(11);
                 this.LootRockTxT.setDepth(11);
@@ -1154,8 +1151,6 @@
                     this.BlockZone1F.setVisible(false);
                     this.physics.world.removeCollider(this.collidePF);
                 }               
-
-                this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
 
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2",{
@@ -1844,8 +1839,6 @@
                 this.LootBatTxT.setScrollFactor(0);
                 this.LootRockTxT= this.add.bitmapText(890, 250, 'carrier_command',this.LootRockV,9);
                 this.LootRockTxT.setScrollFactor(0);
-                this.label = this.add.text(460, 195, '(x,y)', { fontFamily: '"Monospace"'});
-                this.label.setScrollFactor(0)
 
                 this.groupeBalles = this.physics.add.group();  
                 this.physics.add.collider(this.groupeBalles, Calque3, this.destroyB,null,this);
@@ -1995,7 +1988,6 @@
                 this.LootRock.setDepth(10);
                 //this.CléDar.setDepth(10);
                 this.BackPack.setDepth(10);
-                this.label.setDepth(10);
                 this.ArgentTxT.setDepth(10);
                 this.LootBatTxT.setDepth(11);
                 this.LootRockTxT.setDepth(11);
@@ -2665,8 +2657,6 @@
                     this.physics.world.removeCollider(this.collidePD);
                 }                 
 
-                this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
-
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2");
                 }
@@ -3012,7 +3002,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: true,
+            debug: false,
             }},
             pixelArt: true,
             fps: {
