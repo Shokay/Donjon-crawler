@@ -1122,7 +1122,15 @@
                 }
                 if (this.player.direction == 'haut'){     
                     this.player.body.setSize(24,12,true)
+                    this.player.setOffset(12, 28)
+                }
+                if (this.player.direction == 'gauche'){     
+                    this.player.body.setSize(24,12,true)
                     this.player.setOffset(10, 28)
+                }
+                if (this.player.direction == 'droite'){     
+                    this.player.body.setSize(24,12,true)
+                    this.player.setOffset(7, 28)
                 }
 
                 if(this.GetcléDar==true){
@@ -1912,7 +1920,7 @@
                 this.physics.add.collider(this.PierresM, CalqueSM);
                 this.PierreM1 = this.PierresM.create(609,1633, "MonstreR");
                 this.PierreM1.setBounce(1);
-                this.PierreM2 = this.PierresM.create(851,1698, "MonstreR");
+                this.PierreM2 = this.PierresM.create(851,1734, "MonstreR");
                 this.PierreM2.setBounce(1);
                 this.PierreM3 = this.PierresM.create(1071,1444, "MonstreR");
                 this.PierreM3.setBounce(1);
@@ -2614,6 +2622,8 @@
             }
 
             update(){ 
+                console.log(this.player.x)
+                console.log(this.player.y)
 
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
@@ -2653,6 +2663,15 @@
                 if (this.player.direction == 'haut'){     
                     this.player.body.setSize(24,12,true)
                     this.player.setOffset(10, 28)
+                }
+
+                if (this.player.direction == 'gauche'){     
+                    this.player.body.setSize(24,12,true)
+                    this.player.setOffset(10, 28)
+                }
+                if (this.player.direction == 'droite'){     
+                    this.player.body.setSize(24,12,true)
+                    this.player.setOffset(7, 28)
                 }
 
                 if(this.AchatPotion==true){
@@ -3029,7 +3048,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: false,
+            debug: true,
             }},
             pixelArt: true,
             fps: {
