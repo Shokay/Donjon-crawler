@@ -15,6 +15,35 @@
 </head>
 <body>
     <script type="text/javascript">
+        class EcranTitre extends Phaser.Scene {
+            constructor() {
+                super("EcranTitre")
+            }
+
+            preload() {
+
+                this.load.image("Title_Screen", "Assets/EcranStart.png");
+
+            }
+
+            create() {
+
+                this.imageAcceuil = this.physics.add.staticGroup();
+                this.imageAcceuil.create(640, 360, 'Title_Screen');
+
+                this.cursors = this.input.keyboard.createCursorKeys();
+
+            }
+
+            update() {
+
+            if (this.cursors.space.isDown) {
+                this.scene.start("sceneExemple");
+            }
+
+            }
+        }
+
     class sceneExemple extends Phaser.Scene{
         constructor(){
         super("sceneExemple");
@@ -2938,7 +2967,7 @@
             forceSetTimeOut: true
             },
             input:{gamepad:true},
-            scene: [sceneExemple,sceneExemple2]
+            scene: [EcranTitre,sceneExemple,sceneExemple2]
             };
         new Phaser.Game(config);
 
