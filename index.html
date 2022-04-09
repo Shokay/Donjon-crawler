@@ -1032,21 +1032,7 @@
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
-            update(time,delta){ 
-                // at 60FPS value of delta will be around 16.666
-                console.log("update -- time=" + time + " delta=" + delta);
-                
-                // pixel steps 0..2..4..6..8../..32 in fixed time of 1/60 sec per step
-                var f = (delta / (1000 / 60)); // 1000 ms / 60fps
-                this._increment = this._increment + (2 * f); // 2 pixels, adjusted for time delta
-
-                // increment of 32 pixels completed, move snake and fox one tile
-                if (this._increment > 32) {
-                    this._increment = this._increment - 32;
-                    this.moveSnakeAndFoxes();
-                };
-                // use `this._increment` to animate sprites positions
-                //etc.
+            update(){ 
 
                 this.Marchand.anims.play("MarchandA",true);
                 this.DonutItem.anims.play("DonutA",true);
@@ -2539,21 +2525,8 @@
                     monstre.setVelocityY(-60)
             }
 
-            update(time,delta){ 
-                // at 60FPS value of delta will be around 16.666
-                console.log("update -- time=" + time + " delta=" + delta);
-                
-                // pixel steps 0..2..4..6..8../..32 in fixed time of 1/60 sec per step
-                var f = (delta / (1000 / 60)); // 1000 ms / 60fps
-                this._increment = this._increment + (2 * f); // 2 pixels, adjusted for time delta
+            update(){ 
 
-                // increment of 32 pixels completed, move snake and fox one tile
-                if (this._increment > 32) {
-                    this._increment = this._increment - 32;
-                    this.moveSnakeAndFoxes();
-                };
-                // use `this._increment` to animate sprites positions
-                //etc.
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
                     this.compteurTrap1 = 60;
@@ -2960,6 +2933,10 @@
             debug: false,
             }},
             pixelArt: true,
+            fps: {
+            target: 90,
+            forceSetTimeOut: true
+            },
             input:{gamepad:true},
             scene: [sceneExemple,sceneExemple2]
             };
