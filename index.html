@@ -199,6 +199,7 @@
                 this.clédarcreate=false;
                 this.PotionStatusHUD=3;
                 this.potionCheck=false;
+                this.controller;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -1108,6 +1109,7 @@
                     monstre.setVelocityY(-60)
             }
             update(){ 
+                console.log(this.isConnected)
 
                 this.Marchand.anims.play("MarchandA",true);
                 this.DonutItem.anims.play("DonutA",true);
@@ -1421,7 +1423,8 @@
                 else if ((this.cursors.up.isDown || this.keys.z.isDown) && this.fallV==false){
                     this.player.body.setVelocityY(-this.speed)
                     this.player.direction="haut"
-                }else if ((this.cursors.down.isDown || this.keys.s.isDown) && this.fallV==false){                this.player.body.setVelocityY(this.speed)
+                }else if ((this.cursors.down.isDown || this.keys.s.isDown) && this.fallV==false){
+                    this.player.body.setVelocityY(this.speed)
                     this.player.direction="bas"
                 }            
 
@@ -1456,51 +1459,44 @@
                         });
 
                 if(this.isConnected){
-                        if (this.controller.leftStick.y < 0){
-                            if(this.controller.A && AttaqueStatus==false) {      //deplacement manette
-                            this.player.setVelocityY(-300-ResistenceN);
-                            this.player.anims.play(haut, true);
-                            }else{
-                            this.player.setVelocityY(-100);
-                            this.player.anims.play(haut, true);
-                            }
+
+                         if(this.controller.leftStick.x < 0){
+                                this.player.body.setVelocityX(-this.speed)
+                                this.player.direction="gauche"
+                                this.player.anims.play(this.gauche, true)
+                        }
+                        else if(this.controller.leftStick.x > 0){
+                            this.player.body.setVelocityX(this.speed)
+                            this.player.direction="droite"
+                            this.player.anims.play(this.droite, true)
+                        }
+                        else if (this.controller.leftStick.y < 0){
+                            this.player.body.setVelocityY(-this.speed)
+                            this.player.direction="haut"
+                            this.player.anims.play(this.haut, true)
                         } 
                         
                         else if (this.controller.leftStick.y > 0) { 
-                            if(controller.A  && AttaqueStatus==false) {
-                            this.player.setVelocityY(300-ResistenceP);
-                            this.player.anims.play(bas, true);
-                            }else{
-                            this.player.setVelocityY(100);
-                            this.player.anims.play(bas, true);
-                            }
+                            this.player.body.setVelocityY(this.speed)
+                             this.player.direction="bas"
+                             this.player.anims.play(this.bas, true)
                         }
                 
-                        else if(this.controller.leftStick.x < 0){
-                            if(this.controller.A  && AttaqueStatus==false) {
-                                this.player.setVelocityX(-300-ResistenceN);
-                                this.player.setVelocityY(0); 
-                                this.player.anims.play(gauche, true);
-                                }else{
-                                this.player.setVelocityX(-100);
-                                this.player.setVelocityY(0); 
-                                this.player.anims.play(gauche, true);}
+                        this.player.body.velocity.normalize().scale(this.speed)
+
+                        if(this.player.direction=="gauche"){
+                            this.player.anims.play(this.immobileG, true)
                         }
-                        else if(this.controller.leftStick.x > 0){
-                            if(this.controller.A  && AttaqueStatus==false) {
-                                this.player.setVelocityX(300-ResistenceP);
-                                this.player.setVelocityY(0); 
-                                this.player.anims.play(droite, true);
-                            }else{
-                                this.player.setVelocityX(100);
-                                this.player.setVelocityY(0); 
-                                this.player.anims.play(droite, true);
-                            }
+                        else if(this.player.direction=="bas"){
+                            this.player.anims.play(this.immobileB, true)
                         }
-                        else{
-                            this.player.setVelocityX(0);
-                            this.player.anims.play(immobile, true); 
+                        else if(this.player.direction=="droite"){
+                            this.player.anims.play(this.immobileD, true)
                         }
+                        if(this.player.direction=="haut"){
+                            this.player.anims.play(this.immobileH, true)
+                        }
+
                 }                    
                 
                 
