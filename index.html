@@ -19,6 +19,9 @@
         constructor(){
         super("sceneExemple");
         }  
+        init(data){
+                this.HpJoueur=data.HpJoueur
+            }
         
 
             preload(){
@@ -111,7 +114,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
+                this.speedconst = 140;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -140,6 +143,8 @@
                 this.PotionStatus=4;
                 this.potionCheck=false;
                 this.PotionStatusHUD=3;
+                this.loochestD1Verif=false;
+                this.loochestG1Verif=false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte"});
                 
@@ -821,7 +826,7 @@
             }
 
             LootChestD1(player,chest){
-                if(this.keys.f.isDown){
+                if(this.keys.f.isDown && this.loochestD1Verif==false){
                     this.ChestGD1.playAnimation("ChestOpen");
                     var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
                     var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
@@ -829,15 +834,17 @@
                     Heal.setScale(0.5);
                     this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
                     this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
+                    this.loochestD1Verif=true;
                 } 
             }
             
             LootChestG1(player,chest){
-                if(this.keys.f.isDown){
+                if(this.keys.f.isDown && this.loochestG1Verif==false){
                     this.ChestGG1.playAnimation("ChestOpen");
                     var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
                     var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
                     var Coin = this.CoinG.create(chest.x-20,chest.y-10, "DropMoney");
+                    this.loochestG1Verif=true;
                 } 
             }
 
@@ -1515,7 +1522,7 @@
                 this.compteur = 60;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
+                this.speedconst = 1000;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1534,7 +1541,7 @@
                 this.BulletA="BulletShoot";
                 this.feuV=false;
                 this.utilisecléV=false;
-                this.Getclé = false;
+                this.GetcléDar = false;
                 this.createclé=false;
                 this.inZone = false;
                 this.OnPotion = false;
@@ -1552,6 +1559,8 @@
                 this.compteurTrap4 = 80;
                 this.compteurTrap5 = 80;
                 this.FeuA=0;
+                this.compteurFall = 30;
+                this.loochestD1Verif=false;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte2"});
                 
@@ -1681,9 +1690,6 @@
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Droite.setDepth(3)
 
-                this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
-                this.CléUtiliser.setSize(50, 50)
-
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
                 this.FireOnG=this.physics.add.group();
@@ -1763,10 +1769,10 @@
                 this.label.setScrollFactor(0)
 
                 this.groupeBalles = this.physics.add.group();  
-                this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
+                this.physics.add.collider(this.groupeBalles, Calque3, this.destroyB,null,this);
 
                 this.groupeBallesTrap = this.physics.add.group();  
-                this.physics.add.collider(this.groupeBallesTrap, Calque3, this.destroy,null,this);
+                this.physics.add.collider(this.groupeBallesTrap, Calque3, this.destroyB,null,this);
 
                 this.BlocsDS1=this.physics.add.group({
                     allowGravity: false,
@@ -1811,6 +1817,7 @@
                 this.CoinG=this.physics.add.group();
                 this.HealG=this.physics.add.group();
                 this.PierresM=this.physics.add.group();
+                this.AntiBall=this.physics.add.group();
                 this.PowerUp = this.physics.add.sprite(1190,429, 'PowerUpAnim');
                 this.physics.add.collider(this.PierresM, Calque3);
                 this.physics.add.collider(this.PierresM, CalqueSJ);
@@ -1866,13 +1873,13 @@
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
                 this.physics.add.overlap(this.player, this.Plaque1, this.ActivPlaque1, null, this);
                 this.physics.add.overlap(this.player, this.Plaque2, this.ActivPlaque2, null, this);
+                this.physics.add.overlap(this.groupeBalles, this.AntiBall, this.destroyB, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsHS4, this.Salle5SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
-                this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
                 this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
                 this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
@@ -1883,7 +1890,11 @@
                         tileset1,
                     );
                 this.CalquePorte.setDepth(2)
-                this.HealG.create(1462,928, "DonutSprite");
+
+                this.heal1=this.HealG.create(1462,928, "DonutSprite");
+                this.heal1.setScale(0.8)
+                this.heal2=this.HealG.create(939,1633, "DonutSprite");
+                this.heal2.setScale(0.8)
 
                 this.player.setCollideWorldBounds(true);
                 this.BourseImage = this.add.image(430,200,'BourseHUD');
@@ -2206,7 +2217,7 @@
                 this.droite="rightB";
                 this.gauche="leftB";
                 this.immobile="staticB";
-                this.invincible=false
+                this.invincible=false;
             }
 
             Fall(){
@@ -2222,7 +2233,7 @@
                 this.speedconst=0
             }
 
-            destroy(balle){
+            destroyB(balle){
                 balle.disableBody(true,true)
             }
 
@@ -2336,29 +2347,25 @@
                     this.CléDar.setDepth(10);
                 }
                 this.createclé=true;
-                this.Getclé = true;
+                this.GetcléDar = true;
             }
 
             LootChestD1(player,chest){
-                if(this.keys.f.isDown){
+                if(this.keys.f.isDown && this.loochestD1Verif==false){
                     this.ChestGD1.playAnimation("ChestOpen2");
                     var Coin = this.CoinG.create(chest.x+25,chest.y+10, "DropMoney");
                     var Coin = this.CoinG.create(chest.x+10,chest.y-30, "DropMoney");
                     this.CléDarDrop= this.physics.add.image(chest.x-10,chest.y-20, 'clédar');
                     this.physics.add.overlap(this.player, this.CléDarDrop, this.GetClé1, null, this);
+                    this.loochestD1Verif=true;
                 } 
-            }
-
-            UseKey(){
-                if(this.keys.f.isDown && this.Getclé == true){
-                    this.utilisecléV=true;
-                    this.CléNul.destroy();
-                }
             }
 
             FireOn(balle,camps){
                 if(this.feuV==true){
                     this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
+                    var AntiBallBloc=this.AntiBall.create(camps.x+15,camps.y+10, "AgroZ");  
+                    AntiBallBloc.setSize(50, 50)
                     balle.disableBody(true,true);
                     this.FireOnG.playAnimation("FireSpriteA");
                     this.FeuA+=1;
@@ -2520,7 +2527,6 @@
             }
 
             update(){ 
-
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
                     this.compteurTrap1 = 60;
@@ -2569,7 +2575,7 @@
                     fire.anims.play("FireSpriteA",true);
                 }, this);
 
-                if(this.Plaque1A==true && this.Plaque2A==true && FeuA==5){
+                if(this.Plaque1A==true && this.Plaque2A==true && this.FeuA>=5){
                     this.BlockZone1Gauche.setVisible(false);
                     this.physics.world.removeCollider(this.collidePG);
                 }
@@ -2695,12 +2701,16 @@
                 }
 
                 if(this.fallV==true && this.PotionStatus==4){
-                    this.tailleP-=0.01
+                    this.tailleP-=0.01;
                     this.player.setScale(this.tailleP);
                     this.player.angle += 3;
                     this.player.alpha -= 0.01;
                     this.invincible=true;
-                    if (this.tailleP<=0){
+                    if(this.tailleP<=0 && this.GetcléDar==true){
+                        this.scene.start("sceneExemple",{
+                        HpJoueur : this.HpJoueur
+                    });
+                    }else if(this.tailleP<=0){
                         this.invincible=false;
                         this.MonstreAttaque()
                         if (this.player.direction=='gauche'){
