@@ -241,7 +241,6 @@
 
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
-                this.physics.world.setFPS(60);
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Droite.setDepth(3)
 
@@ -1033,7 +1032,15 @@
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
-            update(){ 
+            update(time,delta){ 
+                this.frameTime += delta
+
+                if (this.frameTime > 16.5) {  
+                    this.frameTime = 0;
+                    g.gameTick++;
+                    // Code that relies on a consistent 60hz update
+                }
+
                 this.Marchand.anims.play("MarchandA",true);
                 this.DonutItem.anims.play("DonutA",true);
                 this.PizzaItem.anims.play("PizzaA",true);
@@ -1686,7 +1693,6 @@
 
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
-                this.physics.world.setFPS(60);
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Droite.setDepth(3)
 
@@ -2526,7 +2532,15 @@
                     monstre.setVelocityY(-60)
             }
 
-            update(){ 
+            update(time,delta){ 
+
+                this.frameTime += delta
+
+                if (this.frameTime > 16.5) {  
+                    this.frameTime = 0;
+                    g.gameTick++;
+                    // Code that relies on a consistent 60hz update
+                }
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
                     this.compteurTrap1 = 60;
