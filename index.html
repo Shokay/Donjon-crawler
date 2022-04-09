@@ -1452,6 +1452,8 @@
                 { frameWidth: 16, frameHeight: 16 });
                 this.load.spritesheet('AnimTrapBullet','assets/BulletTrapSpriteSheet.png',
                 { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('AnimTrapBulletB','assets/BulletTrapSpriteSheetB.png',
+                { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('AnimBoule2D','assets/AnimBullet2D.png',
                 { frameWidth: 16, frameHeight: 16 });
                 this.load.spritesheet('AnimBoule2H','assets/bulletspritesheetFH.png',
@@ -1513,7 +1515,7 @@
                 this.compteur = 60;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
+                this.speedconst = 140;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1544,7 +1546,12 @@
                 this.potionCheck=false;
                 this.PotionStatusHUD=3;
                 this.feucheck=false;
-                this.compteurTrap = 60;
+                this.compteurTrap1 = 60;
+                this.compteurTrap2 = 60;
+                this.compteurTrap3 = 60;
+                this.compteurTrap4 = 80;
+                this.compteurTrap5 = 80;
+                this.FeuA=0;
 
                 const carteDuNiveau = this.make.tilemap({ key: "carte2"});
                 
@@ -1680,6 +1687,8 @@
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
                 this.FireOnG=this.physics.add.group();
+                this.feuP=this.FireOnG.create(1263,512, "FireSprite");
+                this.feuP.setDepth(2)
 
                 this.SpikeG=this.physics.add.group({
                     allowGravity: false,
@@ -1712,15 +1721,15 @@
                     const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);
                 });
 
-                this.FlecheTrapG=this.physics.add.group({
-                    allowGravity: false,
-                    immovable:true
-                })
+                this.FlecheTrapS1 = this.physics.add.image(948,655,"DartTrapH")
+                
+                this.FlecheTrapS2 = this.physics.add.image(1067,655,"DartTrapH")
 
-                carteDuNiveau.getObjectLayer('Piege FlecheH').objects.forEach((trapdarts) => {
-                    // Add new spikes to our sprite group
-                    const Trapsprite = this.FlecheTrapG.create(trapdarts.x, trapdarts.y -= 32,'DartTrapH').setOrigin(0);
-                });
+                this.FlecheTrapS3 = this.physics.add.image(1341,655,"DartTrapH")
+
+                this.FlecheTrapS4 = this.physics.add.image(1312,1775,"DartTrapB")
+                
+                this.FlecheTrapS5 = this.physics.add.image(879,1775,"DartTrapB")
 
                 this.Plaque1 = this.physics.add.image(1395,1463,"PlaquePressionoff")
                 this.Plaque2 = this.physics.add.image(1170,1675,"PlaquePressionoff")
@@ -1874,6 +1883,7 @@
                         tileset1,
                     );
                 this.CalquePorte.setDepth(2)
+                this.HealG.create(1462,928, "DonutSprite");
 
                 this.player.setCollideWorldBounds(true);
                 this.BourseImage = this.add.image(430,200,'BourseHUD');
@@ -1969,6 +1979,13 @@
                 this.anims.create({
                     key: 'BulletShootTrap',           
                     frames: this.anims.generateFrameNumbers('AnimTrapBullet', {start:0,end:1}),          //creation des animation
+                    frameRate: 5,
+                    repeat: -1,
+                });
+                
+                this.anims.create({
+                    key: 'BulletShootTrapB',           
+                    frames: this.anims.generateFrameNumbers('AnimTrapBulletB', {start:0,end:1}),          //creation des animation
                     frameRate: 5,
                     repeat: -1,
                 });
@@ -2259,6 +2276,16 @@
                 balle2.body.allowGravity =false;
                 balle2.setVelocity(0, 750 * 0.5); 
             }   
+
+            tirerTrapB(trapdarts) { 
+                var balle2 = this.groupeBallesTrap.create(trapdarts.x + (15 * 0), trapdarts.y + (15 * 1));
+                balle2.anims.play("BulletShootTrapB",true);
+                balle2.setCollideWorldBounds(true);
+                balle2.body.setSize(10,15,true);
+                balle2.body.onWorldBounds = true;  
+                balle2.body.allowGravity =false;
+                balle2.setVelocity(0, 750 * -0.5); 
+            }  
             
             AttaqueRock(balle,Monstreseul){
                 Monstreseul.disableBody(true, true);
@@ -2334,6 +2361,7 @@
                     this.FireOnG.create(camps.x+15,camps.y, "FireSprite");
                     balle.disableBody(true,true);
                     this.FireOnG.playAnimation("FireSpriteA");
+                    this.FeuA+=1;
                 }
             }
 
@@ -2493,11 +2521,35 @@
 
             update(){ 
 
-                /*this.compteurTrap--
-                if(this.compteurTrap == 0){
-                    this.compteurTrap = 60;
-                    this.tirerTrap(this.FlecheTrapG);
-                }*/
+                this.compteurTrap1--
+                if(this.compteurTrap1 == 0){
+                    this.compteurTrap1 = 60;
+                    this.tirerTrap(this.FlecheTrapS1);
+                }
+
+                this.compteurTrap2--
+                if(this.compteurTrap2 == 0){
+                    this.compteurTrap2 = 60;
+                    this.tirerTrap(this.FlecheTrapS2);
+                }
+
+                this.compteurTrap3--
+                if(this.compteurTrap3 == 0){
+                    this.compteurTrap3 = 60;
+                    this.tirerTrap(this.FlecheTrapS3);
+                }
+
+                this.compteurTrap4--
+                if(this.compteurTrap4 == 0){
+                    this.compteurTrap4 = 80;
+                    this.tirerTrapB(this.FlecheTrapS4);
+                }
+
+                this.compteurTrap5--
+                if(this.compteurTrap5 == 0){
+                    this.compteurTrap5 = 80;
+                    this.tirerTrapB(this.FlecheTrapS5);
+                }
 
                 if (this.player.direction == 'bas'){     
                     this.player.body.setSize(24,12,true)
@@ -2517,12 +2569,12 @@
                     fire.anims.play("FireSpriteA",true);
                 }, this);
 
-                if(this.Plaque1A==true && this.Plaque2A==true){
+                if(this.Plaque1A==true && this.Plaque2A==true && FeuA==5){
                     this.BlockZone1Gauche.setVisible(false);
                     this.physics.world.removeCollider(this.collidePG);
                 }
 
-                if(this.utilisecléV==true){
+                if(this.FeuA==1){
                     this.BlockZone1Droite.setVisible(false);
                     this.physics.world.removeCollider(this.collidePD);
                 }                 
@@ -2868,7 +2920,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: true,
+            debug: false,
             }},
             pixelArt: true,
             input:{gamepad:true},
