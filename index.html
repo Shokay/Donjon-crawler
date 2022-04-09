@@ -2834,7 +2834,13 @@
                         this.player.setScale(this.tailleP);
                         this.player.angle += 3;
                         this.player.alpha -= 0.01;
-                    if (this.tailleP<=0){
+                    if(this.tailleP<=0 && this.GetcléDar==true){
+                        this.scene.start("sceneExemple",{
+                        HpJoueur : this.HpJoueur,
+                        thune: this.thune,
+                        GetcléDar: this.GetcléDar
+                    });}
+                    else if (this.tailleP<=0){
                         if (this.player.direction=='gauche'){
                             this.player.x+=30
                         }
