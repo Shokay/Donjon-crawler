@@ -1273,31 +1273,7 @@
          "draworder":"topdown",
          "id":24,
          "name":"FireCamp",
-         "objects":[
-                {
-                 "gid":301,
-                 "height":32,
-                 "id":145,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":608,
-                 "y":256
-                }, 
-                {
-                 "gid":301,
-                 "height":32,
-                 "id":146,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":736,
-                 "y":224
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
