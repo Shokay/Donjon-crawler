@@ -167,7 +167,7 @@
                 this.HpJoueur=3;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 1000;
+                this.speedconst = 140;
                 this.thune=0;
                 this.LootBatV=0;
                 this.LootRockV=0;
@@ -1581,6 +1581,8 @@
                 { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('MonstreBA','assets/spritesheetMB.png',
                 { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('MonstreBAF','assets/BatInfSpriteSheet.png',
+                { frameWidth: 32, frameHeight: 32 });
                 this.load.spritesheet('PVbar','assets/spritesheetPV.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('SpikeA','assets/spritesheetPique.png',
@@ -1950,6 +1952,8 @@
 
                 this.BatM=this.physics.add.group();
                 this.physics.add.collider(this.BatM, Calque3);
+                this.BatMF=this.physics.add.group();
+                this.physics.add.collider(this.BatMF, Calque3);
                 this.BatM1 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM2 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM3 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
@@ -1977,10 +1981,12 @@
                 
                 this.physics.add.overlap(this.groupeBalles, this.PierresM, this.AttaqueRock, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.BatM, this.AttaqueBat, null, this);
+                this.physics.add.overlap(this.groupeBalles, this.BatMF, this.AttaqueBat, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.CampG, this.FireOn, null, this);
                 this.physics.add.overlap(this.groupeBalles, this.EggG, this.EggBroke, null, this);
                 this.physics.add.overlap(this.player, this.groupeBallesTrap, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.BatM, this.MonstreAttaque, null, this);
+                this.physics.add.overlap(this.player, this.BatMF, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.PierresM, this.MonstreAttaque, null, this);
                 this.physics.add.overlap(this.player, this.SpikeG, this.SpikeDegat, null, this);
                 this.physics.add.overlap(this.player, this.Plaque1, this.ActivPlaque1, null, this);
@@ -2206,6 +2212,13 @@
                 this.anims.create({
                     key: 'MonstreBatAttack',           
                     frames: this.anims.generateFrameNumbers('MonstreBA', {start:0,end:1}),          //creation des animation
+                    frameRate: 6,
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: 'MonstreBatAttackF',           
+                    frames: this.anims.generateFrameNumbers('MonstreBAF', {start:0,end:1}),          //creation des animation
                     frameRate: 6,
                     repeat: -1,
                 });
@@ -2496,6 +2509,15 @@
                     AntiBallBloc.setSize(50, 50)
                     this.eggcassé=this.EggOnG.playAnimation("EggSpriteSheetA");
                     this.eggcassé.setDepth(-1);
+                    var varpif=Math.floor(Math.random() * 10)+1
+                    if(varpif>=4){
+                        this.BatMX = this.BatMF.create(eggs.x+15,eggs.y+15, "MonstreBAF");           ///salle 1
+                        this.BatMX.setBounce(1);
+                        this.trackennemie(this.BatMX)
+                        this.BatMF.playAnimation("MonstreBatAttackF");
+                    }else{
+                        var Coin = this.CoinG.create(eggs.x+15,eggs.y+15, "DropMoney");
+                    }
                 }
             }
 
@@ -2654,8 +2676,6 @@
             }
 
             update(){ 
-                console.log(this.player.x)
-                console.log(this.player.y)
 
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
