@@ -50,6 +50,8 @@
         }  
         init(data){
                 this.HpJoueur=data.HpJoueur
+                this.thune=data.thune
+                this.GetcléDar=data.GetcléDar
             }
         
 
@@ -161,6 +163,7 @@
                 this.ImagePlaque2="PlaquePressionoff";
                 this.BulletA="BulletShoot";
                 this.utilisecléV=false;
+                this.utilisecléFinal=false;
                 this.Getclé = false;
                 this.createclé=false;
                 this.inZone = false;
@@ -268,13 +271,23 @@
                         tileset1,
                     );
 
+                 this.BlockZone1F = carteDuNiveau.createLayer(
+                        "PorteBlockF",
+                        tileset1,
+                    );
+
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
                 this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
-                this.BlockZone1Droite.setDepth(3)
+                this.BlockZone1Droite.setDepth(3) 
+                this.BlockZone1F.setCollisionByProperty({ estSolide: true }); 
+                this.BlockZone1F.setDepth(3)
 
                 this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
                 this.CléUtiliser.setSize(50, 50)
+
+                this.CléUtiliserF = this.physics.add.image(1685,1229,"AgroZ")
+                this.CléUtiliserF.setSize(100, 50)
 
                 this.DropsRock=this.physics.add.group();
                 this.DropsBat=this.physics.add.group();
@@ -338,6 +351,7 @@
                 this.physics.add.collider(this.player, CalqueSJ);
                 this.collidePG=this.physics.add.collider(this.player, this.BlockZone1Gauche);
                 this.collidePD=this.physics.add.collider(this.player, this.BlockZone1Droite);
+                this.collidePF=this.physics.add.collider(this.player, this.BlockZone1F);
                 this.physics.add.collider(this.player, CalqueMort, this.Fall,null,this);
                 this.ArgentTxT= this.add.bitmapText(445, 195, 'carrier_command',this.thune,9);
                 this.ArgentTxT.setScrollFactor(0);
@@ -483,6 +497,7 @@
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
                 this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
+                this.physics.add.overlap(this.player, this.CléUtiliserF, this.UseKeyF, null, this);
                 this.physics.add.overlap(this.player, this.CoinG, this.TakeMoney, null, this);
                 this.physics.add.overlap(this.player, this.HealG, this.TakeHeal, null, this);
                 this.physics.add.overlap(this.player, this.ChestD1, this.LootChestD1, null, this);
@@ -882,6 +897,13 @@
                     this.CléNul.destroy();
                 }
             }
+
+            UseKeyF(){
+                if(this.keys.f.isDown && this.GetcléDar == true){
+                    this.utilisecléFinal=true;
+                    this.CléDar.destroy();
+                }
+            }
             
             Salle1SpawnVerif(){
                 if(this.salle1visit==false){
@@ -1077,6 +1099,12 @@
                     this.player.setOffset(10, 28)
                 }
 
+                if(this.GetcléDar == true){
+                    this.CléDar= this.add.sprite(924,237, 'clédar');
+                    this.CléDar.setScrollFactor(0);
+                    this.CléDar.setDepth(10);
+                }
+
                 if(this.HpJoueur>3){
                     this.HpJoueur=3
                 }
@@ -1107,13 +1135,19 @@
                 if(this.utilisecléV==true){
                     this.BlockZone1Droite.setVisible(false);
                     this.physics.world.removeCollider(this.collidePD);
-                }                 
+                }    
+
+                if(this.utilisecléFinal==true){
+                    this.BlockZone1F.setVisible(false);
+                    this.physics.world.removeCollider(this.collidePF);
+                }               
 
                 this.label.setText('(' + Math.trunc(this.player.x) + ', ' + Math.trunc(this.player.y) + ')');
 
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
                     this.scene.start("sceneExemple2",{
-                        HpJoueur : this.HpJoueur
+                        HpJoueur : this.HpJoueur,
+                        thune: this.thune
                     });
                 }
 
@@ -1449,6 +1483,7 @@
             }
             init(data){
                 this.HpJoueur=data.HpJoueur
+                this.thune=data.thune
             }
             preload(){
                 //load de toute les images / sprites sheet 
@@ -1551,8 +1586,7 @@
                 this.compteur = 60;
                 this.fallV=false;
                 this.tailleP=1;
-                this.speedconst = 140;
-                this.thune=0;
+                this.speedconst = 1000;
                 this.LootBatV=0;
                 this.LootRockV=0;
                 this.spawnS1=false;
@@ -2555,7 +2589,7 @@
             }
 
             update(){ 
-
+                console.log(this.thune)
                 this.compteurTrap1--
                 if(this.compteurTrap1 == 0){
                     this.compteurTrap1 = 60;
@@ -2737,7 +2771,9 @@
                     this.invincible=true;
                     if(this.tailleP<=0 && this.GetcléDar==true){
                         this.scene.start("sceneExemple",{
-                        HpJoueur : this.HpJoueur
+                        HpJoueur : this.HpJoueur,
+                        thune: this.thune,
+                        GetcléDar: this.GetcléDar
                     });
                     }else if(this.tailleP<=0){
                         this.invincible=false;
@@ -2959,7 +2995,7 @@
             physics: {      
             default: 'arcade',
             arcade: {
-            debug: false,
+            debug: true,
             }},
             pixelArt: true,
             fps: {
