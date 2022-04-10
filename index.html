@@ -15,20 +15,20 @@
 </head>
 <body>
     <script type="text/javascript">
-        class EcranTitre extends Phaser.Scene {
+        class EcranTitre extends Phaser.Scene {             //init de la premiere scene 
             constructor() {
                 super("EcranTitre")
             }
 
             preload() {
 
-                this.load.image("Title_Screen", "assets/EcranStart.png");
+                this.load.image("Title_Screen", "assets/EcranStart.png");           //crée le title screen
 
             }
 
             create() {
 
-                this.imageAcceuil = this.physics.add.staticGroup();
+                this.imageAcceuil = this.physics.add.staticGroup();         //place le title screen
                 this.imageAcceuil.create(640, 360, 'Title_Screen');
 
                 this.cursors = this.input.keyboard.createCursorKeys();
@@ -38,31 +38,31 @@
             update() {
 
             if (this.cursors.space.isDown) {
-                this.scene.start("sceneExemple");
+                this.scene.start("sceneExemple");               //changement de scene si space et down
             }
 
             }
         }
 
         class EcranFin extends Phaser.Scene {
-            constructor() {
+            constructor() {                             //init de la deuxieme scene
                 super("EcranFin")
             }
 
             preload() {
 
-                this.load.image("End_Screen", "assets/endtitle.png");
+                this.load.image("End_Screen", "assets/endtitle.png");       //chargement ecran de fin
 
             }
 
             create() {
 
                 this.imageFin = this.physics.add.staticGroup();
-                this.fin=this.imageFin.create(640, 360, 'End_Screen');
-                this.fin.setScale(5)
+                this.fin=this.imageFin.create(640, 360, 'End_Screen');              //place l'ecran
+                this.fin.setScale(5)        
             }
 
-            update() {
+            update() {              //rien car ecran de fin (il faut refresh)
             }
         }    
 
@@ -72,7 +72,7 @@
         }  
         init(data){
                 this.HpJoueur=data.HpJoueur
-                this.thune=data.thune
+                this.thune=data.thune                   //recuperation de data entre scene etage 1 et etage 2
                 this.GetcléDar=data.GetcléDar
             }
         
@@ -98,7 +98,7 @@
                 this.load.image("tapis","assets/Tapis.png");
                 this.load.image("CampFireNull","assets/fireplaceNull.png");   
                 this.load.image("DropMoney","assets/MoneyDrop.png");
-                this.load.image("DonutTexte","assets/DonutTxT.png");
+                this.load.image("DonutTexte","assets/DonutTxT.png");            
                 this.load.image("PizzaTexte","assets/PizzaTxT.png");
                 this.load.image("PotionTexte","assets/PotionTxT.png");                                               
                 this.load.tilemapTiledJSON("carte", "DonjonMap.json");  
@@ -147,7 +147,7 @@
             
             
         
-
+            ///create de toute les vars utilisé dans la scene
             create (){
                 this.isConnected = false;
                 this.directionX=0
@@ -212,7 +212,7 @@
                         32
                         );  
 
-                const tileset2 = carteDuNiveau.addTilesetImage(
+                const tileset2 = carteDuNiveau.addTilesetImage(        
                         "SetHole",
                         "Phaser_Trou",
                         32,
@@ -306,7 +306,7 @@
 
                 this.BlockZone1Gauche.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1Gauche.setDepth(3)
-                this.BlockZone1Droite.setCollisionByProperty({ estSolide: true }); 
+                this.BlockZone1Droite.setCollisionByProperty({ estSolide: true });      //colision avec propriété
                 this.BlockZone1Droite.setDepth(3) 
                 this.BlockZone1F.setCollisionByProperty({ estSolide: true }); 
                 this.BlockZone1F.setDepth(3)
@@ -316,15 +316,15 @@
                 this.CléUtiliser = this.physics.add.image(2239,845,"AgroZ")
                 this.CléUtiliser.setSize(50, 50)
 
-                this.CléUtiliserF = this.physics.add.image(1685,1229,"AgroZ")
+                this.CléUtiliserF = this.physics.add.image(1685,1229,"AgroZ")           // ajout des zone des clé 
                 this.CléUtiliserF.setSize(100, 50)
 
                 this.DropsRock=this.physics.add.group();
-                this.DropsBat=this.physics.add.group();
+                this.DropsBat=this.physics.add.group();         //groupe de var
                 this.FireOnG=this.physics.add.group();
 
                 this.SpikeG=this.physics.add.group({
-                    allowGravity: false,
+                    allowGravity: false,                
                     immovable:true
                 });
 
@@ -337,12 +337,11 @@
 
                 this.Calque.setDepth(-2)
 
-                carteDuNiveau.getObjectLayer('Spike').objects.forEach((spike) => {
-                    // Add new spikes to our sprite group
-                    const spikeSprite = this.SpikeG.create(spike.x, spike.y -= 32,'PiqueSolo').setOrigin(0);
-                });
+                carteDuNiveau.getObjectLayer('Spike').objects.forEach((spike) => {       
+                    const spikeSprite = this.SpikeG.create(spike.x, spike.y -= 32,'PiqueSolo').setOrigin(0);            //importation via calque objet spike
+                }); 
 
-                this.SpikeG.playAnimation("SpikeAnim");
+                this.SpikeG.playAnimation("SpikeAnim");     //anim sur group
                 
                 this.CampG=this.physics.add.group({
                     allowGravity: false,
@@ -350,8 +349,7 @@
                 });
 
                 carteDuNiveau.getObjectLayer('FireCamp').objects.forEach((camps) => {
-                    // Add new spikes to our sprite group
-                    const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);
+                    const CampSprite = this.CampG.create(camps.x, camps.y -= 32,'CampFireNull').setOrigin(0);               //importation via calque objet feu de camp
                 });
 
                 this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionoff")
@@ -362,22 +360,22 @@
                 this.DonutItem = this.physics.add.sprite(260,355, 'DonutSprite');
                 this.DonutItem.body.setSize(128,64,true)
                 this.DonutItem.setOffset(-6, 5)                
-                this.PizzaItem = this.physics.add.sprite(279,250, 'PizzaSprite');
+                this.PizzaItem = this.physics.add.sprite(279,250, 'PizzaSprite');               //item constant ( marchant) et derriere joueur
                 this.PizzaItem.body.setSize(128,64,true)
                 this.PizzaItem.setOffset(8, 0)
                 this.PotionItem = this.physics.add.sprite(304,300, 'PotionSprite');
                 this.PotionItem.body.setSize(128,64,true)
                 this.PotionItem.setOffset(8, 15)
 
-                this.player = this.physics.add.sprite(1665,1093, 'PersoSprite');
-                this.player.body.setSize(24,12,true)
+                this.player = this.physics.add.sprite(1665,1093, 'PersoSprite');            //init joueur
+                this.player.body.setSize(24,12,true)        
                 this.player.setOffset(8, 28)
                 this.player.alpha = 1;  
-                Calque3.setCollisionByProperty({ estSolide: true });         //background et plateformes
+                Calque3.setCollisionByProperty({ estSolide: true });         //colision avec proprieté
                 CalqueSJ.setCollisionByProperty({ estSolide: true }); 
                 CalqueSM.setCollisionByProperty({ estSolide: true }); 
-                CalqueMort.setCollisionByProperty({ Tue: true });         //background et plateformes
-                this.physics.add.collider(this.player, Calque3);
+                CalqueMort.setCollisionByProperty({ Tue: true });    
+                this.physics.add.collider(this.player, Calque3);            //ajout collision avec joeur
                 this.physics.add.collider(this.player, CalqueSJ);
                 this.collidePG=this.physics.add.collider(this.player, this.BlockZone1Gauche);
                 this.collidePD=this.physics.add.collider(this.player, this.BlockZone1Droite);
@@ -387,20 +385,20 @@
                 this.ArgentTxT.setScrollFactor(0);
                 this.LootBatTxT= this.add.bitmapText(906, 210, 'carrier_command',this.LootBatV,9);
                 this.LootBatTxT.setScrollFactor(0);
-                this.LootRockTxT= this.add.bitmapText(890, 250, 'carrier_command',this.LootRockV,9);
+                this.LootRockTxT= this.add.bitmapText(890, 250, 'carrier_command',this.LootRockV,9);            //texte pour hud
                 this.LootRockTxT.setScrollFactor(0);
                 this.Marchand = this.physics.add.sprite(170,290, 'MarchandSprite') ;
                 this.Marchand.body.setSize(100,100,true)
                 this.Marchand.setOffset(50, 50)
                 this.TextePotion = this.physics.add.image(240,280, "PotionTexte");
-                this.TextePotion.setScale(0.5)
-                this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");
+                this.TextePotion.setScale(0.5)      
+                this.TextePizza = this.physics.add.image(210,230, "PizzaTexte");        //texte pour item marchand
                 this.TextePizza.setScale(0.5)
                 this.TexteDonut= this.physics.add.image(200,335, "DonutTexte");
                 this.TexteDonut.setScale(0.5)
 
                 this.groupeBalles = this.physics.add.group();  
-                this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);
+                this.physics.add.collider(this.groupeBalles, Calque3, this.destroy,null,this);          //groupe de balle
 
                 this.BlocsDS1=this.physics.add.group({
                     allowGravity: false,
@@ -412,7 +410,7 @@
                     immovable:true
                 });
 
-                this.BlocsGS2=this.physics.add.group({
+                this.BlocsGS2=this.physics.add.group({                              // ajout de declancheur de spawn mob
                     allowGravity: false,
                     immovable:true
                 });
@@ -433,8 +431,8 @@
                 });
 
                 carteDuNiveau.getObjectLayer('Salle2G').objects.forEach((blocsV) => {
-                    // Add new spikes to our sprite group
-                    const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);
+                    // Add new spikes to our sprite group   
+                    const Blocd3 = this.BlocsGS2.create(blocsV.x, blocsV.y -= 32,"TriggerZone").setOrigin(0);           //declancheur calque objet
                 });
 
                 carteDuNiveau.getObjectLayer('Salle4H').objects.forEach((blocsV) => {
@@ -446,12 +444,12 @@
                 this.ChestD1 = this.ChestGD1.create(2123,668, "ChestSprite");
                 this.ChestD1.body.setSize(150,150,true);
 
-                this.ChestGG1=this.physics.add.group();
-                this.ChestG1 = this.ChestGG1.create(267,1082, "ChestSprite");
+                this.ChestGG1=this.physics.add.group(); 
+                this.ChestG1 = this.ChestGG1.create(267,1082, "ChestSprite");           //ajout des coffres
                 this.ChestG1.body.setSize(150,150,true);
                 
                 this.CoinG=this.physics.add.group();
-                this.HealG=this.physics.add.group();
+                this.HealG=this.physics.add.group();        //group heal et argent
 
                 this.PierresM=this.physics.add.group();
                 this.physics.add.collider(this.PierresM, Calque3);
@@ -465,7 +463,7 @@
                 this.PierreM3.setBounce(1);
                 this.PierreM4 = this.PierresM.create(2199,751, "MonstreR");
                 this.PierreM4.setBounce(1);
-                this.PierreM5 = this.PierresM.create(2164,586, "MonstreR");
+                this.PierreM5 = this.PierresM.create(2164,586, "MonstreR");                     //creation de monstre cailloux
                 this.PierreM5.setBounce(1);
                 this.PierreM6 = this.PierresM.create(819,676, "MonstreR");
                 this.PierreM6.setBounce(1);
@@ -482,7 +480,7 @@
                 this.BatM2 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM3 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM4 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
-                this.BatM5 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
+                this.BatM5 = this.BatM.create(1000000000,1000000000, "MonstreBA");                              //creation hors map pour apres faire spawn quand declancheur true
                 this.BatM6 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
                 this.BatM7 = this.BatM.create(1000000000,1000000000, "MonstreBA");
                 this.BatM8 = this.BatM.create(1000000000,1000000000, "MonstreBA");  
@@ -498,7 +496,7 @@
                 this.AgroZoneM3.setSize(224, 224)
                 this.AgroZoneM4 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM4.setSize(224, 224)
-                this.AgroZoneM5 = this.physics.add.image(0,0,"AgroZ")
+                this.AgroZoneM5 = this.physics.add.image(0,0,"AgroZ")               //zone d'agro des rocher
                 this.AgroZoneM5.setSize(224, 224)
                 this.AgroZoneM6 = this.physics.add.image(0,0,"AgroZ")
                 this.AgroZoneM6.setSize(224, 224)
@@ -521,7 +519,7 @@
                 this.physics.add.overlap(this.player, this.BlocsDS1, this.Salle1SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsDS3, this.Salle3SpawnVerif, null, this);
                 this.physics.add.overlap(this.player, this.BlocsGS2, this.Salle4SpawnVerif, null, this);
-                this.physics.add.overlap(this.player, this.BlocsHS4, this.Salle5SpawnVerif, null, this);
+                this.physics.add.overlap(this.player, this.BlocsHS4, this.Salle5SpawnVerif, null, this);        //toute les fonctions appelé quand interaction joueur/balle environnement
                 this.physics.add.overlap(this.player, this.DropsBat, this.TakeDropB, null, this);
                 this.physics.add.overlap(this.player, this.DropsRock, this.TakeDropR, null, this);
                 this.physics.add.overlap(this.player, this.CléUtiliser, this.UseKey, null, this);
@@ -546,7 +544,7 @@
                 this.BourseImage.setScrollFactor(0);
                 this.Pvbarre = this.add.sprite(360,205, 'PVbar');
                 this.Pvbarre.setScrollFactor(0);
-                this.BackPack = this.add.sprite(890,230, 'BackPackHUD');
+                this.BackPack = this.add.sprite(890,230, 'BackPackHUD');        //hud 
                 this.BackPack.setScrollFactor(0);
                 this.LootBat = this.add.sprite(900,212, 'BatLoot');
                 this.LootBat.setScrollFactor(0);
@@ -563,7 +561,7 @@
                 this.BackPack.setDepth(10);
                 this.ArgentTxT.setDepth(10);
                 this.LootBatTxT.setDepth(11);
-                this.LootRockTxT.setDepth(11);
+                this.LootRockTxT.setDepth(11);          //hud au dessus de tout et scale
                 this.BourseImage.setDepth(10);
                 this.Pvbarre.setDepth(10);
                 this.PotionHud.setDepth(10);
@@ -626,7 +624,7 @@
                 
                 this.anims.create({
                     key: 'BulletShoot',           
-                    frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),          //creation des animation
+                    frames: this.anims.generateFrameNumbers('AnimBoule1', {start:0,end:1}),
                     frameRate: 5,
                     repeat: -1,
                 });
@@ -653,7 +651,7 @@
 
                 this.anims.create({
                     key: 'HP2',           
-                    frames: this.anims.generateFrameNumbers('PVbar', {start:1,end:1}),          //creation des animation
+                    frames: this.anims.generateFrameNumbers('PVbar', {start:1,end:1}),
                     frameRate: 6,
                 });
 
@@ -676,7 +674,7 @@
                 });
                 this.anims.create({
                     key: 'MarchandA',           
-                    frames: this.anims.generateFrameNumbers('MarchandSprite', {start:0,end:5}),          //creation des animation
+                    frames: this.anims.generateFrameNumbers('MarchandSprite', {start:0,end:5}),  
                     frameRate: 5,
                 });
                 this.anims.create({
@@ -733,7 +731,7 @@
                 if(this.invincible === false){
                         this.invincible = true;
                         this.HpJoueur --;
-                        this.player.setTint(0xff0000);
+                        this.player.setTint(0xff0000);     //fonction d'attaque de monstre
                         this.cameras.main.shake(100, 0.01);
                     }
             }
@@ -743,7 +741,7 @@
                 this.haut="upB";
                 this.bas="downB";
                 this.droite="rightB";
-                this.gauche="leftB";
+                this.gauche="leftB";          //mort
                 this.immobile="staticB";
                 this.invincible=false
             }
@@ -752,8 +750,8 @@
                 if (this.player.direction=='gauche')
                     this.player.x-=30
                 if (this.player.direction=='droite')
-                    this.player.x+=30
-                if (this.player.direction=='haut')
+                    this.player.x+=30   
+                if (this.player.direction=='haut')          //fonction quand on tombe
                     this.player.y-=20
                 if (this.player.direction=='bas')
                     this.player.y+=30
@@ -762,12 +760,12 @@
             }
 
             destroy(balle){
-                balle.disableBody(true,true)
+                balle.disableBody(true,true)            //destroy des balles 
             }
 
             tirer(player) {
-                // choix de la direction de la balle en fonction de l'ancien ou du déplacement actuel du joueur
-                if (player.direction == 'gauche') { 
+                // choix de la direction de la balle en fonction de l'ancien ou du déplacement actuel du joueur     //fonction pour  tirer
+                if (player.direction == 'gauche') {     
                     this.directionX=750 * -0.5
                     this.directionY=0
                     this.directionTX=-2
@@ -796,7 +794,7 @@
                 balle1.anims.play(this.BulletA,true);
                 balle1.setCollideWorldBounds(true);
                 balle1.body.setSize(15,10,true)
-                balle1.body.onWorldBounds = true;  
+                balle1.body.onWorldBounds = true;           //creation de la balle et de ses status
                 balle1.body.allowGravity =false;
                 balle1.setVelocity(this.directionX, this.directionY); 
             }  
@@ -806,7 +804,7 @@
                 balle.disableBody(true,true);
                 this.thune+=Math.floor(Math.random() * 20)+1
                 this.ArgentTxT.setText(this.thune)
-                var DropRock = this.DropsRock.create(Monstreseul.x,Monstreseul.y, "RockLoot");
+                var DropRock = this.DropsRock.create(Monstreseul.x,Monstreseul.y, "RockLoot");          //player contre rock ( loot)
                 DropRock.setScale(0.5)
                 DropRock.body.setSize(100,100,true)
             }
@@ -815,7 +813,7 @@
                 Monstreseul.disableBody(true, true);
                 balle.disableBody(true,true);
                 this.thune+=Math.floor(Math.random() * 20)+1
-                this.ArgentTxT.setText(this.thune)
+                this.ArgentTxT.setText(this.thune)          //player contre bat ( loot)
                 var DropBat = this.DropsBat.create(Monstreseul.x,Monstreseul.y, "BatLoot");
                 DropBat.setScale(0.5)
                 DropBat.body.setSize(100,100,true)
@@ -824,16 +822,16 @@
             TakeDropB(player,drop){
                 drop.destroy()
                 this.LootBatV+=1
-                this.LootBatTxT.setText(this.LootBatV)
+                this.LootBatTxT.setText(this.LootBatV)                  //recup loot Bat
             }
 
             TakeDropR(player,drop){
                 drop.destroy()
-                this.LootRockV+=1
+                this.LootRockV+=1       //recup loot rock
                 this.LootRockTxT.setText(this.LootRockV)
             }
             VerifAchatPotion(){
-                if(this.keys.f.isDown && this.thune>=150 && this.AchatPotion==false){
+                if(this.keys.f.isDown && this.thune>=150 && this.AchatPotion==false){           //verifie l'achat de la potion
                     this.thune-=150
                     this.ArgentTxT.setText(this.thune)
                     this.PotionItem.setVisible(false)
@@ -841,9 +839,9 @@
                 }
             }
 
-            VerifAchatPizza(){
+            VerifAchatPizza(){  
                 if(this.keys.f.isDown && this.thune>=100 && this.AchatPizza==false ){
-                    this.thune-=100
+                    this.thune-=100     //verifie l'achat de la pizza
                     this.ArgentTxT.setText(this.thune)
                     this.PizzaItem.setVisible(false)
                     this.AchatPizza=true;
@@ -854,7 +852,7 @@
             VerifAchatDonut(){
                 if(this.keys.f.isDown && this.thune>=50 && this.AchatDonut==false){
                     this.thune-=50
-                    this.ArgentTxT.setText(this.thune)
+                    this.ArgentTxT.setText(this.thune)          //verifie l'achat du donut
                     this.DonutItem.setVisible(false)
                     this.AchatDonut=true;
                     this.HpJoueur+=1
@@ -867,7 +865,7 @@
                     this.thune+=ItemGlobal*4;
                     this.LootBatV=0;
                     this.LootRockV=0;
-                    this.ArgentTxT.setText(this.thune);
+                    this.ArgentTxT.setText(this.thune);                 //vente des items au marchand
                     this.LootBatTxT.setText(this.LootBatV);
                     this.LootRockTxT.setText(this.LootRockV);
                 }
@@ -875,7 +873,7 @@
 
             SpikeDegat(player,Pique){
                 if(this.invincible === false && Pique.anims.currentFrame.index>=15){
-                        this.invincible = true;
+                        this.invincible = true;         //degat des piques sur joueur
                         this.HpJoueur --;
                         player.setTint(0xff0000);
                         this.cameras.main.shake(100, 0.01);
@@ -886,7 +884,7 @@
                 drop.destroy()
                 if (this.createclé==false){
                     this.CléNul = this.add.sprite(924,237, 'clénul');
-                    this.CléNul.setScrollFactor(0);
+                    this.CléNul.setScrollFactor(0);         //recuperation de la clé
                     this.CléNul.setDepth(10);
                 }
                 this.createclé=true;
@@ -900,7 +898,7 @@
                     var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
                     var Heal = this.HealG.create(chest.x+50,chest.y-20, "DonutSprite");
                     Heal.setScale(0.5);
-                    this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');
+                    this.CléNulDrop = this.physics.add.image(chest.x-20,chest.y-10, 'clénul');      //loot qui pop du coffre
                     this.physics.add.overlap(this.player, this.CléNulDrop, this.GetClé1, null, this);
                     this.loochestD1Verif=true;
                 } 
@@ -911,25 +909,25 @@
                     this.ChestGG1.playAnimation("ChestOpen");
                     var Coin = this.CoinG.create(chest.x+10,chest.y+25, "DropMoney");
                     var Coin = this.CoinG.create(chest.x+30,chest.y-20, "DropMoney");
-                    var Coin = this.CoinG.create(chest.x-20,chest.y-10, "DropMoney");
+                    var Coin = this.CoinG.create(chest.x-20,chest.y-10, "DropMoney");           //loot qui pop du coffre 2
                     this.loochestG1Verif=true;
                 } 
             }
 
             UseKey(){
-                if(this.keys.f.isDown && this.Getclé == true){
+                if(this.keys.f.isDown && this.Getclé == true){  //utilisation de la clé sur porte 1
                     this.utilisecléV=true;
                     this.CléNul.destroy();
                 }
             }
 
             UseKeyF(){
-                if(this.keys.f.isDown && this.GetcléDar == true){
+                if(this.keys.f.isDown && this.GetcléDar == true){ //utilisation de la clé sur porte finale
                     this.utilisecléFinal=true;
                     this.CléDar.destroy();
                 }
             }
-            
+            ///////////////////////////////////////verif des spawn/////////////////
             Salle1SpawnVerif(){
                 if(this.salle1visit==false){
                     this.spawnS1=true
@@ -961,13 +959,13 @@
 
                 }
             }
-
+            ////////////////////////////////////////////////////
 
             ActivPlaque1(){
                 this.Plaque1A=true
                 this.ImagePlaque1="PlaquePressionon"
                 this.Plaque1.destroy()
-                this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionon")
+                this.Plaque1 = this.physics.add.image(882,1035,"PlaquePressionon")         //activation des plaques
                 this.Plaque1.setDepth(-1)
             }
 
@@ -977,14 +975,14 @@
                 this.Plaque2 = this.physics.add.image(625,1200,"PlaquePressionon")
                 this.Plaque2.setDepth(-1)
             }
-
+            //////////////////////////////////////attaque des monstres pierres sur joueur
             AttackM1(){               
                         this.PierreM1.anims.play('MonstreRockAttack', true)
                         if (this.PierreM1.x > this.player.x)
                         this.PierreM1.setVelocityX(-60)
                         if (this.PierreM1.x < this.player.x)
                         this.PierreM1.setVelocityX(60)
-                        if (this.PierreM1.y < this.player.y)
+                        if (this.PierreM1.y < this.player.y)                                            
                         this.PierreM1.setVelocityY(60)
                         if (this.PierreM1.y > this.player.y)
                         this.PierreM1.setVelocityY(-60) 
@@ -1090,7 +1088,7 @@
             TakeMoney(player,drop){
                 drop.destroy();
                 this.thune+=3;
-                this.ArgentTxT.setText(this.thune);
+                this.ArgentTxT.setText(this.thune);        //recup money
             }
 
             TakeHeal(player,drop){
@@ -1102,22 +1100,22 @@
                 if (monstre.x > this.player.x)
                     monstre.setVelocityX(-60)
                 if (monstre.x < this.player.x)
-                    monstre.setVelocityX(60)
+                    monstre.setVelocityX(60)        //fonction traquer joueur des bat
                 if (monstre.y < this.player.y)
                     monstre.setVelocityY(60)
                     if (monstre.y > this.player.y)
                     monstre.setVelocityY(-60)
             }
             update(){ 
-                console.log(this.isConnected)
+                console.log(this.isConnected)  //verif si manette co
 
                 this.Marchand.anims.play("MarchandA",true);
                 this.DonutItem.anims.play("DonutA",true);
-                this.PizzaItem.anims.play("PizzaA",true);
+                this.PizzaItem.anims.play("PizzaA",true);       //animation ( j'aurais pu faire mieux mais j'avais oublié le repeat-1)
                 this.PotionItem.anims.play("PotionA",true);
 
                 if (this.player.direction == 'bas'){     
-                    this.player.body.setSize(24,12,true)
+                    this.player.body.setSize(24,12,true)        //changement hitbox selon direction (elle est cassé)
                     this.player.setOffset(3, 28)
                 }
                 if (this.player.direction == 'haut'){     
@@ -1134,21 +1132,21 @@
                 }
 
                 if(this.GetcléDar==true){
-                    this.physics.add.collider(this.player, this.SolidF);
+                    this.physics.add.collider(this.player, this.SolidF);        //verif recup de la clé F
                 }
 
-                if(this.GetcléDar == true && this.clédarcreate == false){
+                if(this.GetcléDar == true && this.clédarcreate == false){               //verif recup clé
                     this.CléDar= this.add.sprite(924,237, 'clédar');
                     this.CléDar.setScrollFactor(0);
                     this.CléDar.setDepth(10);
                     this.clédarcreate=true;
                 }
 
-                if(this.HpJoueur>3){
+                if(this.HpJoueur>3){            //cap le hp joueur a 3
                     this.HpJoueur=3
                 }
 
-                if(((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)) && this.AchatPotion==false){
+                if(((this.player.x >= 251 && this.player.x <= 370) && (this.player.y >=280 && this.player.y <= 324)) && this.AchatPotion==false){       //pop info item quand joueur a coté
                     this.TextePotion.setVisible(true);
                 }else{
                     this.TextePotion.setVisible(false);
@@ -1168,17 +1166,17 @@
 
                 if(this.Plaque1A==true && this.Plaque2A==true){
                     this.BlockZone1Gauche.setVisible(false);
-                    this.physics.world.removeCollider(this.collidePG);
+                    this.physics.world.removeCollider(this.collidePG);          //porte ouvert plaque de presssion
                 }
 
                 if(this.utilisecléV==true){
                     this.BlockZone1Droite.setVisible(false);
-                    this.physics.world.removeCollider(this.collidePD);
+                    this.physics.world.removeCollider(this.collidePD);          //utilisation de la clé 
                 }    
 
                 if(this.utilisecléFinal==true){
                     this.BlockZone1F.setVisible(false);
-                    this.physics.world.removeCollider(this.collidePF);
+                    this.physics.world.removeCollider(this.collidePF);        //utilisation de la clé  F
                 }               
 
                 if ((this.player.x >= 1647 && this.player.x <= 1687) && (this.player.y >=437 && this.player.y <= 461)){
@@ -1186,8 +1184,8 @@
                         HpJoueur : this.HpJoueur,
                         thune: this.thune,
                         PotionStatus: this.PotionStatus,
-                        potionCheck: this.potionCheck,
-                        PotionStatusHUD: this.PotionStatusHUD,
+                        potionCheck: this.potionCheck,  
+                        PotionStatusHUD: this.PotionStatusHUD,              //quand joueur monte escalier lancement de scene avec transfere de data
                         AchatPotion: this.AchatPotion,
                         LootBatV: this.LootBatV,
                         LootRockV: this.LootRockV,
@@ -1200,7 +1198,7 @@
                 }
 
                 if (this.HpJoueur>=3){
-                    this.Pvbarre.anims.play("HP1", true);
+                    this.Pvbarre.anims.play("HP1", true);                               // si hp joueur = x alors changement d'hp
                 }
 
                 if (this.HpJoueur==2){
@@ -1228,7 +1226,7 @@
                 }
 
                 if (this.PotionStatusHUD<=1){
-                    this.PotionHud.anims.play("PotionHUDState3", true);
+                    this.PotionHud.anims.play("PotionHUDState3", true);  //changement hud potion selon etat
                 }
 
                 if (this.HpJoueur<=0){
@@ -1236,7 +1234,7 @@
                 }    
                 
                 if (this.spawnS1==true){
-                    this.BatM1 = this.BatM.create(2443,997, "MonstreBA");           ///salle 1
+                    this.BatM1 = this.BatM.create(2443,997, "MonstreBA");    ///chauve souris salle pop
                     this.BatM1.setBounce(1);
                     this.BatM2 = this.BatM.create(2351,1188, "MonstreBA");
                     this.BatM2.setBounce(1);
@@ -1246,7 +1244,7 @@
                 }
 
                 if (this.spawnS3==true){
-                    this.BatM3 = this.BatM.create(2920,693, "MonstreBA");           ///salle 1
+                    this.BatM3 = this.BatM.create(2920,693, "MonstreBA");    ///chauve souris salle pop
                     this.BatM3.setBounce(1);
                     this.BatM4 = this.BatM.create(2773,550, "MonstreBA");
                     this.BatM4.setBounce(1);
@@ -1258,7 +1256,7 @@
                 }
 
                 if (this.spawnS4==true){
-                    this.BatM6 = this.BatM.create(1119,578, "MonstreBA");           ///salle 1
+                    this.BatM6 = this.BatM.create(1119,578, "MonstreBA");  ///chauve souris salle pop
                     this.BatM6.setBounce(1);
                     this.BatM7 = this.BatM.create(623,643, "MonstreBA");
                     this.BatM7.setBounce(1);
@@ -1268,7 +1266,7 @@
                 }
 
                 if (this.spawnS5==true){
-                    this.BatM8 = this.BatM.create(1907,381, "MonstreBA");           ///salle 1
+                    this.BatM8 = this.BatM.create(1907,381, "MonstreBA");           ///chauve souris salle pop
                     this.BatM8.setBounce(1);
                     this.BatM9 = this.BatM.create(1907,185, "MonstreBA");
                     this.BatM9.setBounce(1);
@@ -1288,7 +1286,7 @@
                 this.trackennemie(this.BatM4);
                 this.trackennemie(this.BatM5);
                 this.trackennemie(this.BatM6);
-                this.trackennemie(this.BatM7);
+                this.trackennemie(this.BatM7); //fonction track tout le temps joueur
                 this.trackennemie(this.BatM8);
                 this.trackennemie(this.BatM9);
                 this.trackennemie(this.BatM10);
@@ -1304,7 +1302,7 @@
                 this.AgroZoneM4.y=this.PierreM4.y;
                 this.AgroZoneM5.x=this.PierreM5.x;
                 this.AgroZoneM5.y=this.PierreM5.y;
-                this.AgroZoneM6.x=this.PierreM6.x;
+                this.AgroZoneM6.x=this.PierreM6.x;     //deplacement zone d'agro rocher selon leur coo
                 this.AgroZoneM6.y=this.PierreM6.y;
                 this.AgroZoneM7.x=this.PierreM7.x;
                 this.AgroZoneM7.y=this.PierreM7.y;
@@ -1316,7 +1314,7 @@
                 this.physics.add.overlap(this.player, this.AgroZoneM1, this.AttackM1, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM2, this.AttackM2, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM3, this.AttackM3, null, this);
-                this.physics.add.overlap(this.player, this.AgroZoneM4, this.AttackM4, null, this);
+                this.physics.add.overlap(this.player, this.AgroZoneM4, this.AttackM4, null, this);      //fonction d'attaque quand jouer dans agro zone
                 this.physics.add.overlap(this.player, this.AgroZoneM5, this.AttackM5, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM6, this.AttackM6, null, this);
                 this.physics.add.overlap(this.player, this.AgroZoneM7, this.AttackM7, null, this);
@@ -1325,7 +1323,7 @@
 
                 if(this.invincible == true){
                     this.compteur-- ;
-                if(this.compteur == 0){
+                if(this.compteur == 0){         
                     this.compteur = 60;
                     this.player.setTint(0xffffff);                   //invincibilité avec compteur 
                     this.invincible = false ;
@@ -1341,7 +1339,7 @@
                     if (this.tailleP<=0){
                         this.invincible=false;
                         this.MonstreAttaque()
-                        if (this.player.direction=='gauche'){
+                        if (this.player.direction=='gauche'){           //fonction quand on tombe dans trou avec tp en arriere selon direction 
                             this.player.x+=30
                         }
                         if (this.player.direction=='droite'){
@@ -1365,7 +1363,7 @@
                 if(this.fallV==true && this.PotionStatus>=1 && this.PotionStatus!=4){
                     this.potionCheck=true;
                     this.tailleP-=0.01
-                        this.player.setScale(this.tailleP);
+                        this.player.setScale(this.tailleP); //fonction tombe quand potion acheter avec ecoulement de la potion
                         this.player.angle += 3;
                         this.player.alpha -= 0.01;
                     if (this.tailleP<=0){
@@ -1393,14 +1391,14 @@
                 }
 
                 if(this.PotionStatus==3){
-                    this.PotionStatus=4
+                    this.PotionStatus=4             //truc pour potion obscure
                 }
 
                 if(this.keys.e.isDown){
                     this.haut="upB";
                     this.bas="downB";
                     this.droite="rightB";
-                    this.gauche="leftB";
+                    this.gauche="leftB";                     //changement spell
                     this.immobileB="staticBB";
                     this.immobileH="staticBH";
                     this.immobileG="staticBG";
@@ -1413,7 +1411,7 @@
                 this.speed = this.speedconst
 
                 this.player.body.setVelocity(0)
-                if(Phaser.Input.Keyboard.JustDown(this.keys.a)){
+                if(Phaser.Input.Keyboard.JustDown(this.keys.a)){            //bloquer tir quand on tombe
                     if (this.fallV==true){                  
                     }else{
                     this.tirer(this.player)
@@ -1424,7 +1422,7 @@
                     this.player.body.setVelocityX(-this.speed)
                     this.player.direction="gauche"
 
-                }else if ((this.cursors.right.isDown || this.keys.d.isDown) && this.fallV==false){
+                }else if ((this.cursors.right.isDown || this.keys.d.isDown) && this.fallV==false){    //animation et vitesse
                     this.player.body.setVelocityX(this.speed)
                     this.player.direction="droite"
                 }
@@ -1479,7 +1477,7 @@
                             this.player.anims.play(this.droite, true)
                         }
                         else if (this.controller.leftStick.y < 0){
-                            this.player.body.setVelocityY(-this.speed)
+                            this.player.body.setVelocityY(-this.speed)      //quand manette est branché
                             this.player.direction="haut"
                             this.player.anims.play(this.haut, true)
                         } 
@@ -1520,9 +1518,9 @@
             }
             init(data){
                 this.HpJoueur=data.HpJoueur;
-                this.thune=data.thune;
+                this.thune=data.thune; 
                 this.PotionStatus = data.PotionStatus;
-                this.potionCheck = data.potionCheck
+                this.potionCheck = data.potionCheck                       //recuperation de data pour scene 
                 this.PotionStatusHUD = data.PotionStatusHUD;
                 this.AchatPotion = data.AchatPotion;
                 this.LootBatV = data.LootBatV;
@@ -1540,7 +1538,7 @@
                 this.load.image("AgroZ","assets/ZoneAgro.png");
                 this.load.image("BourseHUD","assets/bourse.png");
                 this.load.image("PiqueSolo","assets/PiqueSeul.png");  
-                this.load.image("TriggerZone","assets/Zonetrigger.png"); 
+                this.load.image("TriggerZone","assets/Zonetrigger.png");                            /////////////////////////////////Les commentaires sont semblable a la scene du dessus/////////////////////////////////
                 this.load.image("PlaquePressionoff","assets/PressurePlat1.png");
                 this.load.image("PlaquePressionon","assets/PressurePlat2.png");
                 this.load.image("BackPackHUD","assets/backpack.png");   
@@ -2511,7 +2509,7 @@
                     this.eggcassé.setDepth(-1);
                     var varpif=Math.floor(Math.random() * 10)+1
                     if(varpif>=4){
-                        this.BatMX = this.BatMF.create(eggs.x+15,eggs.y+15, "MonstreBAF");           ///salle 1
+                        this.BatMX = this.BatMF.create(eggs.x+15,eggs.y+15, "MonstreBAF");          // quand joueur casse oeufs spawn aléatoire entre argent et ennemies et animation jouer
                         this.BatMX.setBounce(1);
                         this.trackennemie(this.BatMX)
                         this.BatMF.playAnimation("MonstreBatAttackF");
@@ -3104,10 +3102,10 @@
             }},
             pixelArt: true,
             fps: {
-            target: 90,
+            target: 90,                    //bloc fps car update frame rate est selon frame rate du pc et donc changement des timings ( vitesse deplacement/tombe etc...)
             forceSetTimeOut: true
             },
-            input:{gamepad:true},
+            input:{gamepad:true},       //activation manette
             scene: [EcranTitre,sceneExemple,sceneExemple2,EcranFin]
             };
         new Phaser.Game(config);
